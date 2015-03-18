@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.initdemo.MainActivity" >
+
+    <item 
+        android:id="@+id/chooseCarer"
+        android:orderInCategory="100"
+        android:title="选择护工"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/logout_room"
+        android:orderInCategory="100"
+        android:title="退出"
+        app:showAsAction="never"/>
+
+</menu>

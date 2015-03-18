@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/network_prompt"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:background="@color/cauliflower"
+    >
+
+    <ImageView
+        android:id="@+id/network_prompt_exclaimation"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/caution"
+        />
+ 
+    <TextView
+        android:id="@+id/network_prompt_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:textSize="30sp" 
+        android:text="世界上最远的距离就是没网。去检查设置"/>
+
+    <ImageButton
+        android:id="@+id/network_prompt_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="fitEnd"
+        android:layout_alignParentRight="true" 
+        android:src="@drawable/right_arrow"
+        android:onClick="onRightArrowClick"/>
+
+</RelativeLayout>

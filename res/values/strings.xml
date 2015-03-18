@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">老伴</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="view_room">请选择房间：</string>
+    <string name="commit">确认</string>
+    <string name="chooice">选择护工</string>
+    <string name="logout">退出房间</string>
+    <string name="setting">设置</string>
+	<string name="current_situation">当前状态：</string>
+    <string name="device">设备：</string>
+    <string name="elder">老人：</string>
+    <string name="searchDevices">搜索设备</string>
+    <string name="unbind">解除</string>
+    <string name="selectelder">绑定老人</string>
+    <string name="selectitem">绑定项目</string>
+    <string name="bind_btn">绑定</string>
+    <string name="item">项目：</string>
+    <string name="start">启动</string>
+    <string name="bindBluetooth">配对</string>
+    <string name="back">返回</string>
+    <!-- preferences -->
+</resources>

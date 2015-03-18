@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+    	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_marginTop="20dip"
+    		android:layout_marginBottom="20dip"
+    		android:orientation="horizontal" >
+    	
+    		<TextView
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_marginLeft="40dip"
+    			android:text="@string/device"/>
+    		<TextView
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+	    		android:id="@+id/deviceName"   		
+    			/>
+    		
+    		<TextView
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_marginLeft="40dip"
+    			android:text="@string/elder"/>
+    		
+    		<TextView
+    			android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+    			android:id="@+id/elderName" />
+    			
+    		<TextView
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_marginLeft="40dip"
+    			android:text="@string/item"/>
+    		
+    		<TextView
+    			android:layout_width="wrap_content"
+	    		android:layout_height="wrap_content"
+    			android:id="@+id/itemName" />
+    		
+    		<Button
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:text="@string/unbind"
+    			android:id="@+id/unbindBtn"/>
+    			
+    		<Button
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:text="@string/start"
+    			android:id="@+id/startBtn" />
+    			
+    		<Button
+    			android:layout_width="40dip"
+    			android:layout_height="40dip"
+    			/>
+    	</LinearLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceCategory android:title="基本设置" android:key="basic_setting">
+    <!-- android:summary="" will be set in the activity -->
+    <EditTextPreference
+	    android:key="gero_setting"
+	    android:title="选择养老院"
+	    android:dialogTitle="请输入养老院编号:" />
+    <ListPreference 
+        android:key="building_setting"
+        android:title="楼栋选择" 
+        android:entries="@array/None" 
+        android:entryValues="@array/None"
+        />
+    <ListPreference 
+        android:key="floor_setting"
+        android:title="楼层选择" 
+        android:entries="@array/None" 
+        android:entryValues="@array/None"
+        />
+    <ListPreference 
+        android:key="room_setting"
+        android:title="房间选择"
+        android:entries="@array/None" 
+        android:entryValues="@array/None"/>
+    
+</PreferenceCategory>
+
+<PreferenceCategory android:title="护工设置">
+    <ListPreference 
+        android:key="carer_setting"
+        android:title="护工选择" 
+        android:dialogTitle="选择护工:" 
+        android:entries="@array/None" 
+        android:entryValues="@array/None"
+        />
+</PreferenceCategory>
+<PreferenceCategory android:title="系统">
+     <Preference   
+		android:key="version"   
+		android:title="版本号"   
+		android:summary="1.0.1"/>
+     <Preference
+         android:key="download"
+         android:title="获取更新"
+         />
+</PreferenceCategory>
+<PreferenceCategory android:title="其它">
+    <Preference   
+		android:key="about"   
+		android:title="关于"   
+		android:summary="v1.0"/>
+    <Preference   
+		android:key="author"   
+		android:title="作者"   
+		android:summary="康世勇"/>
+    <Preference   
+		android:key="contact"   
+		android:title="反馈"   
+		android:summary="有任何问题请发送至compu@sjtu.edu.cn"/>  
+</PreferenceCategory>
+</PreferenceScreen>
