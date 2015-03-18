@@ -23,4 +23,7 @@
     <string name="bindBluetooth">配对</string>
     <string name="back">返回</string>
     <!-- preferences -->
+    
+    <string name="avatar">Avatar</string>
+    
 </resources>

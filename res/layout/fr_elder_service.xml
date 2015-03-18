@@ -6,8 +6,7 @@
     android:orientation="vertical"
     android:paddingLeft="50dp"
     android:paddingRight="30dp"
-    android:paddingTop="30dp"
-    android:background="@drawable/bg2" >
+    android:paddingTop="30dp" >
     <GridView
         android:id="@+id/elder_list"
         android:layout_height="200dp"
