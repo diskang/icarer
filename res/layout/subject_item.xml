@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 改动：分割线是横的 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.sjtu.icarer"
+    style="@style/ListItem"
+    >
+
+    <ImageView
+        android:id="@+id/iv_subject"
+        style="@style/AvatarNXLarge"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/avatar" />
+
+    <TextView
+        android:id="@+id/tv_subject_info"
+        style="@style/ListTitleText"
+        android:layout_width="match_parent"
+        android:layout_below="@id/iv_subject"
+        android:singleLine="true"
+        android:textStyle="normal"/>
+    <com.sjtu.icarer.common.view.CircleButton
+            android:id="@+id/ItemCheck"
+            android:layout_width="64dip"
+            android:layout_height="64dip"
+            android:layout_centerHorizontal="true"
+            android:layout_alignRight="@id/iv_subject"
+            android:focusable="false"
+	        android:clickable="false"
+            
+	        android:src="@drawable/ic_action_tick"
+            app:cb_color_off="@color/bg_checkbox_off" 
+            app:cb_color="@color/bg_checkbox_on"
+            />
+</RelativeLayout>

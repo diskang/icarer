@@ -16,7 +16,7 @@ import org.json.JSONObject;
 
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Const;
-import com.sjtu.icarer.entity.RunningDevice;
+import com.sjtu.icarer.model.RunningDevice;
 
 import android.content.Context;
 import android.util.Log;

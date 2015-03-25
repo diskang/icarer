@@ -5,6 +5,28 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.Toast;
+
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -15,26 +37,8 @@ import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Const;
 import com.sjtu.icarer.common.utils.DBUtil;
 import com.sjtu.icarer.common.utils.OpUtil;
-
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import com.sjtu.icarer.common.utils.SafeAsyncTask;
+import com.sjtu.icarer.service.IcarerService;
 
 public class FragmentRoom extends Fragment{
 	Context mcontext;
@@ -49,6 +53,8 @@ public class FragmentRoom extends Fragment{
 	private String carerId;
 	private DBUtil dbUtil ;
 	private Prefer prefer;
+	
+	@Inject protected IcarerService icarerService;
 	
 	
 	private GridView serviceView;
@@ -67,6 +73,8 @@ public class FragmentRoom extends Fragment{
 					.considerExifParams(true)
 					.bitmapConfig(Bitmap.Config.RGB_565)
 					.build();
+		Injector.inject(this);
+		checkRetrofit();
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -188,7 +196,7 @@ public class FragmentRoom extends Fragment{
 //	}
 
 	private static class ViewHolder {
-		CheckBox checkbox;
+		//CheckBox checkbox;
 		ImageView image;
 	}
 	class ImageAdapter extends BaseAdapter {
@@ -223,9 +231,9 @@ public class FragmentRoom extends Fragment{
 			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = inflater.inflate(R.drawable.item, parent, false);
+				view = inflater.inflate(R.layout.item, parent, false);
 				holder = new ViewHolder();
-				holder.checkbox = (CheckBox) view.findViewById(R.id.ItemCheck);
+				//holder.checkbox = (CheckBox) view.findViewById(R.id.ItemCheck);
 				holder.image = (ImageView) view.findViewById(R.id.ItemImage);
 				view.setTag(holder);
 			} else {
@@ -236,7 +244,7 @@ public class FragmentRoom extends Fragment{
 			String itemName = roomItemList.get(position);
             String pic_uri = Mapping.RoomItemMapping.get(itemName) ;
 			ImageLoader.getInstance().displayImage(pic_uri, holder.image, options, animateFirstListener);
-
+			
 			return view;
 		}
 	}
@@ -264,4 +272,16 @@ public class FragmentRoom extends Fragment{
 		AnimateFirstDisplayListener.displayedImages.clear();
 	}
 	
+	private void checkRetrofit(){
+	    new SafeAsyncTask<Boolean>(){
+
+			@Override
+			public Boolean call() throws Exception {
+				String ssssString = icarerService.getUserKey("admin");
+				Log.d(TAG, ssssString);
+				return ssssString!=null;
+			}
+	    	
+	    }.execute();
+	}
 }

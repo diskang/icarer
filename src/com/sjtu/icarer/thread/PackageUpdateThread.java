@@ -14,7 +14,7 @@ import java.net.URL;
 
 
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.common.config.URLs;
+import com.sjtu.icarer.common.config.Url;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -38,7 +38,7 @@ public class PackageUpdateThread {
 	private String updateMsg = "有最新的软件包哦，亲快下载吧~";
 	
 	//返回的安装包url
-	private String apkUrl = URLs.UPDATE_URL;
+	private String apkUrl = Url.UPDATE_URL;
 	
 	
 	private Dialog noticeDialog;

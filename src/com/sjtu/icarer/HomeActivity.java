@@ -1,42 +1,61 @@
 package com.sjtu.icarer;
 
-
-
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.config.URLs;
-import com.sjtu.icarer.common.constant.Const;
-import com.sjtu.icarer.common.utils.OpUtil;
+import javax.inject.Inject;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
-public class HomeActivity extends FragmentActivity {
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.sjtu.icarer.common.config.Prefer;
+import com.sjtu.icarer.common.config.Url;
+import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.utils.OpUtil;
+
+public class HomeActivity extends ActionBarActivity {
 	private int current_fragment_type ;//1:room  2:elder  3:carer
 	private String roomNumber;
 	private String carerName;
 	private String carerId;
 	private Context context;
+	@InjectView(R.id.toolbar) protected Toolbar toolbar;
+	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
+	@InjectView(R.id.room_number)protected TextView roomNumView;
+	@InjectView(R.id.tv_item_info)protected TextView carerView ;
+	
+	@Inject protected PackageInfo info;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		context = this;
-		
 		setContentView(R.layout.activity_home);
+		ButterKnife.inject(this);
+		Injector.inject(this);
+		
+		toolbar.setLogo(R.drawable.ic_launcher);
+		// Title
+		toolbar.setTitle("—HOUSECARE— ");
+		// Sub Title
+		toolbar.setSubtitle(" 沪上养老专业品牌");
+		 
+		setSupportActionBar(toolbar);
+		
 		Prefer prefer = new Prefer(this);
 		roomNumber = prefer.getRoomNumber();
 		carerName = prefer.getCarerName();
@@ -151,37 +170,37 @@ public class HomeActivity extends FragmentActivity {
         startActivity(mIntent); 
 	}
 	private void updateView(){
-
-		TextView roomNumView = (TextView)findViewById(R.id.room_number);
-		TextView carerView = (TextView)findViewById(R.id.carer_info);
-		
+		final ImageView carerImageView = (ImageView)carerItemLayout.findViewById(R.id.iv_avatar);
 		roomNumView.setText("房间: \n"+roomNumber);
-		carerView.setText("今日护工: \n"+carerName);
-		loadCarerImage();
+		carerView.setText("今日护工: "+carerName);
+		loadCarerImage(carerImageView);
 	}
 	
-	private void loadCarerImage(){
+	private void loadCarerImage(ImageView carerImageView){
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
         .showImageOnLoading(R.drawable.default_carer) // resource or drawable
         .showImageForEmptyUri(R.drawable.default_carer) // resource or drawable
         .showImageOnFail(R.drawable.default_carer) // resource or drawable
         .cacheInMemory(true) 
         .cacheOnDisk(true)
-        .considerExifParams(true)
+        .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+        .displayer(new RoundedBitmapDisplayer(2000))
         .build();
-		final ImageView carerImageView = (ImageView)findViewById(R.id.carer_pic);
-		ImageSize mImageSize = new ImageSize(160, 120);
-		String imageUrl = URLs.IMG_URL_STAFF+"?staff_id="+carerId;
-		ImageLoader.getInstance().loadImage(imageUrl, mImageSize, options, new SimpleImageLoadingListener(){
-			
-            @Override
-            public void onLoadingComplete(String imageUri, View view,
-                    Bitmap loadedImage) {
-                super.onLoadingComplete(imageUri, view, loadedImage);
-                carerImageView.setImageBitmap(loadedImage);
-            }
-             
-        });
+		
+		
+		
+		String imageUrl = Url.IMG_URL_STAFF+"?staff_id="+carerId;
+		ImageLoader.getInstance().displayImage(imageUrl, carerImageView, options);
+//		ImageLoader.getInstance().loadImage(imageUrl, mImageSize, options, new SimpleImageLoadingListener(){
+//			
+//			 @Override
+//	            public void onLoadingComplete(String imageUri, View view,
+//	                    Bitmap loadedImage) {
+//	                super.onLoadingComplete(imageUri, view, loadedImage);
+//	                carerAware.setImageBitmap(loadedImage);
+//	            }
+//             
+//        });
 	}
 	@Override
 	public void onBackPressed() {

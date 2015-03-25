@@ -4,18 +4,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
-import com.sjtu.icarer.common.config.Mapping;
-import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.config.URLs;
-import com.sjtu.icarer.common.constant.Const;
-import com.sjtu.icarer.common.utils.DBUtil;
-import com.sjtu.icarer.common.utils.OpUtil;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,7 +25,22 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
+import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.sjtu.icarer.common.config.Mapping;
+import com.sjtu.icarer.common.config.Prefer;
+import com.sjtu.icarer.common.config.Url;
+import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.utils.DBUtil;
+import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.common.view.CircleButton;
 
 public class FragmentElder extends Fragment{ 
 	
@@ -58,10 +62,10 @@ public class FragmentElder extends Fragment{
 	private String carerName;
 	private String carerId;
 	
-	private GridView elderView;
-	private GridView ItemView;
-	
-	private Button SubmitButton;
+	@InjectView(R.id.elder_list)protected GridView elderView;
+	@InjectView(R.id.elder_service_items)protected GridView ItemView;
+	@InjectView(R.id.elder_confirm_submit)protected Button SubmitButton;
+	//private Button SubmitButton;
 	private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 	
 	@Override
@@ -77,15 +81,17 @@ public class FragmentElder extends Fragment{
 				.cacheOnDisk(true)
 				.considerExifParams(true)
 				.bitmapConfig(Bitmap.Config.RGB_565)
+				.displayer(new RoundedBitmapDisplayer(2000))
 				.build();
 		
 	}
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fr_elder_service, container, false);
-		elderView = (GridView) rootView.findViewById(R.id.elder_list);
-	    ItemView = (GridView) rootView.findViewById(R.id.elder_service_items);
-	    SubmitButton = (Button) rootView.findViewById(R.id.elder_confirm_submit);
+		ButterKnife.inject(this, rootView);
+//		elderView = (GridView) rootView.findViewById(R.id.elder_list);
+//	    ItemView = (GridView) rootView.findViewById(R.id.elder_service_items);
+//	    SubmitButton = (Button) rootView.findViewById(R.id.elder_confirm_submit);
 		
 	    elderView.setAdapter(new ElderImageAdapter(animateFirstListener));
 		elderView.setOnItemClickListener(new OnItemClickListener() {
@@ -110,17 +116,20 @@ public class FragmentElder extends Fragment{
 		ItemView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				CheckBox checkbox =  (CheckBox) view.findViewById(R.id.ItemCheck);
-//            	if(elderIdList==null||elderIdList.length==0){
-//			    		Toast.makeText(mcontext, "不存在老人!", Toast.LENGTH_SHORT).show();
-//			    		return;
-//			    }
+//				CheckBox checkbox =  (CheckBox) view.findViewById(R.id.ItemCheck);
+				CircleButton checkbox = (CircleButton)view.findViewById(R.id.ItemCheck);
             	if(!finishedElderItem[finishedChosenElder][position].isEmpty()) {
-            		checkbox.setChecked(false);
+            		//cancel it
+            		checkbox.setPressed(true);
+                    checkbox.setPressed(false);
+                   
             		finishedElderItem[finishedChosenElder][position] = "";	
+            		
             	}else {
                     String fitem = personItemList.get(position);
-                    checkbox.setChecked(true);
+                    //check it
+                    checkbox.setPressed(true);
+                    checkbox.setPressed(false);
                     finishedElderItem[finishedChosenElder][position] = fitem;
             	}
 			}
@@ -174,7 +183,9 @@ public class FragmentElder extends Fragment{
 		    	View elderGrid = elderView.getChildAt(finishedChosenElder);//- elderGridView.getFirstVisiblePosition()
 				if(elderGrid!=null){
 					
-					((CheckBox)elderGrid.findViewById(R.id.ItemCheck)).setChecked(true);
+					CircleButton cbElderHintButton = (CircleButton)elderGrid.findViewById(R.id.cb_elder_hint);
+					cbElderHintButton.setPressed(true);
+					cbElderHintButton.setPressed(true);
 				}else{
 					Log.d(TAG,"null"+finishedChosenElder);
 				}
@@ -267,7 +278,7 @@ public class FragmentElder extends Fragment{
 	
 
 	private static class ViewHolder {
-		CheckBox checkbox;
+		//CheckBox checkbox;
 		ImageView image;
 		TextView text;
 	}
@@ -303,19 +314,19 @@ public class FragmentElder extends Fragment{
 			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = inflater.inflate(R.drawable.item_elder, parent, false);
+				view = inflater.inflate(R.layout.elder_item, parent, false);
 				holder = new ViewHolder();
-				holder.text = (TextView) view.findViewById(R.id.ItemText);
-				holder.image = (ImageView) view.findViewById(R.id.ItemImage);
+				holder.text = (TextView) view.findViewById(R.id.tv_elder_info);
+				holder.image = (ImageView) view.findViewById(R.id.iv_elder_image);
 				view.setTag(holder);
 			} else {
 				holder = (ViewHolder) view.getTag();
 			}
 
 			holder.text.setText(elderNameList[position]);
-            String pic_uri = URLs.IMG_URL+"?elder_id="+elderIdList[position];
+            String pic_uri = Url.IMG_URL+"?elder_id="+elderIdList[position];
 
-			ImageLoader.getInstance().displayImage(pic_uri, holder.image, options, animateFirstListener);
+			ImageLoader.getInstance().displayImage(pic_uri, holder.image, options);
 
 			return view;
 		}
@@ -353,7 +364,7 @@ public class FragmentElder extends Fragment{
 			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = inflater.inflate(R.drawable.item, parent, false);
+				view = inflater.inflate(R.layout.item, parent, false);
 				holder = new ViewHolder();
 				holder.image = (ImageView) view.findViewById(R.id.ItemImage);
 				view.setTag(holder);
@@ -389,6 +400,7 @@ public class FragmentElder extends Fragment{
     @Override
 	public void onDestroy() {
 		super.onDestroy();
+		ButterKnife.reset(this);
 		AnimateFirstDisplayListener.displayedImages.clear();
 	}
     

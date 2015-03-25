@@ -1,4 +1,4 @@
-package com.sjtu.icarer.entity;
+package com.sjtu.icarer.model;
 
 /***************************
  * 

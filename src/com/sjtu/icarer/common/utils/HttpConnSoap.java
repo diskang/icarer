@@ -18,7 +18,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
-import com.sjtu.icarer.common.config.URLs;
+import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Const;
 
 import android.util.Log;
@@ -35,7 +35,7 @@ public class HttpConnSoap {
 	public boolean BindBluetoothDevice(String address,int elder_id,String device_name,String device_type){
 		//String ServerUrl = ServerHost + "insertBluetoothDeviceInfo?address="+address+"&elder_id="+elder_id+"&device_name="+device_name+"&type="+device_type;
 		
-		String ServerUrl = URLs.SOAP_URL + "insertBluetoothDeviceInfo";
+		String ServerUrl = Url.SOAP_URL + "insertBluetoothDeviceInfo";
 		
 		Log.d("bowen", ServerUrl);
 		HttpPost httpRequest = new HttpPost(ServerUrl);
@@ -67,7 +67,7 @@ public class HttpConnSoap {
 	 * 该函数解除蓝牙设备的绑定
 	 */
 	public boolean unBindBluetoothDevice(String address, int elder_id){
-		String ServerUrl = URLs.SOAP_URL + "unBindBluetoothDevice";
+		String ServerUrl = Url.SOAP_URL + "unBindBluetoothDevice";
 		
 		HttpPost post = new HttpPost(ServerUrl);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -92,7 +92,7 @@ public class HttpConnSoap {
 	public String InsertData(String methodName, String elder_id, String doctor_id, 
 			String date_str, String duration_str, String start_time, String data) {
 		String resp = "";
-		String ServerUrl = URLs.SOAP_URL+methodName
+		String ServerUrl = Url.SOAP_URL+methodName
 				+"?elder_id="+elder_id+"&doctor_id="+doctor_id+"&date_str="+date_str
 				+"&duration_str="+"&start_time="+start_time+"&data="+data;
 		
@@ -121,7 +121,7 @@ public class HttpConnSoap {
 	 */
 	public String InsertMac(String methodName, String gero_id, String roomNo, String padMac) {
 		String resp = "";
-		String ServerUrl = URLs.SOAP_URL + methodName;
+		String ServerUrl = Url.SOAP_URL + methodName;
 		
 		HttpPost  httpRequest  = new HttpPost(ServerUrl);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -154,7 +154,7 @@ public class HttpConnSoap {
 			String itemRoom, String[] itemElder) throws UnsupportedEncodingException {
 		String resp = "";
 		Boolean isEmpty = true;
-		String ServerUrl = URLs.SOAP_URL+methodName+"?carer_id="+carer_id+"&roomNo="+roomNo;
+		String ServerUrl = Url.SOAP_URL+methodName+"?carer_id="+carer_id+"&roomNo="+roomNo;
 		String[] floorTemp = itemFloor.split(",");
 		String[] roomTemp = itemRoom.split(",");
 		String temp = "";
@@ -207,7 +207,7 @@ public class HttpConnSoap {
 	 */
 	public InputStream GetDevicesByRoom(String roomNo){
 		InputStream list = null;
-		String ServerUrl = URLs.SOAP_URL + "selectBluetoothDeviceByRoom?roomNo=" + roomNo;
+		String ServerUrl = Url.SOAP_URL + "selectBluetoothDeviceByRoom?roomNo=" + roomNo;
 		InputStream result = null;
 		HttpGet httpRequest = new HttpGet(ServerUrl);
 		
@@ -228,7 +228,7 @@ public class HttpConnSoap {
 	public String GetBasicInfo(String methodName, ArrayList<String> Parameters, ArrayList<String> ParValues) {
 		List<NameValuePair> params = null;
 		List<String> list = new ArrayList<String>();
-		String ServerUrl = URLs.SOAP_URL+methodName;
+		String ServerUrl = Url.SOAP_URL+methodName;
 		Log.d("TAG", ServerUrl);
 		String soapAction = "http://tempuri.org/"+methodName;
 		String result = null;
@@ -265,7 +265,7 @@ public class HttpConnSoap {
 			peopleType = "1";
 		}
 		
-		String ServerUrl = URLs.SOAP_URL + "getArrangement?people_type="+peopleType+"&gero_id="+Const.GERO_ID
+		String ServerUrl = Url.SOAP_URL + "getArrangement?people_type="+peopleType+"&gero_id="+Const.GERO_ID
 				+"&date="+ddate;
 		HttpGet  httpRequest  = new HttpGet(ServerUrl);
 		String result = null;
@@ -297,7 +297,7 @@ public class HttpConnSoap {
 		if(geroId==null || geroId.isEmpty()){
 			return null;
 		}
-		String ServerUrl = URLs.SOAP_URL + methodName + "?gero_id="+geroId;
+		String ServerUrl = Url.SOAP_URL + methodName + "?gero_id="+geroId;
 		
 		
 		try {
@@ -329,7 +329,7 @@ public class HttpConnSoap {
 		if(geroId==null || geroId.isEmpty()){
 			return null;
 		}
-		String ServerUrl = URLs.SOAP_URL + methodName + "?gero_id="+geroId+"&type="+type;
+		String ServerUrl = Url.SOAP_URL + methodName + "?gero_id="+geroId+"&type="+type;
 
 		HttpGet  httpRequest  = new HttpGet(ServerUrl);
 		InputStream result = null;

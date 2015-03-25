@@ -12,12 +12,10 @@ public class WelcomeActivity extends Activity {
 
 	private final int WEL_DISPLAY_LENGHT = 1000;
 	
-	private static final String TAG = "WelcomeActivity";
+	//private static final String TAG = "WelcomeActivity";
 	
 	
 	private String roomNumber;
-	private String carerId;
-	private String carerName;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

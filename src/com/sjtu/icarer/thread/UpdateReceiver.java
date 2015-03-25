@@ -3,20 +3,17 @@ package com.sjtu.icarer.thread;
 import java.util.HashMap;
 import java.util.List;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+
 import com.sjtu.icarer.HomeActivity;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Const;
 import com.sjtu.icarer.common.utils.DBUtil;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.os.StrictMode;
-import android.util.Log;
-import android.widget.Toast;
-
 public class UpdateReceiver extends BroadcastReceiver{
-	private static final String TAG = "UpdateReceiver";
+    //private static final String TAG = "UpdateReceiver";
 	private Context mcontext;
 	private DBUtil dbUtil;
 	private Prefer prefer;

@@ -1,21 +1,5 @@
 package com.sjtu.icarer.thread;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.os.Build;
-import android.os.Environment;
-import android.os.Looper;
-import android.util.Log;
-import android.util.TypedValue;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,14 +9,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.Writer;
-import java.text.DateFormat;
-import java.lang.reflect.Field;  
+import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Build;
+import android.os.Environment;
+import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
 
 /**
  * Singleton helper: install a default unhandled exception handler which shows
@@ -53,7 +45,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private Map<String, String> infos = new HashMap<String, String>();      
       
     //用于格式化日期,作为日志文件名的一部分      
-    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");      
+    @SuppressLint("SimpleDateFormat")
+	private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");      
       
     /** 保证只有一个CrashHandler实例 */      
     private CrashHandler() {}      
@@ -158,7 +151,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      * @param ex   
      * @return  返回文件名称,便于将文件传送到服务器   
      */      
-    private String saveCatchInfo2File(Throwable ex) {      
+    @SuppressLint("SdCardPath")
+	private String saveCatchInfo2File(Throwable ex) {      
               
         StringBuffer sb = new StringBuffer();      
         for (Map.Entry<String, String> entry : infos.entrySet()) {      

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParser;
 
-import com.sjtu.icarer.entity.RunningDevice;
+import com.sjtu.icarer.model.RunningDevice;
 
 import android.util.Log;
 import android.util.Xml;
