@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    android:installLocation="internalOnly"
     package="com.sjtu.icarer"
-    android:versionCode="2"
-    android:versionName="1.0.1" >
+    android:versionCode="3"
+    android:versionName="2.0.1" >
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -15,6 +16,11 @@
     	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
   		<uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
   		<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+      
+        <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+        <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+        <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+        <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <application
         android:name="com.sjtu.icarer.core.IcarerApplication"
         android:allowBackup="false"
@@ -22,24 +28,37 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.GitHub" >
         <activity
-            android:name=".WelcomeActivity"
-            android:label="@string/app_name" >
+            android:name=".ui.MainActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:screenOrientation="landscape"
-            android:name=".HomeActivity"
+            android:name=".authenticator.IcarerAuthenticatorActivity"
+            android:excludeFromRecents="true"  >
+            
+        </activity>
+        <activity
+            android:name="com.sjtu.icarer.ui.WelcomeActivity"
+            android:label="@string/app_name" >
+            
+        </activity>
+        <activity
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:name="com.sjtu.icarer.ui.HomeActivity"
             android:label="@string/app_name" 
             android:theme="@style/Theme.GitHub">
             
         </activity>
         
         <activity
-            android:name=".LoginActivity"
+            android:name="com.sjtu.icarer.ui.login.LoginActivity"
             android:label="@string/app_name">
             
         </activity>
@@ -52,7 +71,22 @@
             android:label="@string/app_name"  
             android:name="com.sjtu.icarer.modules.test.CatchExceptionLogActivity" >  
             
-        </activity>  
+        </activity>
+         
+        <service
+            android:name=".authenticator.AccountAuthenticatorService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":auth" >
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator" />
+        </service>
+         
      	<service
           android:name="com.sjtu.icarer.thread.UpdateService"
           android:enabled="true"

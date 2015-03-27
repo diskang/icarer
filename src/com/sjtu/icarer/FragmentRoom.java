@@ -34,11 +34,13 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.DBUtil;
 import com.sjtu.icarer.common.utils.OpUtil;
 import com.sjtu.icarer.common.utils.SafeAsyncTask;
+import com.sjtu.icarer.model.User;
 import com.sjtu.icarer.service.IcarerService;
+import com.sjtu.icarer.ui.HomeActivity;
 
 public class FragmentRoom extends Fragment{
 	Context mcontext;
@@ -76,6 +78,7 @@ public class FragmentRoom extends Fragment{
 		Injector.inject(this);
 		checkRetrofit();
 	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fr_room_service, container, false);
@@ -130,7 +133,7 @@ public class FragmentRoom extends Fragment{
      			    	if(success) {
      			    		Toast.makeText(mcontext, "提交成功", Toast.LENGTH_SHORT).show();
      			    		Intent intent = new Intent(mcontext, HomeActivity.class);
-     			    		intent.putExtra(Const.FRAGMENT_INDEX, INDEX);
+     			    		intent.putExtra(Constants.FRAGMENT_INDEX, INDEX);
      			    		startActivity(intent);
      			    	} 
      			    	else {
@@ -277,9 +280,9 @@ public class FragmentRoom extends Fragment{
 
 			@Override
 			public Boolean call() throws Exception {
-				String ssssString = icarerService.getUserKey("admin");
-				Log.d(TAG, ssssString);
-				return ssssString!=null;
+				User user = icarerService.authenticate("su", "admin");
+				Log.d(TAG, user.getDigest());
+				return user.getDigest()!=null;
 			}
 	    	
 	    }.execute();

@@ -25,6 +25,8 @@ public class RestAdapterRequestInterceptor implements RequestInterceptor {
 
         // Add the user agent to the request.
         request.addHeader("User-Agent", userAgentProvider.get());
-//        request.addPathParam(arg0, arg1);
+//        request.addEncodedQueryParam("username", "su");
+//        request.addEncodedQueryParam("digest", "");
+        
     }
 }

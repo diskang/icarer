@@ -1,5 +1,7 @@
 package com.sjtu.icarer;
 
+import javax.inject.Singleton;
+
 import android.accounts.AccountManager;
 import android.app.NotificationManager;
 import android.content.Context;
@@ -10,8 +12,6 @@ import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.view.inputmethod.InputMethodManager;
-
-import javax.inject.Singleton;
 
 import com.sjtu.icarer.core.IcarerApplication;
 
@@ -64,10 +64,10 @@ public class AndroidModule {
         return context.getApplicationInfo();
     }
 
-    @Provides
-    AccountManager provideAccountManager(final Context context) {
-        return AccountManager.get(context);
-    }
+   @Provides
+   AccountManager provideAccountManager(final Context context) {
+       return AccountManager.get(context);
+   }
 
     @Provides
     ClassLoader provideClassLoader(final Context context) {

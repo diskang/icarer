@@ -26,7 +26,7 @@ public final class Url {
     public static final String URL_AREA_FARG =     "/gero/{gid}/area/{aid}";
     public static final String URL_AREA = URL_PREFFIX + URL_AREA_FARG;
     //用于URL参数digest的密钥
-    public static final String URL_USER_KEY =    "/resthouse/user/digest";
+    public static final String URL_USER_KEY =    "/resthouse/pad/login";
     //
     public static final String URL_USER_FARG =     "/user/{uid}";
     public static final String URL_USER = URL_PREFFIX + URL_USER_FARG;

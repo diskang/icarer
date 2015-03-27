@@ -2,7 +2,7 @@ package com.sjtu.icarer.model;
 
 import java.util.List;
 
-public class HttpModel<T> {
+public class HttpWrapper<T> {
 	private int status;
 	private String error;
 //	private int total;

@@ -7,10 +7,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.sjtu.icarer.HomeActivity;
 import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.DBUtil;
+import com.sjtu.icarer.ui.HomeActivity;
 
 public class UpdateReceiver extends BroadcastReceiver{
     //private static final String TAG = "UpdateReceiver";
@@ -28,7 +28,7 @@ public class UpdateReceiver extends BroadcastReceiver{
         dbUtil = new DBUtil(mcontext);
 		prefer = new Prefer(mcontext);
 		roomNumber = prefer.getRoomNumber();
-		if (Const.ACTION_UPDATE_INFO.equals(intent.getAction())) {
+		if (Constants.ACTION_UPDATE_INFO.equals(intent.getAction())) {
 			updateCarer();
 			//update if changed
 			String[] elderIdList = prefer.getElderIdList();

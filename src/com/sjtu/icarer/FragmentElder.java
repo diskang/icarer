@@ -37,10 +37,11 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.DBUtil;
 import com.sjtu.icarer.common.utils.OpUtil;
 import com.sjtu.icarer.common.view.CircleButton;
+import com.sjtu.icarer.ui.HomeActivity;
 
 public class FragmentElder extends Fragment{ 
 	
@@ -227,7 +228,7 @@ public class FragmentElder extends Fragment{
      			    	if(success) {
      			    		Toast.makeText(mcontext, "提交成功", Toast.LENGTH_SHORT).show();
      			    		Intent intent = new Intent(mcontext, HomeActivity.class);
-     			    		intent.putExtra(Const.FRAGMENT_INDEX, INDEX);
+     			    		intent.putExtra(Constants.FRAGMENT_INDEX, INDEX);
      			    		startActivity(intent);
      			    	} 
      			    	else {

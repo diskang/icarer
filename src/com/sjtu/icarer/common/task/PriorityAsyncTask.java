@@ -18,6 +18,7 @@ package com.sjtu.icarer.common.task;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
 import com.sjtu.icarer.common.utils.LogUtils;
 
 import java.util.concurrent.*;
@@ -389,12 +390,13 @@ public abstract class PriorityAsyncTask<Params, Progress, Result> implements Tas
         Params[] mParams;
     }
 
-    @SuppressWarnings({})
     private static class AsyncTaskResult<Data> {
-        final PriorityAsyncTask mTask;
+        @SuppressWarnings("rawtypes")
+		final PriorityAsyncTask mTask;
         final Data[] mData;
 
-        AsyncTaskResult(PriorityAsyncTask task, Data... data) {
+        @SuppressWarnings("rawtypes")
+		AsyncTaskResult(PriorityAsyncTask task, Data... data) {
             mTask = task;
             mData = data;
         }

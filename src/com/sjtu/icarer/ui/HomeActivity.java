@@ -1,4 +1,4 @@
-package com.sjtu.icarer;
+package com.sjtu.icarer.ui;
 
 import javax.inject.Inject;
 
@@ -22,9 +22,17 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.sjtu.icarer.FragmentCarer;
+import com.sjtu.icarer.FragmentElder;
+import com.sjtu.icarer.FragmentRoom;
+import com.sjtu.icarer.Injector;
+import com.sjtu.icarer.R;
+import com.sjtu.icarer.R.drawable;
+import com.sjtu.icarer.R.id;
+import com.sjtu.icarer.R.layout;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.OpUtil;
 
 public class HomeActivity extends ActionBarActivity {
@@ -60,7 +68,7 @@ public class HomeActivity extends ActionBarActivity {
 		roomNumber = prefer.getRoomNumber();
 		carerName = prefer.getCarerName();
 		carerId = prefer.getCarerId();
-		int frIndex = getIntent().getIntExtra(Const.FRAGMENT_INDEX, 1);
+		int frIndex = getIntent().getIntExtra(Constants.FRAGMENT_INDEX, 1);
 		addFragment(frIndex);
 		updateView();
 

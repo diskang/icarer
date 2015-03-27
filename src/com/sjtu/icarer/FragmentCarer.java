@@ -14,7 +14,7 @@ import java.util.Set;
 
 
 import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.ClsUtils;
 import com.sjtu.icarer.common.utils.DBUtil;
 import com.sjtu.icarer.model.RunningDevice;
@@ -564,7 +564,7 @@ public class FragmentCarer extends Fragment{
         		startActivity(intent_setting2);
 	        	break;
         	case R.id.goto_refresh:
-        		Intent intent = new Intent(Const.ACTION_UPDATE_INFO);
+        		Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
         		mcontext.sendBroadcast(intent);
         		getActivity().finish();
 	        	break;

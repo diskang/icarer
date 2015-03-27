@@ -2,7 +2,7 @@ package com.sjtu.icarer.common.constant;
 
 
 
-public class Const {
+public final class Constants {
 	public static final String ROOM_SERVICE_ACTION = "org.sjtu.icarer.RoomService";
 	public static final String ELDER_SERVICE_ACTION = "org.sjtu.icarer.ElderService";
 	public static final String GERO_ID = "126";//SHOULD BE REMOVED
@@ -22,5 +22,33 @@ public class Const {
 	
 	public static final String FRAGMENT_INDEX = "com.sjtu.icarer.fragment";
 	
+	
+	public static final class Auth {
+        private Auth() {}
+
+        /**
+         * Account type id
+         */
+        public static final String BOOTSTRAP_ACCOUNT_TYPE = "com.sjtu.icarer";
+
+        /**
+         * Account name
+         */
+        public static final String BOOTSTRAP_ACCOUNT_NAME = "icarer";
+
+        /**
+         * Provider id
+         */
+        public static final String BOOTSTRAP_PROVIDER_AUTHORITY = "com.sjtu.icarer.sync";
+
+        /**
+         * Auth token type
+         */
+        public static final String AUTHTOKEN_TYPE = BOOTSTRAP_ACCOUNT_TYPE;
+        /**
+         * user data
+         */
+        public static final String ICARER_ACCOUNT_USER = "loginUser";
+    }
 	
 }

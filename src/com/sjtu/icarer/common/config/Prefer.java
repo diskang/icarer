@@ -1,14 +1,13 @@
 package com.sjtu.icarer.common.config;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.sjtu.icarer.common.constant.Const;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+
+import com.sjtu.icarer.common.constant.Constants;
 
 public class Prefer {
 	
@@ -38,43 +37,43 @@ public class Prefer {
 	}
 	
 	public String getGeroId(){
-		GERO_ID = preferences.getString(Const.PREFER_GERO_ID,null);
+		GERO_ID = preferences.getString(Constants.PREFER_GERO_ID,null);
 		return GERO_ID;
 	}
 	public void setGeroId(String geroId){
-		editor.putString(Const.PREFER_GERO_ID, geroId);
+		editor.putString(Constants.PREFER_GERO_ID, geroId);
 		editor.commit();
 	}
 	
 	public String getRoomNumber(){
-		ROOM_NUMBER = preferences.getString(Const.PREFER_ROOM_NUMBER,null);
+		ROOM_NUMBER = preferences.getString(Constants.PREFER_ROOM_NUMBER,null);
 		return ROOM_NUMBER;
 	}
 	public void setRoomNumber(String RoomNumber){
-		editor.putString(Const.PREFER_ROOM_NUMBER,RoomNumber);
+		editor.putString(Constants.PREFER_ROOM_NUMBER,RoomNumber);
 		editor.commit();
 	}
 	
 	public String getCarerId(){
-		CARER_ID  = preferences.getString(Const.PREFER_CARER_ID,null);
+		CARER_ID  = preferences.getString(Constants.PREFER_CARER_ID,null);
 		return CARER_ID;
 	}
 	public void setCarerId(String carerId){
-		editor.putString(Const.PREFER_CARER_ID,carerId);
+		editor.putString(Constants.PREFER_CARER_ID,carerId);
 		editor.commit();
 	}
 	
 	public String getCarerName(){
-		CARER_NAME = preferences.getString(Const.PREFER_CARER_NAME,null);
+		CARER_NAME = preferences.getString(Constants.PREFER_CARER_NAME,null);
 		return CARER_NAME;
 	}
 	public void setCarerName(String carerName){
-		editor.putString(Const.PREFER_CARER_NAME,carerName);
+		editor.putString(Constants.PREFER_CARER_NAME,carerName);
 		editor.commit();
 	}
 	
 	public String[] getElderIdList(){
-		ELDER_ID_LIST = preferences.getString(Const.PREFER_ELDER_ID,null);
+		ELDER_ID_LIST = preferences.getString(Constants.PREFER_ELDER_ID,null);
 		if(ELDER_ID_LIST!=null){
 			String[] elderidlist = ELDER_ID_LIST.split(",");
 			return elderidlist;
@@ -91,12 +90,12 @@ public class Prefer {
 		for (int i=0;i<elderIdList.length;i++){
 			sb.append(elderIdList[i]+",");
 		}
-		editor.putString(Const.PREFER_ELDER_ID,sb.toString());
+		editor.putString(Constants.PREFER_ELDER_ID,sb.toString());
 		editor.commit();
 	}
 	
 	public String[] getElderNameList(){
-		ELDER_NAME_LIST = preferences.getString(Const.PREFER_ELDER_NAME,null);
+		ELDER_NAME_LIST = preferences.getString(Constants.PREFER_ELDER_NAME,null);
 		if(ELDER_NAME_LIST!=null){
 			String[] elderidlist = ELDER_NAME_LIST.split(",");
 			return elderidlist;
@@ -113,12 +112,12 @@ public class Prefer {
 		for (int i=0;i<elderNameList.length;i++){
 			sb.append(elderNameList[i]+",");
 		}
-		editor.putString(Const.PREFER_ELDER_NAME,sb.toString());
+		editor.putString(Constants.PREFER_ELDER_NAME,sb.toString());
 		editor.commit();
 	}
 	
 	public List<String> getItemRoomList(){
-		ITEM_ROOM_LIST= preferences.getString(Const.PREFER_ITEM_ROOM,null);
+		ITEM_ROOM_LIST= preferences.getString(Constants.PREFER_ITEM_ROOM,null);
 		if(ITEM_ROOM_LIST!=null){
 			String[] itemroomlist = ITEM_ROOM_LIST.split(",");
 			List<String> list =new ArrayList<String>();
@@ -139,12 +138,12 @@ public class Prefer {
 		for (int i=0;i<itemRoomList.size();i++){
 			sb.append(itemRoomList.get(i)+",");
 		}
-		editor.putString(Const.PREFER_ITEM_ROOM,sb.toString());
+		editor.putString(Constants.PREFER_ITEM_ROOM,sb.toString());
 		editor.commit();
 	}
 	
 	public List<String> getItemElderList(){
-		ITEM_ELDER_LIST= preferences.getString(Const.PREFER_ITEM_ELDER,null);
+		ITEM_ELDER_LIST= preferences.getString(Constants.PREFER_ITEM_ELDER,null);
 		if(ITEM_ELDER_LIST!=null){
 			String[] itemelderlist = ITEM_ELDER_LIST.split(",");
 			
@@ -166,21 +165,21 @@ public class Prefer {
 		for (int i=0;i<itemElderList.size();i++){
 			sb.append(itemElderList.get(i)+",");
 		}
-		editor.putString(Const.PREFER_ITEM_ELDER, sb.toString());
+		editor.putString(Constants.PREFER_ITEM_ELDER, sb.toString());
 		editor.commit();
 	}
 	
 	
 	public boolean updatedTimeStamp(){
 		/*update per day, if updated return true; if not, return false to update...*/
-		String oldStamp = preferences.getString(Const.PREFER_TIMESTAMP,null);
+		String oldStamp = preferences.getString(Constants.PREFER_TIMESTAMP,null);
 		String newStamp = new java.sql.Date(new java.util.Date().getTime())+"";
 		
 		Log.d(TAG,newStamp);
 		if (newStamp.equals(oldStamp)){
 			return true;
 		}else{
-			editor.putString(Const.PREFER_TIMESTAMP,newStamp);
+			editor.putString(Constants.PREFER_TIMESTAMP,newStamp);
 			editor.commit();
 			return false;
 		}

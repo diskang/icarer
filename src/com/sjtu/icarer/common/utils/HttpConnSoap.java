@@ -19,7 +19,7 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 
 import com.sjtu.icarer.common.config.Url;
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 
 import android.util.Log;
 
@@ -265,7 +265,7 @@ public class HttpConnSoap {
 			peopleType = "1";
 		}
 		
-		String ServerUrl = Url.SOAP_URL + "getArrangement?people_type="+peopleType+"&gero_id="+Const.GERO_ID
+		String ServerUrl = Url.SOAP_URL + "getArrangement?people_type="+peopleType+"&gero_id="+Constants.GERO_ID
 				+"&date="+ddate;
 		HttpGet  httpRequest  = new HttpGet(ServerUrl);
 		String result = null;

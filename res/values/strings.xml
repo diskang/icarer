@@ -26,5 +26,13 @@
     
     <string name="avatar">Avatar</string>
     <string name="empty"></string>
+    <string name="label_username">用户名</string>
+    <string name="label_password">密码</string>
+    <string name="label_sign_in">请点击登录</string>
+    <string name="message_signing_in">正在登陆</string>
+    <string name="signup_link">无法登录？请 &lt;a href=http://www.androidbootstrap.com>点击&lt;/a> 注册.</string>
+    <string name="message_bad_credentials">Username or Password is incorrect</string>
+    <string name="message_auth_failed">Please enter a valid password</string>
+    <string name="message_auth_failed_new_account">Please enter a valid username &amp; password</string>
     
 </resources>

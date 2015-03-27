@@ -122,7 +122,7 @@
         android:layout_toRightOf="@id/ll_navbar"
         android:layout_below="@id/toolbar"
         android:orientation="vertical"
-        android:background="@color/background" >
+        android:background="@drawable/main_background" >
         
         <!-- here may add a network prompt -->
         <RelativeLayout

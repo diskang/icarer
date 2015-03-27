@@ -2,7 +2,7 @@ package com.sjtu.icarer.thread;
 
 import java.util.Calendar;
 
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -29,7 +29,7 @@ public class UpdateService extends Service{
 	    filter.addAction(Intent.ACTION_SCREEN_ON);
 	    BroadcastReceiver mReceiver = new UpdateReceiver();
 	    registerReceiver(mReceiver, filter);
-	    setAlarm(this,Const.ACTION_UPDATE_INFO,UPDATE_START_HOUR,UPDATE_START_MINUTE,UPDATE_ID);
+	    setAlarm(this,Constants.ACTION_UPDATE_INFO,UPDATE_START_HOUR,UPDATE_START_MINUTE,UPDATE_ID);
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class UpdateService extends Service{
     public void onDestroy() {
 		super.onDestroy();
 		//TODO let it be a choice
-		cancelAlarm(this, Const.ACTION_UPDATE_INFO, UPDATE_ID);
+		cancelAlarm(this, Constants.ACTION_UPDATE_INFO, UPDATE_ID);
 	}
 	@Override
 	public IBinder onBind(Intent intent) {

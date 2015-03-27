@@ -10,7 +10,8 @@ import android.view.animation.AnimationUtils;
  */
 public class ResLoader {
 
-    public static Object loadRes(ResType type, Context context, int id) {
+    @SuppressWarnings("deprecation")
+	public static Object loadRes(ResType type, Context context, int id) {
         if (context == null || id < 1) return null;
         switch (type) {
             case Animation:

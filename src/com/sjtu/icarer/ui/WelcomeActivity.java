@@ -1,10 +1,12 @@
-package com.sjtu.icarer;
+package com.sjtu.icarer.ui;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.sjtu.icarer.R;
+import com.sjtu.icarer.SettingActivity;
 import com.sjtu.icarer.common.config.Prefer;
 
 

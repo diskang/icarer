@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.constant.Const;
+import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.DBUtil;
 import com.sjtu.icarer.common.utils.OpUtil;
 import com.sjtu.icarer.thread.PackageUpdateThread;
@@ -295,7 +295,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.dismiss(); 
-						Intent intent = new Intent(Const.ACTION_UPDATE_INFO);
+						Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
 		        		sendBroadcast(intent);
 		        		finish();
 					}

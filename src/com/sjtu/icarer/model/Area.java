@@ -2,6 +2,8 @@ package com.sjtu.icarer.model;
 
 import java.util.List;
 
+import com.google.gson.Gson;
+
 public class Area {
     private int id;
     private int parentId;
@@ -63,5 +65,10 @@ public class Area {
 	public void setAreaList(List<Area> areaList) {
 		this.areaList = areaList;
 	}
-
+	
+	@Override
+	public String toString(){
+		Gson gson = new Gson();
+		return gson.toJson(this);
+	}
 }

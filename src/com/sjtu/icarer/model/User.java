@@ -2,6 +2,8 @@ package com.sjtu.icarer.model;
 
 import java.io.Serializable;
 
+import com.google.gson.Gson;
+
 public  class User implements Serializable{
 	/**
 	 * 
@@ -9,13 +11,14 @@ public  class User implements Serializable{
 	private static final long serialVersionUID = 2340304011060815823L;
 	
 	private int id;
+	private int geroId;
 	private String name;
 	private String username;
-	private String password="admin";//set for all user
+	private String password;//set for all user
 	private int gender;
 	private int age;
     private String photoUrl;
-	private String secretKey;//use secret key to encrypt HTTP request param
+	private String digest;
 	
 	public User(int id) {
 		this.setId(id);
@@ -35,7 +38,14 @@ public  class User implements Serializable{
 		this.id = id;
 	}
 
+	public int getGeroId() {
+		return geroId;
+	}
 
+	public void setGeroId(int geroId) {
+		this.geroId = geroId;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -95,14 +105,17 @@ public  class User implements Serializable{
 		this.password = password;
 	}
 
-
-	public String getSecretKey() {
-		return secretKey;
+	public String getDigest() {
+		return digest;
 	}
 
-
-	public void setSecretKey(String secretKey) {
-		this.secretKey = secretKey;
+	public void setDigest(String digest) {
+		this.digest = digest;
 	}
 
+    @Override
+    public String toString(){
+    	Gson gson = new Gson();
+    	return gson.toJson(this);
+    }
 }
