@@ -5,6 +5,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -17,10 +20,13 @@ import butterknife.Optional;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
+import com.sjtu.icarer.R.string;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.events.AreaUndoEvent;
+import com.sjtu.icarer.events.SetupSubmitEvent;
+import com.sjtu.icarer.events.TaskCancelEvent;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.login.LoginActivity;
@@ -60,11 +66,7 @@ public class SetupActivity extends PreferenceActivity {
     @Optional
     @OnClick(R.id.btn_setup_submit)
     public void setupSubmit(Button button){
-    	Toaster.showLong(this,"redo");
-    	//do sth put into preference
-    	final Intent i = new Intent(this, LoginActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(i);
+    	eventBus.post(new SetupSubmitEvent());
     }
     @Optional
     @OnClick(R.id.btn_setup_undo)
@@ -84,6 +86,21 @@ public class SetupActivity extends PreferenceActivity {
         eventBus.unregister(this);
     }
     
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog.setMessage(getText(string.message_signing_in));
+        dialog.setIndeterminate(true);
+        dialog.setCancelable(true);
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            public void onCancel(final DialogInterface dialog) {
+                eventBus.post(new TaskCancelEvent());
+            }
+        });
+        return dialog;
+    }
+    
+   
 //    private void getBuilding(){
 //    	new SafeAsyncTask<Boolean>() {
 //

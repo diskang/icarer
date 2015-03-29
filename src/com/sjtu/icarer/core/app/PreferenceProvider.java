@@ -15,15 +15,15 @@ public class PreferenceProvider {
     	return sharedPreferences;
     }
     
-    public int getAreaId(){
-    	return sharedPreferences.getInt(Prefer.AREA_ID, 0);
+    public Integer getAreaId(){
+    	return sharedPreferences.getInt(Prefer.AREA_ID,0);
     }
     
     public String getAreaFullName(){
-    	return sharedPreferences.getString(Prefer.AREA_FULL_NAME, "");
+    	return sharedPreferences.getString(Prefer.AREA_FULL_NAME, null);
     }
     
-    public void setAreaId(int areaId) {
+    public void setAreaId(Integer areaId) {
 		editor.putInt(Prefer.AREA_ID, areaId);
 		editor.commit();
 	}

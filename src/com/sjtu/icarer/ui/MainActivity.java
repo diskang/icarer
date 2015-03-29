@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.common.utils.LogUtils;
+import com.sjtu.icarer.core.app.PreferenceProvider;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
@@ -28,8 +29,10 @@ import com.sjtu.icarer.ui.login.LoginActivity;
 public class MainActivity extends IcarerFragmentActivity {
 
     @Inject protected IcarerServiceProvider icarerServiceProvider;
-
+    @Inject protected PreferenceProvider preferenceProvider;
+    
     private boolean userHasAuthenticated = false;
+    private Integer areaId;
 
 
     @Override
@@ -44,7 +47,7 @@ public class MainActivity extends IcarerFragmentActivity {
             
         Injector.inject(this);
         // Set up navigation drawer
-
+        areaId = preferenceProvider.getAreaId();
 
         checkAuth();
 
@@ -73,10 +76,13 @@ public class MainActivity extends IcarerFragmentActivity {
 
     private void initScreen() {
         if (userHasAuthenticated) {
-
             LogUtils.d("userHasAuthenticated");
-            
-            final Intent i = new Intent(this, SetupActivity.class);
+            final Intent i;
+            if(areaId.equals(0)){
+            	i = new Intent(this, SetupActivity.class); 
+            }else{
+            	i = new Intent(this, LoginActivity.class);
+            }
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
         }

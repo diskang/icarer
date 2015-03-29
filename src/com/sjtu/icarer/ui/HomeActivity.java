@@ -31,6 +31,7 @@ import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.core.app.PreferenceProvider;
 
 public class HomeActivity extends IcarerFragmentActivity {
 	private int current_fragment_type ;//1:room  2:elder  3:carer
@@ -38,6 +39,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 	private String carerName;
 	private String carerId;
 	private Context context;
+	@Inject protected PreferenceProvider preferenceProvider;
 	@InjectView(R.id.toolbar) protected Toolbar toolbar;
 	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
 	@InjectView(R.id.room_number)protected TextView roomNumView;
@@ -58,7 +60,8 @@ public class HomeActivity extends IcarerFragmentActivity {
 		
 		setSupportActionBar(toolbar);
 		Prefer prefer = new Prefer(this);
-		roomNumber = prefer.getRoomNumber();
+//		roomNumber = prefer.getRoomNumber();
+		roomNumber = preferenceProvider.getAreaFullName();
 		carerName = prefer.getCarerName();
 		carerId = prefer.getCarerId();
 		int frIndex = getIntent().getIntExtra(Constants.FRAGMENT_INDEX, 1);
