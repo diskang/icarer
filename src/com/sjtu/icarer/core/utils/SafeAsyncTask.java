@@ -1,4 +1,4 @@
-package com.sjtu.icarer.common.utils;
+package com.sjtu.icarer.core.utils;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -11,6 +11,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
+
+import com.sjtu.icarer.common.utils.Ln;
 
 /**
  * Originally from RoboGuice:

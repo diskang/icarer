@@ -1,10 +1,13 @@
 package com.sjtu.icarer.ui.login;
 
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import android.accounts.OperationCanceledException;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import butterknife.ButterKnife;
@@ -13,8 +16,8 @@ import butterknife.InjectView;
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.utils.Ln;
-import com.sjtu.icarer.common.utils.SafeAsyncTask;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
+import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.model.Area;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
@@ -43,13 +46,15 @@ public class LoginActivity extends ActionBarActivity {
 	}
 	
     private void checkAuth() {
+    	
         new SafeAsyncTask<Boolean>() {
 
             @Override
             public Boolean call() throws Exception {
                 final IcarerService svc = icarerServiceProvider.getService(LoginActivity.this);
-                Area area =svc.getArea(0);
-                Ln.d(area.toString());
+                Area area = svc.getArea(3);
+                //List<Area> areas =svc.getAreas(1,0);
+//                Ln.d(area.toString());
                 return svc != null;
             }
 

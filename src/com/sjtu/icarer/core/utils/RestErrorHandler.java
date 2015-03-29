@@ -1,4 +1,4 @@
-package com.sjtu.icarer.core.web;
+package com.sjtu.icarer.core.utils;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;

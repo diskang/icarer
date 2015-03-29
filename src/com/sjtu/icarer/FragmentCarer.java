@@ -545,38 +545,5 @@ public class FragmentCarer extends Fragment{
 		
 		return elder_id;
 	}
-	@Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-		inflater.inflate(R.menu.goto_login, menu);
-    }
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-    	int id = item.getItemId();
-        
-        switch(id) {
-        	
-        	case R.id.goto_prefer:
-        		Intent intent_setting2 = new Intent(getActivity(), SettingActivity.class);
-        		startActivity(intent_setting2);
-	        	break;
-        	case R.id.goto_refresh:
-        		Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
-        		mcontext.sendBroadcast(intent);
-        		getActivity().finish();
-	        	break;
-        	case R.id.goto_quit:
-        		System.exit(0);
-        		break;//TODO
-            default:
-            	break;
-            }
-        		
-        return super.onOptionsItemSelected(item);
-        
-    }
 
 }

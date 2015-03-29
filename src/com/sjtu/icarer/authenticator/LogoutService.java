@@ -7,7 +7,7 @@ import android.content.Context;
 
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.Ln;
-import com.sjtu.icarer.common.utils.SafeAsyncTask;
+import com.sjtu.icarer.core.utils.SafeAsyncTask;
 
 import javax.inject.Inject;
 

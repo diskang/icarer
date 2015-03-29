@@ -3,33 +3,26 @@ package com.sjtu.icarer;
 import java.util.HashMap;
 import java.util.List;
 
-import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.constant.Constants;
-import com.sjtu.icarer.common.utils.DBUtil;
-import com.sjtu.icarer.common.utils.OpUtil;
-import com.sjtu.icarer.thread.PackageUpdateThread;
-import com.sjtu.icarer.thread.CrashHandler;
-
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.StrictMode;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.preference.PreferenceGroup;
 import android.preference.PreferenceScreen;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.widget.Toast;
+
+import com.sjtu.icarer.common.config.Prefer;
+import com.sjtu.icarer.common.constant.Constants;
+import com.sjtu.icarer.common.utils.DBUtil;
+import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.thread.PackageUpdateThread;
 
 @SuppressWarnings("deprecation")
 public class SettingActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener{

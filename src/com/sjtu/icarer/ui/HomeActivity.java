@@ -8,14 +8,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -25,17 +26,13 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.sjtu.icarer.FragmentCarer;
 import com.sjtu.icarer.FragmentElder;
 import com.sjtu.icarer.FragmentRoom;
-import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.R.drawable;
-import com.sjtu.icarer.R.id;
-import com.sjtu.icarer.R.layout;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.OpUtil;
 
-public class HomeActivity extends ActionBarActivity {
+public class HomeActivity extends IcarerFragmentActivity {
 	private int current_fragment_type ;//1:room  2:elder  3:carer
 	private String roomNumber;
 	private String carerName;
@@ -51,19 +48,15 @@ public class HomeActivity extends ActionBarActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		context = this;
 		setContentView(R.layout.activity_home);
-		ButterKnife.inject(this);
-		Injector.inject(this);
-		
+		context = this;
 		toolbar.setLogo(R.drawable.ic_launcher);
 		// Title
 		toolbar.setTitle("—HOUSECARE— ");
 		// Sub Title
 		toolbar.setSubtitle(" 沪上养老专业品牌");
-		 
-		setSupportActionBar(toolbar);
 		
+		setSupportActionBar(toolbar);
 		Prefer prefer = new Prefer(this);
 		roomNumber = prefer.getRoomNumber();
 		carerName = prefer.getCarerName();
@@ -215,6 +208,40 @@ public class HomeActivity extends ActionBarActivity {
 		ImageLoader.getInstance().stop();
 		super.onBackPressed();
 	}
-
+	
+	@Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.goto_login, menu);
+		return true;
+    }
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+    	int id = item.getItemId();
+        
+        switch(id) {
+        	
+        	case R.id.goto_prefer:
+        		Intent intent_setting2 = new Intent(HomeActivity.this, SetupActivity.class);
+        		startActivity(intent_setting2);
+	        	break;
+        	case R.id.goto_refresh:
+        		Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
+        		sendBroadcast(intent);
+	        	break;
+        	case R.id.goto_quit:
+        		System.exit(0);
+        		break;//TODO
+            default:
+            	break;
+            }
+        		
+        return super.onOptionsItemSelected(item);
+        
+    }
 
 }

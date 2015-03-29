@@ -9,6 +9,7 @@ import com.sjtu.icarer.model.Area;
 import com.sjtu.icarer.model.HttpWrapper;
 
 public interface AreaService {
+	//not use
     @GET(Url.URL_AREA)
     HttpWrapper<Area> getArea(
     		@Path("gid")int geroId,
@@ -17,4 +18,12 @@ public interface AreaService {
     		@Query("digest")String digest
     		);
     
+    @GET(Url.URL_AREAS)
+    HttpWrapper<Area> getAreas(
+    		@Path("gid")int geroId,
+    		@Query("level")int level,
+    		@Query("parent_id")int parentId,
+    		@Query("username")String username,
+    		@Query("digest")String digest
+    		);
 }

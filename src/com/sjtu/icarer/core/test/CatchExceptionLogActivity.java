@@ -1,4 +1,4 @@
-package com.sjtu.icarer.modules.test;
+package com.sjtu.icarer.core.test;
 
 import com.sjtu.icarer.R;
 

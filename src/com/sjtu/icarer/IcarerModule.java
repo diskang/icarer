@@ -9,6 +9,8 @@ import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.Preference;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,15 +19,18 @@ import com.sjtu.icarer.authenticator.IcarerAuthenticatorActivity;
 import com.sjtu.icarer.authenticator.LogoutService;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.core.IcarerApplication;
-import com.sjtu.icarer.core.PostFromAnyThreadBus;
+import com.sjtu.icarer.core.app.PreferenceProvider;
 import com.sjtu.icarer.core.app.UserAgentProvider;
-import com.sjtu.icarer.core.web.RestAdapterRequestInterceptor;
-import com.sjtu.icarer.core.web.RestErrorHandler;
+import com.sjtu.icarer.core.utils.PostFromAnyThreadBus;
+import com.sjtu.icarer.core.utils.RestAdapterRequestInterceptor;
+import com.sjtu.icarer.core.utils.RestErrorHandler;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.HomeActivity;
 import com.sjtu.icarer.ui.MainActivity;
+import com.sjtu.icarer.ui.SetupActivity;
 import com.sjtu.icarer.ui.login.LoginActivity;
+import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
 import com.squareup.otto.Bus;
 
 import dagger.Module;
@@ -43,6 +48,8 @@ import dagger.Provides;
         IcarerApplication.class,
         IcarerAuthenticatorActivity.class,
         MainActivity.class,
+        SetupActivity.class,
+        AreaPreferenceFragment.class,
         LoginActivity.class,
         HomeActivity.class,
         FragmentRoom.class
@@ -75,6 +82,11 @@ public class IcarerModule {
 	@Provides
 	AccountDataProvider provideAccountDataProvider(AccountManager accountManager, Gson gson){
 		return new AccountDataProvider(accountManager, gson);
+	}
+	
+	@Provides
+	PreferenceProvider providePreferenceProvider(SharedPreferences sharedPreferences){
+		return new PreferenceProvider(sharedPreferences);
 	}
 	
     @Provides

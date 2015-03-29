@@ -69,10 +69,14 @@
         </activity>
         <activity  
             android:label="@string/app_name"  
-            android:name="com.sjtu.icarer.modules.test.CatchExceptionLogActivity" >  
+            android:name="com.sjtu.icarer.core.test.CatchExceptionLogActivity" >  
             
         </activity>
-         
+        <activity  
+            android:label="AreaSetupPreferences"  
+            android:name=".ui.SetupActivity" >  
+            
+        </activity> 
         <service
             android:name=".authenticator.AccountAuthenticatorService"
             android:enabled="true"

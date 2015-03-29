@@ -15,7 +15,7 @@ public final class Url {
 	/**
      * Base URL for all requests
      */
-    public static final String URL_BASE = "http://121.41.46.189:8080";
+    public static final String URL_BASE = "http://202.120.38.227:8088";
     
     public static final String URL_PREFFIX="/resthouse/api/service";
 //    public static final String URL_PREFFIX =   "/resthouse/api/web";
@@ -23,16 +23,20 @@ public final class Url {
     public static final String URL_DOWNLOAD_FRAG = "/download";
     public static final String URL_DOWNLOAD = URL_PREFFIX + URL_DOWNLOAD_FRAG;
     
-    public static final String URL_AREA_FARG =     "/gero/{gid}/area/{aid}";
-    public static final String URL_AREA = URL_PREFFIX + URL_AREA_FARG;
+    //区域
+    public static final String URL_AREAS_FRAG = "/gero/{gid}/area";
+    public static final String URL_AREAS = URL_PREFFIX + URL_AREAS_FRAG;
+    
+    public static final String URL_AREA_FRAG =     "/gero/{gid}/area/{aid}";
+    public static final String URL_AREA = URL_PREFFIX + URL_AREA_FRAG;
     //用于URL参数digest的密钥
     public static final String URL_USER_KEY =    "/resthouse/pad/login";
     //
-    public static final String URL_USER_FARG =     "/user/{uid}";
-    public static final String URL_USER = URL_PREFFIX + URL_USER_FARG;
+    public static final String URL_USER_FRAG =     "/user/{uid}";
+    public static final String URL_USER = URL_PREFFIX + URL_USER_FRAG;
     //
-    public static final String URL_USER_ELDERS_FARG =     "/gero/{gid}/elder";
-    public static final String URL_USER_ELDERS = URL_PREFFIX + URL_USER_ELDERS_FARG;
+    public static final String URL_USER_ELDERS_FRAG =     "/gero/{gid}/elder";
+    public static final String URL_USER_ELDERS = URL_PREFFIX + URL_USER_ELDERS_FRAG;
     // 养老院的项目列表
     public static final String URL_CARE_ITEMS_FRAG= "/gero/{gid}/care_item";
     public static final String URL_CARE_ITEMS = URL_PREFFIX + URL_CARE_ITEMS_FRAG;

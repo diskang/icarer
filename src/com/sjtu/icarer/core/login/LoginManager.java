@@ -2,7 +2,7 @@ package com.sjtu.icarer.core.login;
 
 import javax.inject.Inject;
 
-import com.sjtu.icarer.common.utils.SafeAsyncTask;
+import com.sjtu.icarer.core.utils.SafeAsyncTask;
 
 public class LoginManager {
 	private static LoginManager instance;

@@ -1,4 +1,4 @@
-package com.sjtu.icarer.core;
+package com.sjtu.icarer.core.utils;
 
 import android.os.Handler;
 import android.os.Looper;

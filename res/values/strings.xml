@@ -26,6 +26,8 @@
     
     <string name="avatar">Avatar</string>
     <string name="empty"></string>
+    <string name="submit">提交</string>
+    <string name="undo">撤销</string>
     <string name="label_username">用户名</string>
     <string name="label_password">密码</string>
     <string name="label_sign_in">请点击登录</string>

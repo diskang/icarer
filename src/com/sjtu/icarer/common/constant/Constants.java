@@ -51,4 +51,11 @@ public final class Constants {
         public static final String ICARER_ACCOUNT_USER = "loginUser";
     }
 	
+	public static final class Prefer {
+        private Prefer() {}
+        public static final String AREA_ID = "areaId";
+        public static final String AREA_FULL_NAME = "areaFullName";
+        
+	}
+	
 }

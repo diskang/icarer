@@ -8,14 +8,12 @@ import android.accounts.OperationCanceledException;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 import butterknife.ButterKnife;
 
 import com.sjtu.icarer.Injector;
-import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.utils.LogUtils;
-import com.sjtu.icarer.common.utils.SafeAsyncTask;
+import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.login.LoginActivity;
@@ -27,7 +25,7 @@ import com.sjtu.icarer.ui.login.LoginActivity;
  * If you need to remove the authentication from the application please see
  * {@link com.sjtu.icarer.authenticator.AccountDataProvider#getAuthKey(android.app.Activity)}
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends IcarerFragmentActivity {
 
     @Inject protected IcarerServiceProvider icarerServiceProvider;
 
@@ -42,7 +40,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
 
         
-        setContentView(R.layout.activity_welcome);
+        //setContentView(R.layout.activity_welcome);
             
         Injector.inject(this);
         // Set up navigation drawer
@@ -77,7 +75,9 @@ public class MainActivity extends FragmentActivity {
         if (userHasAuthenticated) {
 
             LogUtils.d("userHasAuthenticated");
-            final Intent i = new Intent(this, LoginActivity.class);
+            
+            final Intent i = new Intent(this, SetupActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
         }
 

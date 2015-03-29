@@ -37,7 +37,7 @@ import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.DBUtil;
 import com.sjtu.icarer.common.utils.OpUtil;
-import com.sjtu.icarer.common.utils.SafeAsyncTask;
+import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.model.User;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.ui.HomeActivity;

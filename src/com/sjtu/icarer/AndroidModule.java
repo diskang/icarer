@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
+import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
 
 import com.sjtu.icarer.core.IcarerApplication;
@@ -54,6 +55,11 @@ public class AndroidModule {
         return (T) context.getSystemService(serviceConstant);
     }
 
+    @Provides
+    LayoutInflater provideLayoutInflater(final Context context){
+    	return (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);  
+    }
+    
     @Provides
     InputMethodManager provideInputMethodManager(final Context context) {
         return (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

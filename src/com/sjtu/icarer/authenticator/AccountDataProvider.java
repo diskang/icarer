@@ -55,7 +55,7 @@ public class AccountDataProvider {
         return accountManagerFuture.getResult().getString(KEY_AUTHTOKEN);
     }
     
-    public User getUserData() throws AccountsException{
+    public User getUserData(){
     	
         Account  account = accountManager.getAccountsByType(AUTHTOKEN_TYPE)[0];
         String userData = accountManager.getUserData(account,ICARER_ACCOUNT_USER);

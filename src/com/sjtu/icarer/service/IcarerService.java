@@ -62,8 +62,16 @@ public class IcarerService {
 	public Area getArea(int areaId){
 		
 		HttpWrapper<Area> model = getAreaService()
-				.getArea(geroId, areaId, username, getDigest());
+				.getArea(geroId, areaId, username, getDigestWithUsername());
 		return model.getEntity();
+	}
+	
+	public List<Area> getAreas(int level, int parentId){
+		
+		String digestValue = getDigest(level+""+parentId+username);
+		HttpWrapper<Area> model = getAreaService()
+				.getAreas(geroId, level, parentId, username, digestValue);
+		return model.getEntities();
 	}
 	/*
 	 * 
@@ -76,10 +84,9 @@ public class IcarerService {
 	 * Assume an elder binds to multiple carers
 	 */
 	public List<Carer> getCurrentElderCarers(int elderId){
-		Map<String, Object> map= new HashMap<String, Object>();
 		Date currentDate = new Date();
-		map.put("date", currentDate);
-		String digestValue = getDigest(map);
+		
+		String digestValue = getDigest(currentDate+username);
 		HttpWrapper<Carer> model = getScheduleService()
 				.getElderCarers(geroId, elderId, currentDate, username, digestValue);
 		return model.getEntities();
@@ -90,10 +97,10 @@ public class IcarerService {
 	 * Assume an area binds to multiple carers
 	 */
 	public List<Carer> getCurrentAreaCarers(int areaId){
-		Map<String, Object> map= new HashMap<String, Object>();
+		
 		Date currentDate = new Date();
-		map.put("date", currentDate);
-		String digestValue = getDigest(map);
+		
+		String digestValue = getDigest(currentDate+username);
 		HttpWrapper<Carer> model = getScheduleService()
 				.getAreaCarers(geroId, areaId, currentDate, username, digestValue);
 		return model.getEntities();
@@ -106,9 +113,7 @@ public class IcarerService {
 	 */
 	
 	public List<Elder> getElderByArea(int areaId){
-		Map<String, Object> map= new HashMap<String, Object>();
-		map.put("area_id", areaId);
-		String digestValue = getDigest(map);
+		String digestValue = getDigest(areaId+username);
 		HttpWrapper<Elder> model = getUserService().getElders(geroId, areaId, username, digestValue);
 		return model.getEntities();
 	}
@@ -127,21 +132,21 @@ public class IcarerService {
 	 * 
 	 */
 	public List<AreaItem> getAreaItems(){
-		String digestValue = getDigest();
+		String digestValue = getDigestWithUsername();
 		HttpWrapper<AreaItem> model = getWorkService().
 				getAreaItems(geroId, username, digestValue);
 		return model.getEntities();
 	}
 	
 	public List<ElderItem> getElderItems(int elderId){
-		String digestValue = getDigest();
+		String digestValue = getDigestWithUsername();
 		HttpWrapper<ElderItem> model = getWorkService().
 				getElderItems(geroId, elderId, username, digestValue);
 		return model.getEntities();
 	}
 	
 	public boolean insertCarework(ElderRecord elderRecord){
-		String digestValue = getDigest();
+		String digestValue = getDigestWithUsername();
 		HttpWrapper<?> model = getWorkService()
 				.insertCarework(geroId, elderRecord, username, digestValue);
 		if(model.isOk()){
@@ -151,7 +156,7 @@ public class IcarerService {
 	}
 	
 	public boolean insertAreawork(AreaRecord areaRecord){
-		String digestValue = getDigest();
+		String digestValue = getDigestWithUsername();
 		HttpWrapper<?> model = getWorkService().insertAreawork(geroId, areaRecord, username, digestValue);
 		if(model.isOk()){
 			return true;
@@ -181,15 +186,28 @@ public class IcarerService {
 		return getRestAdapter().create(WorkService.class);
 	}
 	
-	private String getDigest(Map<String, Object> params){
+	
+	@SuppressWarnings("unused")
+	private String getDigest(Map<String, String[]> params){
 		Map<String,Object> p = new HashMap<String,Object>(params);
-		p.put("username", username);
+		String[] usernameList = {username};
+		p.put("username", usernameList);
 		return HmacSHA256Utils.digest(this.digest, p);
 	}
 	
-	private String getDigest(){
-		Map<String,Object> p = new HashMap<String,Object>();
-		p.put("username", username);
-		return HmacSHA256Utils.digest(this.digest, p);
+	/*
+	 * @linedParams: param values joined in key's alphabet order
+	 * */
+	private String getDigest(String linedParams){
+		
+		return HmacSHA256Utils.digest(this.digest, linedParams);
+	}
+	
+	private String getDigestWithUsername(){
+//		Map<String,Object> p = new HashMap<String,Object>();
+//		String[] usernameList = {username};
+//		p.put("username", usernameList);
+//		return HmacSHA256Utils.digest(this.digest, p);
+		return getDigest(username);
 	}
 }
