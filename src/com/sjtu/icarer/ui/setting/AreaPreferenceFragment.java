@@ -24,7 +24,7 @@ import com.sjtu.icarer.R;
 import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
-import com.sjtu.icarer.core.app.PreferenceProvider;
+import com.sjtu.icarer.core.app.PreferenceManager;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.events.AreaUndoEvent;
 import com.sjtu.icarer.events.SetupSubmitEvent;
@@ -38,7 +38,7 @@ import com.squareup.otto.Subscribe;
 
 public class AreaPreferenceFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener{
 	@Inject protected Bus eventBus;
-	@Inject protected PreferenceProvider preferenceProvider;
+	@Inject protected PreferenceManager preferenceProvider;
 	@Inject protected AccountDataProvider accountDataProvider;
 	@Inject protected IcarerServiceProvider icarerServiceProvider;
 	private boolean areaIdChanged = false;

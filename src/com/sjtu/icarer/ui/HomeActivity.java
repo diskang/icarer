@@ -31,7 +31,7 @@ import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.OpUtil;
-import com.sjtu.icarer.core.app.PreferenceProvider;
+import com.sjtu.icarer.core.app.PreferenceManager;
 
 public class HomeActivity extends IcarerFragmentActivity {
 	private int current_fragment_type ;//1:room  2:elder  3:carer
@@ -39,8 +39,8 @@ public class HomeActivity extends IcarerFragmentActivity {
 	private String carerName;
 	private String carerId;
 	private Context context;
-	@Inject protected PreferenceProvider preferenceProvider;
-	@InjectView(R.id.toolbar) protected Toolbar toolbar;
+	@Inject protected PreferenceManager preferenceProvider;
+	
 	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
 	@InjectView(R.id.room_number)protected TextView roomNumView;
 	@InjectView(R.id.tv_item_info)protected TextView carerView ;
@@ -52,13 +52,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		context = this;
-		toolbar.setLogo(R.drawable.ic_launcher);
-		// Title
-		toolbar.setTitle("—HOUSECARE— ");
-		// Sub Title
-		toolbar.setSubtitle(" 沪上养老专业品牌");
 		
-		setSupportActionBar(toolbar);
 		Prefer prefer = new Prefer(this);
 //		roomNumber = prefer.getRoomNumber();
 		roomNumber = preferenceProvider.getAreaFullName();
@@ -212,39 +206,5 @@ public class HomeActivity extends IcarerFragmentActivity {
 		super.onBackPressed();
 	}
 	
-	@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.goto_login, menu);
-		return true;
-    }
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-    	int id = item.getItemId();
-        
-        switch(id) {
-        	
-        	case R.id.goto_prefer:
-        		Intent intent_setting2 = new Intent(HomeActivity.this, SetupActivity.class);
-        		startActivity(intent_setting2);
-	        	break;
-        	case R.id.goto_refresh:
-        		Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
-        		sendBroadcast(intent);
-	        	break;
-        	case R.id.goto_quit:
-        		System.exit(0);
-        		break;//TODO
-            default:
-            	break;
-            }
-        		
-        return super.onOptionsItemSelected(item);
-        
-    }
 
 }

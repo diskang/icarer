@@ -15,7 +15,7 @@ public  class User implements Serializable{
 	private String name;
 	private String username;
 	private String password;//set for all user
-	private int gender;
+	private String gender;
 	private int age;
     private String photoUrl;
 	private String digest;
@@ -66,12 +66,12 @@ public  class User implements Serializable{
 	}
 
 
-	public int getGender() {
+	public String getGender() {
 		return gender;
 	}
 
 
-	public void setGender(int gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 

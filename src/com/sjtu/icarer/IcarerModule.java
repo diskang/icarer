@@ -19,8 +19,9 @@ import com.sjtu.icarer.authenticator.IcarerAuthenticatorActivity;
 import com.sjtu.icarer.authenticator.LogoutService;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.core.IcarerApplication;
-import com.sjtu.icarer.core.app.PreferenceProvider;
+import com.sjtu.icarer.core.app.PreferenceManager;
 import com.sjtu.icarer.core.app.UserAgentProvider;
+import com.sjtu.icarer.core.setup.ListElderTask;
 import com.sjtu.icarer.core.utils.PostFromAnyThreadBus;
 import com.sjtu.icarer.core.utils.RestAdapterRequestInterceptor;
 import com.sjtu.icarer.core.utils.RestErrorHandler;
@@ -52,7 +53,8 @@ import dagger.Provides;
         AreaPreferenceFragment.class,
         LoginActivity.class,
         HomeActivity.class,
-        FragmentRoom.class
+        FragmentRoom.class,
+        ListElderTask.class
     },
     library = true
 )
@@ -85,8 +87,8 @@ public class IcarerModule {
 	}
 	
 	@Provides
-	PreferenceProvider providePreferenceProvider(SharedPreferences sharedPreferences){
-		return new PreferenceProvider(sharedPreferences);
+	PreferenceManager providePreferenceProvider(SharedPreferences sharedPreferences){
+		return new PreferenceManager(sharedPreferences);
 	}
 	
     @Provides

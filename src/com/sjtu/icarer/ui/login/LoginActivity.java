@@ -7,73 +7,70 @@ import javax.inject.Inject;
 
 import android.accounts.OperationCanceledException;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.Toolbar;
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
-import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.common.utils.Ln;
+import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
+import com.sjtu.icarer.core.app.PreferenceManager;
+import com.sjtu.icarer.core.setup.ListElderTask;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
-import com.sjtu.icarer.model.Area;
+import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
+import com.sjtu.icarer.ui.IcarerFragmentActivity;
 
-public class LoginActivity extends ActionBarActivity {
-	@InjectView(R.id.toolbar) protected Toolbar toolbar;
+public class LoginActivity extends IcarerFragmentActivity {
 	@Inject IcarerServiceProvider icarerServiceProvider;
+	@Inject PreferenceManager preferenceProvider;
+	
+	private int areaId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.act_carer_login);
-		ButterKnife.inject(this);
-		Injector.inject(this);
-		
-		toolbar.setLogo(R.drawable.ic_launcher);
-		// Title
-		toolbar.setTitle("—HOUSECARE— ");
-		// Sub Title
-		toolbar.setSubtitle(" 沪上养老专业品牌");
-		 
-		setSupportActionBar(toolbar);
-		
+
+		areaId = preferenceProvider.getAreaId();
 		checkAuth();
 	
 	}
 	
     private void checkAuth() {
-    	
-        new SafeAsyncTask<Boolean>() {
+    	new ListElderTask(this,areaId,icarerServiceProvider){
+    		@Override
+            protected void onSuccess(List<Elder> elders) throws Exception {
+                super.onSuccess(elders);
 
-            @Override
-            public Boolean call() throws Exception {
-                final IcarerService svc = icarerServiceProvider.getService(LoginActivity.this);
-                Area area = svc.getArea(3);
-                //List<Area> areas =svc.getAreas(1,0);
-//                Ln.d(area.toString());
-                return svc != null;
+                LogUtils.d("elder fetched");
             }
-
-            @Override
-            protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                if (e instanceof OperationCanceledException) {
-                    // User cancelled the authentication process (back button, etc).
-                    // Since auth could not take place, lets finish this activity.
-                    finish();
-                }
-            }
-
-            @Override
-            protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
-                super.onSuccess(hasAuthenticated);
-                ToastUtils.show(LoginActivity.this, "Login activity");
-            }
-        }.execute();
+    	}.start();
+//        new SafeAsyncTask<Boolean>() {
+//
+//            @Override
+//            public Boolean call() throws Exception {
+//                final IcarerService svc = icarerServiceProvider.getService(LoginActivity.this);
+//                List<Elder> elders= svc.getElderByArea(areaId);
+//                //List<Area> areas =svc.getAreas(1,0);
+////                Ln.d(area.toString());
+//                return svc != null;
+//            }
+//
+//            @Override
+//            protected void onException(final Exception e) throws RuntimeException {
+//                super.onException(e);
+//                if (e instanceof OperationCanceledException) {
+//                    // User cancelled the authentication process (back button, etc).
+//                    // Since auth could not take place, lets finish this activity.
+//                    finish();
+//                }
+//            }
+//
+//            @Override
+//            protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
+//                super.onSuccess(hasAuthenticated);
+//                ToastUtils.show(LoginActivity.this, "Login activity");
+//            }
+//        }.execute();
     }
 	
     

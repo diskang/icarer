@@ -113,8 +113,8 @@ public class IcarerService {
 	 */
 	
 	public List<Elder> getElderByArea(int areaId){
-		String digestValue = getDigest(areaId+username);
-		HttpWrapper<Elder> model = getUserService().getElders(geroId, areaId, username, digestValue);
+		String digestValue = getDigest(areaId+"120ID"+username);
+		HttpWrapper<Elder> model = getUserService().getElders(geroId, areaId,"1", "20","ID",username, digestValue);
 		return model.getEntities();
 	}
 	

@@ -3,10 +3,10 @@ package com.sjtu.icarer.core.app;
 import android.content.SharedPreferences;
 
 import static com.sjtu.icarer.common.constant.Constants.Prefer;
-public class PreferenceProvider {
+public class PreferenceManager {
 	private SharedPreferences sharedPreferences;
 	private SharedPreferences.Editor editor;
-    public PreferenceProvider(SharedPreferences sharedPreferences) {
+    public PreferenceManager(SharedPreferences sharedPreferences) {
     	this.sharedPreferences = sharedPreferences;
     	this.editor = this.sharedPreferences.edit();
 	}

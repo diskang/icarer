@@ -115,7 +115,7 @@ public class PackageUpdateThread {
 		builder.setTitle("软件版本更新");
 		
 		final LayoutInflater inflater = LayoutInflater.from(mContext);
-		View v = inflater.inflate(R.layout.progress, null);
+		View v = inflater.inflate(R.layout.progress_bar, null);
 		mProgress = (ProgressBar)v.findViewById(R.id.progress);
 		
 		builder.setView(v);

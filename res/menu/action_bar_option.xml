@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.example.initdemo.MainActivity" >
+
+    <item
+        android:id="@+id/goto_prefer"
+        android:orderInCategory="1"
+        android:title="@string/label_settings"
+        android:icon="@drawable/ic_launcher"
+        app:showAsAction="never"/>
+	<item
+        android:id="@+id/goto_refresh"
+        android:orderInCategory="1"
+        android:title="@string/label_refresh"
+        android:icon="@drawable/actionbar_spinner"
+        app:showAsAction="ifRoom">
+        <!-- menu>  
+            <item  
+                android:id="@+id/menu_theme"  
+                
+                android:showAsAction="always|withText"  
+                android:title="更换主题"/>  
+            <item  
+                android:id="@+id/menu_system"  
+                
+                android:showAsAction="always|withText"  
+                android:title="系统设置"/>  
+        </menu-->      
+    </item>
+	<item
+        android:id="@+id/goto_logout"
+        android:orderInCategory="1"
+        android:title="@string/label_logout"
+        android:icon="@drawable/ic_launcher"
+        app:showAsAction="never" >
+    </item>
+	<item
+        android:id="@+id/goto_quit"
+        android:orderInCategory="1"
+        android:title="@string/label_exit"
+        android:icon="@drawable/ic_launcher"
+        app:showAsAction="never"/>
+</menu>

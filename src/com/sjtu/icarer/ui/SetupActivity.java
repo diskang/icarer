@@ -1,5 +1,7 @@
 package com.sjtu.icarer.ui;
 
+import static com.sjtu.icarer.events.AreaUndoEvent.UNDO_ALL;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -8,7 +10,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.view.LayoutInflater;
@@ -21,19 +22,12 @@ import butterknife.Optional;
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.R.string;
-import com.sjtu.icarer.common.utils.view.ToastUtils;
-import com.sjtu.icarer.common.utils.view.Toaster;
-import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.events.AreaUndoEvent;
 import com.sjtu.icarer.events.SetupSubmitEvent;
 import com.sjtu.icarer.events.TaskCancelEvent;
-import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
-import com.sjtu.icarer.ui.login.LoginActivity;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
 import com.squareup.otto.Bus;
-
-import static com.sjtu.icarer.events.AreaUndoEvent.UNDO_ALL;
 
 public class SetupActivity extends PreferenceActivity {
 	@Inject protected IcarerServiceProvider icarerServiceProvider;
@@ -89,7 +83,7 @@ public class SetupActivity extends PreferenceActivity {
     @Override
     protected Dialog onCreateDialog(int id) {
         final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage(getText(string.message_signing_in));
+        dialog.setMessage(getText(string.message_fetch_data));
         dialog.setIndeterminate(true);
         dialog.setCancelable(true);
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -100,34 +94,4 @@ public class SetupActivity extends PreferenceActivity {
         return dialog;
     }
     
-   
-//    private void getBuilding(){
-//    	new SafeAsyncTask<Boolean>() {
-//
-//            @Override
-//            public Boolean call() throws Exception {
-//                final IcarerService svc = icarerServiceProvider.getService(SetupActivity.this);
-//                svc.getAreas(1,0);
-//                Area area =svc.getArea(0);
-//                Ln.d(area.toString());
-//                return svc != null;
-//            }
-//
-//            @Override
-//            protected void onException(final Exception e) throws RuntimeException {
-//                super.onException(e);
-//                if (e instanceof OperationCanceledException) {
-//                    // User cancelled the authentication process (back button, etc).
-//                    // Since auth could not take place, lets finish this activity.
-//                    finish();
-//                }
-//            }
-//
-//            @Override
-//            protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
-//                super.onSuccess(hasAuthenticated);
-//                ToastUtils.show(SetupActivity.this, "Setup activity");
-//            }
-//        }.execute();
-//    }
 }

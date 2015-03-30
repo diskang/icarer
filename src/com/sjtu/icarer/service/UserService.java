@@ -20,6 +20,9 @@ public interface UserService {
 	HttpWrapper<Elder> getElders(
 			@Path("gid")int geroId, 
 			@Query("area_id")int areaId,
+			@Query("page")String page,
+			@Query("rows")String rows,
+			@Query("sort")String sort,
 			@Query("username")String username,
 			@Query("digest") String digest
 			);
