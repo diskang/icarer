@@ -20,8 +20,7 @@ public  class User implements Serializable{
     private String photoUrl;
 	private String digest;
 	
-	public User(int id) {
-		this.setId(id);
+	public User() {
 	}
 	
     public User(String username, String password) {

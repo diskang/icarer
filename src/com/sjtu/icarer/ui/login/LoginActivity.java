@@ -14,7 +14,9 @@ import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.core.app.PreferenceManager;
 import com.sjtu.icarer.core.setup.ListElderTask;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
+import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.model.Elder;
+import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.IcarerFragmentActivity;
@@ -22,7 +24,7 @@ import com.sjtu.icarer.ui.IcarerFragmentActivity;
 public class LoginActivity extends IcarerFragmentActivity {
 	@Inject IcarerServiceProvider icarerServiceProvider;
 	@Inject PreferenceManager preferenceProvider;
-	
+	@Inject DbManager dbManager;
 	private int areaId;
 	
 	@Override
@@ -31,47 +33,76 @@ public class LoginActivity extends IcarerFragmentActivity {
 		setContentView(R.layout.act_carer_login);
 
 		areaId = preferenceProvider.getAreaId();
-		checkAuth();
+		getElders();
 	
 	}
 	
-    private void checkAuth() {
-    	new ListElderTask(this,areaId,icarerServiceProvider){
-    		@Override
-            protected void onSuccess(List<Elder> elders) throws Exception {
-                super.onSuccess(elders);
+    private void getElders() {
+//    	new ListElderTask(this,areaId,icarerServiceProvider){
+//    		@Override
+//            protected void onSuccess(List<Elder> elders) throws Exception {
+//                super.onSuccess(elders);
+//
+//                LogUtils.d("elder fetched");
+//            }
+//    	}.start();
+        new SafeAsyncTask<List<Elder>>() {
 
-                LogUtils.d("elder fetched");
+            @Override
+            public List<Elder> call() throws Exception {
+                //final IcarerService svc = icarerServiceProvider.getService(LoginActivity.this);
+                List<Elder> elders = dbManager.getElders(false);
+                return elders;
+                
             }
-    	}.start();
-//        new SafeAsyncTask<Boolean>() {
-//
-//            @Override
-//            public Boolean call() throws Exception {
-//                final IcarerService svc = icarerServiceProvider.getService(LoginActivity.this);
-//                List<Elder> elders= svc.getElderByArea(areaId);
-//                //List<Area> areas =svc.getAreas(1,0);
-////                Ln.d(area.toString());
-//                return svc != null;
-//            }
-//
-//            @Override
-//            protected void onException(final Exception e) throws RuntimeException {
-//                super.onException(e);
-//                if (e instanceof OperationCanceledException) {
-//                    // User cancelled the authentication process (back button, etc).
-//                    // Since auth could not take place, lets finish this activity.
-//                    finish();
-//                }
-//            }
-//
-//            @Override
-//            protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
-//                super.onSuccess(hasAuthenticated);
-//                ToastUtils.show(LoginActivity.this, "Login activity");
-//            }
-//        }.execute();
+
+            @Override
+            protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                if (e instanceof OperationCanceledException) {
+                    // User cancelled the authentication process (back button, etc).
+                    // Since auth could not take place, lets finish this activity.
+                    finish();
+                }
+            }
+
+            @Override
+            protected void onSuccess(final List<Elder> elders) throws Exception {
+                super.onSuccess(elders);
+                ToastUtils.show(LoginActivity.this, "get elders ok");
+                for(Elder elder: elders){
+                	getCarerAfterElder(elder);
+                }
+            }
+        }.execute();
     }
 	
+    private void getCarerAfterElder(final Elder elder){
+    	new SafeAsyncTask<List<Carer>>() {
+
+            @Override
+            public List<Carer> call() throws Exception {
+                final IcarerService svc = icarerServiceProvider.getService(LoginActivity.this);
+                List<Carer> carers = dbManager.getCarerByElder(elder, true);
+                return carers;
+                
+            }
+
+            @Override
+            protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                if (e instanceof OperationCanceledException) {
+                	LogUtils.d("get carer failed");
+                    finish();
+                }
+            }
+
+            @Override
+            protected void onSuccess(final List<Carer> carers) throws Exception {
+                super.onSuccess(carers);
+                ToastUtils.show(LoginActivity.this, "get carer success");
+            }
+        }.execute();
+    }
     
 }

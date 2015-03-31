@@ -10,7 +10,6 @@ import retrofit.converter.GsonConverter;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.Preference;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -21,7 +20,7 @@ import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.core.IcarerApplication;
 import com.sjtu.icarer.core.app.PreferenceManager;
 import com.sjtu.icarer.core.app.UserAgentProvider;
-import com.sjtu.icarer.core.setup.ListElderTask;
+import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PostFromAnyThreadBus;
 import com.sjtu.icarer.core.utils.RestAdapterRequestInterceptor;
 import com.sjtu.icarer.core.utils.RestErrorHandler;
@@ -54,7 +53,8 @@ import dagger.Provides;
         LoginActivity.class,
         HomeActivity.class,
         FragmentRoom.class,
-        ListElderTask.class
+//        PreferenceManager.class
+//        DbManager.class
     },
     library = true
 )
@@ -71,13 +71,19 @@ public class IcarerModule {
         return new LogoutService(context, accountManager);
     }
 	/*HTTP request without account*/
-	@Provides
-	IcarerService provideIcarerService(RestAdapter restAdapter){
+	@Provides @Named("unAuth")
+	IcarerService provideUnAuthIcarerService(RestAdapter restAdapter){
 		return new IcarerService(restAdapter);
 	}
+	
+	@Provides @Named("Auth")
+	IcarerService provideAuthIcarerService(RestAdapter restAdapter, AccountDataProvider apiKeyProvider){
+		return new IcarerService(restAdapter,apiKeyProvider);
+	}
+	
 	/*HTTP request with data already known*/
-	@Provides
-	IcarerServiceProvider providIcarerServiceProvider(RestAdapter restAdapter, AccountDataProvider apiKeyProvider) {
+	@Provides 
+	IcarerServiceProvider provideIcarerServiceProvider(RestAdapter restAdapter, AccountDataProvider apiKeyProvider) {
         return new IcarerServiceProvider(restAdapter, apiKeyProvider);
     }
 	
@@ -108,7 +114,7 @@ public class IcarerModule {
         return new GsonBuilder().setFieldNamingPolicy(LOWER_CASE_WITH_UNDERSCORES)
         		.setDateFormat("yyyy-MM-dd HH:mm:ss:SSS")
         		.setPrettyPrinting()
-        		.serializeNulls()
+//        		.serializeNulls()
         		.create();
     }
     
@@ -132,4 +138,23 @@ public class IcarerModule {
                 .setConverter(new GsonConverter(gson))
                 .build();
     }
+	
+	//Database now
+//	@Provides
+//	DbHelper provideDbHelper(Context context){
+//		return new DbHelper(context);
+//	}
+	
+//	@Provides
+//	DbCache provideCache(){
+//		return new DbCache();
+//	}
+	
+//	@Provides
+//	DbManager provideDbManager(@Named("Auth")IcarerService icarerService,
+//			                   PreferenceManager preferenceManager,
+//			                   DbCache dbCache){
+//		return new DbManager(icarerService, preferenceManager,dbCache);
+//	}
+	
 }

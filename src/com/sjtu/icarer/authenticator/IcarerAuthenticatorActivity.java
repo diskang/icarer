@@ -46,6 +46,7 @@ import com.sjtu.icarer.R.string;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.Ln;
 import com.sjtu.icarer.common.utils.view.Toaster;
+import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.events.UnAuthorizedErrorEvent;
 import com.sjtu.icarer.model.User;
@@ -82,7 +83,7 @@ public class IcarerAuthenticatorActivity extends ActionBarAccountAuthenticatorAc
 
     private AccountManager accountManager;
 
-    @Inject IcarerService icarerService;
+    @Inject @Named("unAuth")IcarerService icarerService;
     @Inject Bus bus;
 
     @InjectView(id.et_username) protected AutoCompleteTextView usernameText;

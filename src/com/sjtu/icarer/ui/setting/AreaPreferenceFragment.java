@@ -25,6 +25,7 @@ import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.core.app.PreferenceManager;
+import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.events.AreaUndoEvent;
 import com.sjtu.icarer.events.SetupSubmitEvent;
@@ -39,8 +40,9 @@ import com.squareup.otto.Subscribe;
 public class AreaPreferenceFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener{
 	@Inject protected Bus eventBus;
 	@Inject protected PreferenceManager preferenceProvider;
-	@Inject protected AccountDataProvider accountDataProvider;
-	@Inject protected IcarerServiceProvider icarerServiceProvider;
+//	@Inject protected AccountDataProvider accountDataProvider;
+//	@Inject protected IcarerServiceProvider icarerServiceProvider;
+	@Inject @Named("Auth") protected IcarerService icarerService;
 	private boolean areaIdChanged = false;
 	private int areaId;
 	private ListPreference building_lp;
@@ -146,7 +148,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
 
 			@Override
 			public List<Area> call() throws Exception {
-				IcarerService icarerService = icarerServiceProvider.getService(getActivity());
+				//IcarerService icarerService = icarerServiceProvider.getService(getActivity());
 				List<Area> areas = icarerService.getAreas(level, parentId);
 				return areas;
 			}
@@ -199,6 +201,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     	final Intent i = new Intent(getActivity(), LoginActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
+        getActivity().finish();
     }
     private void inflateListPreference(ListPreference lp,List<Area> areas){
     	if(areas==null||areas.size()==0){

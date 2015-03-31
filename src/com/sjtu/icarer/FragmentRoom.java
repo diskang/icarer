@@ -37,6 +37,7 @@ import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.DBUtil;
 import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.model.User;
 import com.sjtu.icarer.service.IcarerService;
@@ -56,7 +57,7 @@ public class FragmentRoom extends Fragment{
 	private DBUtil dbUtil ;
 	private Prefer prefer;
 	
-	@Inject protected IcarerService icarerService;
+	@Inject @Named("Auth")protected IcarerService icarerService;
 	
 	
 	private GridView serviceView;

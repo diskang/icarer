@@ -2,13 +2,12 @@ package com.sjtu.icarer.service;
 
 import java.io.IOException;
 
+import retrofit.RestAdapter;
 import android.accounts.AccountsException;
 import android.app.Activity;
 
 import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.model.User;
-
-import retrofit.RestAdapter;
 
 public class IcarerServiceProvider {
     private RestAdapter restAdapter;
@@ -34,6 +33,6 @@ public class IcarerServiceProvider {
     	String digest = accountDataProvider.getAuthKey(activity);
     	User userData = accountDataProvider.getUserData();
         // TODO: See how that affects the bootstrap service.
-        return new IcarerService(restAdapter, digest, userData);
+        return new IcarerService(restAdapter, accountDataProvider);
     }
 }

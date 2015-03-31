@@ -1,7 +1,5 @@
 package com.sjtu.icarer.service;
 
-import java.util.Date;
-
 import retrofit.http.GET;
 import retrofit.http.Path;
 import retrofit.http.Query;
@@ -27,7 +25,7 @@ public interface ScheduleService {
 	HttpWrapper<Carer> getElderCarers(
 			@Path("gid")int geroId, 
 			@Path("eid")int elderId, 
-			@Query("date") Date date,
+			@Query("date") String date,
 			@Query("username")String username,
 			@Query("digest")String digest
 			);
@@ -36,7 +34,7 @@ public interface ScheduleService {
 	HttpWrapper<Carer> getAreaCarers(
 			@Path("gid")int geroId,
 			@Path("aid")int areaId,
-			@Query("date") Date date,
+			@Query("date") String date,
 			@Query("username")String username,
 			@Query("digest")String digest
 			);

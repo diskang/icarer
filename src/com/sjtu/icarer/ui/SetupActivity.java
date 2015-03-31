@@ -25,12 +25,11 @@ import com.sjtu.icarer.R.string;
 import com.sjtu.icarer.events.AreaUndoEvent;
 import com.sjtu.icarer.events.SetupSubmitEvent;
 import com.sjtu.icarer.events.TaskCancelEvent;
-import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
 import com.squareup.otto.Bus;
 
 public class SetupActivity extends PreferenceActivity {
-	@Inject protected IcarerServiceProvider icarerServiceProvider;
+	
 	@Inject protected LayoutInflater layoutInflater;
 	@Inject protected Bus eventBus;
 	

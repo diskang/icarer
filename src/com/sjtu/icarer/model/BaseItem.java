@@ -5,7 +5,7 @@ public abstract class BaseItem {
 	private int id;
 	private String icon;
 	private int period;
-	private String note;
+	private String notes;
 	
 	public BaseItem() {
 		
@@ -35,12 +35,12 @@ public abstract class BaseItem {
 		this.period = period;
 	}
 
-	public String getNote() {
-		return note;
+	public String getNotes() {
+		return notes;
 	}
 
-	public void setNote(String note) {
-		this.note = note;
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 }

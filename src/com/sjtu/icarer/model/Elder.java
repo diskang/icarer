@@ -10,10 +10,6 @@ public class Elder extends User implements Serializable{
 	private static final long serialVersionUID = -737490097890850021L;
 	private int careLevel;
 	private int areaId;
-	
-	public Elder(int id) {
-		super(id);
-	}
 
 	public int getCareLevel() {
 		return careLevel;

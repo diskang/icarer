@@ -9,7 +9,9 @@ import javax.inject.Inject;
 
 import retrofit.RestAdapter;
 
+import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.common.security.HmacSHA256Utils;
+import com.sjtu.icarer.common.utils.TimeUtils;
 import com.sjtu.icarer.model.Area;
 import com.sjtu.icarer.model.AreaItem;
 import com.sjtu.icarer.model.AreaRecord;
@@ -20,12 +22,14 @@ import com.sjtu.icarer.model.ElderRecord;
 import com.sjtu.icarer.model.HttpWrapper;
 import com.sjtu.icarer.model.User;
 
+import static com.sjtu.icarer.common.utils.TimeUtils.DATE_FORMAT_DATE;
 /**
  * @author kang shiyong
  * @Date 2015/3/25
  */
 public class IcarerService {
 	private RestAdapter restAdapter;
+	private User authUser;
 	private String digest;
 	private int geroId;
 	private String username;
@@ -42,16 +46,17 @@ public class IcarerService {
      *
      * @param restAdapter The RestAdapter that allows HTTP Communication.
      */
-	@Inject
+	
 	public IcarerService(RestAdapter restAdapter){
 		this.restAdapter = restAdapter;
 	}
 	
-	public IcarerService(RestAdapter restAdapter,String digest,User user){
+	public IcarerService(RestAdapter restAdapter, AccountDataProvider accountDataProvider){
 		this.restAdapter = restAdapter;
-	    this.digest = digest;
-	    this.geroId = user.getGeroId();
-	    this.username = user.getUsername();
+		this.authUser = accountDataProvider.getUserData();
+    	this.digest = authUser.getDigest();
+    	this.geroId = authUser.getGeroId();
+    	this.username = authUser.getUsername();
 	}
 	
 	/*
@@ -84,7 +89,7 @@ public class IcarerService {
 	 * Assume an elder binds to multiple carers
 	 */
 	public List<Carer> getCurrentElderCarers(int elderId){
-		Date currentDate = new Date();
+		String currentDate = TimeUtils.getCurrentTimeInString(DATE_FORMAT_DATE);
 		
 		String digestValue = getDigest(currentDate+username);
 		HttpWrapper<Carer> model = getScheduleService()
@@ -98,8 +103,7 @@ public class IcarerService {
 	 */
 	public List<Carer> getCurrentAreaCarers(int areaId){
 		
-		Date currentDate = new Date();
-		
+		String currentDate = TimeUtils.getCurrentTimeInString(DATE_FORMAT_DATE);
 		String digestValue = getDigest(currentDate+username);
 		HttpWrapper<Carer> model = getScheduleService()
 				.getAreaCarers(geroId, areaId, currentDate, username, digestValue);
