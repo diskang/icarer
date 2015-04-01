@@ -7,7 +7,6 @@ import android.accounts.AccountsException;
 import android.app.Activity;
 
 import com.sjtu.icarer.authenticator.AccountDataProvider;
-import com.sjtu.icarer.model.User;
 
 public class IcarerServiceProvider {
     private RestAdapter restAdapter;
@@ -30,8 +29,8 @@ public class IcarerServiceProvider {
     public IcarerService getService(final Activity activity)
             throws IOException, AccountsException {
         // The call to keyProvider.getAuthKey(...) is what initiates the login screen. Call that now.
-    	String digest = accountDataProvider.getAuthKey(activity);
-    	User userData = accountDataProvider.getUserData();
+    	accountDataProvider.getAuthKey(activity);
+    	//User userData = accountDataProvider.getUserData();
         // TODO: See how that affects the bootstrap service.
         return new IcarerService(restAdapter, accountDataProvider);
     }

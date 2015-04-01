@@ -1,22 +1,20 @@
 package com.sjtu.icarer.ui;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
+import android.accounts.OperationCanceledException;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -27,40 +25,43 @@ import com.sjtu.icarer.FragmentCarer;
 import com.sjtu.icarer.FragmentElder;
 import com.sjtu.icarer.FragmentRoom;
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
+import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.OpUtil;
-import com.sjtu.icarer.core.app.PreferenceManager;
+import com.sjtu.icarer.core.LoadAreaCarerTask;
+import com.sjtu.icarer.core.utils.PreferenceManager;
+import com.sjtu.icarer.events.RefreshCarerEvent;
+import com.sjtu.icarer.model.Carer;
+import com.sjtu.icarer.persistence.DbManager;
+import com.sjtu.icarer.service.IcarerServiceProvider;
+import com.sjtu.icarer.ui.area.AreaItemFragment;
+import com.squareup.otto.Subscribe;
 
 public class HomeActivity extends IcarerFragmentActivity {
 	private int current_fragment_type ;//1:room  2:elder  3:carer
-	private String roomNumber;
-	private String carerName;
-	private String carerId;
-	private Context context;
+	@Inject protected IcarerServiceProvider icarerServiceProvider;
 	@Inject protected PreferenceManager preferenceProvider;
+	@Inject protected DbManager dbManager;
 	
-	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
+	LinearLayout carerItemLayout; 
 	@InjectView(R.id.room_number)protected TextView roomNumView;
-	@InjectView(R.id.tv_item_info)protected TextView carerView ;
-	
-	@Inject protected PackageInfo info;
-	
+	private TextView carerTextView ;
+	private ImageView carerImageView;
+	private Carer carer;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+//		ButterKnife.inject(this);
 		setContentView(R.layout.activity_home);
-		context = this;
-		
-		Prefer prefer = new Prefer(this);
-//		roomNumber = prefer.getRoomNumber();
-		roomNumber = preferenceProvider.getAreaFullName();
-		carerName = prefer.getCarerName();
-		carerId = prefer.getCarerId();
+		carerItemLayout = (LinearLayout)findViewById(R.id.carer_item);
+		carerImageView = (ImageView)carerItemLayout.findViewById(R.id.iv_avatar);
+		carerTextView = (TextView)carerItemLayout.findViewById(R.id.tv_item_info);
+
 		int frIndex = getIntent().getIntExtra(Constants.FRAGMENT_INDEX, 1);
 		addFragment(frIndex);
-		updateView();
+//		roomNumView.setText("房间: \n"+ preferenceProvider.getAreaFullName());
+		getCarer();
 
 	}
 
@@ -96,10 +97,11 @@ public class HomeActivity extends IcarerFragmentActivity {
 		switch(type){
 		
 		case 1:
-			tag = FragmentRoom.class.getSimpleName();
+//			tag = FragmentRoom.class.getSimpleName();
+			tag = AreaItemFragment.class.getSimpleName();
 			fr = getSupportFragmentManager().findFragmentByTag(tag);
 			if (fr == null) {
-				fr = new FragmentRoom();
+				fr = new AreaItemFragment();
 			}
 			break;
 		case 2:
@@ -135,7 +137,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 		RelativeLayout layoutContainer = (RelativeLayout)findViewById(R.id.network_prompt_container);
 		RelativeLayout promptLayout = (RelativeLayout)findViewById(R.id.network_prompt);
 		if(promptLayout==null){
-			promptLayout =(RelativeLayout) RelativeLayout.inflate(context, R.drawable.bar_network_prompt, null);
+			promptLayout =(RelativeLayout) RelativeLayout.inflate(this, R.drawable.bar_network_prompt, null);
 		}
 		
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(     
@@ -167,27 +169,53 @@ public class HomeActivity extends IcarerFragmentActivity {
         
         startActivity(mIntent); 
 	}
-	private void updateView(){
-		final ImageView carerImageView = (ImageView)carerItemLayout.findViewById(R.id.iv_avatar);
-		roomNumView.setText("房间: \n"+roomNumber);
-		carerView.setText("今日护工: "+carerName);
-		loadCarerImage(carerImageView);
+	private void getCarer(){
+		new LoadAreaCarerTask(this,dbManager,false){
+    		@Override
+            protected void onSuccess(List<Carer> carers) throws Exception {
+                super.onSuccess(carers);
+                LogUtils.d("area carer fetched");
+                if(carers!=null){
+                	eventBus.post(new RefreshCarerEvent(carers.get(0)));
+                }
+            }
+    		@Override
+    		protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                if (e instanceof OperationCanceledException) {
+                    // User cancelled the authentication process (back button, etc).
+                    // Since auth could not take place, lets finish this activity.
+                    finish();
+                }else{
+                	LogUtils.d(e.getMessage());
+                	e.printStackTrace();
+                }
+            }
+    	}.start();
 	}
 	
-	private void loadCarerImage(ImageView carerImageView){
+	@Subscribe
+	public void updateCarer(RefreshCarerEvent refreshCarerEvent){
+		LogUtils.d("receive refreshcarerevent");
+		Carer carer = refreshCarerEvent.getCarer();
+		if (carer==null)return;
+		carerTextView.setText("今日护工："+carer.getName());
+    	loadCarerImage(carer);
+	}
+	
+	private void loadCarerImage(Carer carer){
+		String imageUrl = Url.URL_BASE+Url.URL_OBJECT_DOWNLOAD+"?file_url="+carer.getPhotoUrl();
+		
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
-        .showImageOnLoading(R.drawable.default_carer) // resource or drawable
-        .showImageForEmptyUri(R.drawable.default_carer) // resource or drawable
-        .showImageOnFail(R.drawable.default_carer) // resource or drawable
-        .cacheInMemory(true) 
-        .cacheOnDisk(true)
-        .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-        .displayer(new RoundedBitmapDisplayer(2000))
-        .build();
+            .showImageOnLoading(R.drawable.default_user) // resource or drawable
+            .showImageForEmptyUri(R.drawable.default_user) // resource or drawable
+            .showImageOnFail(R.drawable.default_user) // resource or drawable
+            .cacheInMemory(true) 
+            .cacheOnDisk(true)
+            .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+            .displayer(new RoundedBitmapDisplayer(2000))
+            .build();
 		
-		
-		
-		String imageUrl = Url.IMG_URL_STAFF+"?staff_id="+carerId;
 		ImageLoader.getInstance().displayImage(imageUrl, carerImageView, options);
 //		ImageLoader.getInstance().loadImage(imageUrl, mImageSize, options, new SimpleImageLoadingListener(){
 //			
@@ -200,6 +228,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 //             
 //        });
 	}
+	
 	@Override
 	public void onBackPressed() {
 		ImageLoader.getInstance().stop();

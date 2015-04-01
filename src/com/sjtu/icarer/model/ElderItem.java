@@ -1,6 +1,7 @@
 package com.sjtu.icarer.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.sql.Time;
 
 public class ElderItem extends BaseItem implements Serializable{
@@ -13,6 +14,8 @@ public class ElderItem extends BaseItem implements Serializable{
     private String careItemName;
     private Time startTime;
     private Time EndTime;
+    private Date lastDate;
+    private Date nextDate;
     
 	public ElderItem() {
     	super();
@@ -48,5 +51,22 @@ public class ElderItem extends BaseItem implements Serializable{
 
 	public void setEndTime(Time endTime) {
 		EndTime = endTime;
-	}	
+	}
+
+	public Date getLastDate() {
+		return lastDate;
+	}
+
+	public void setLastDate(Date lastDate) {
+		this.lastDate = lastDate;
+	}
+
+	public Date getNextDate() {
+		return nextDate;
+	}
+
+	public void setNextDate(Date nextDate) {
+		this.nextDate = nextDate;
+	}
+	
 }

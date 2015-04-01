@@ -80,7 +80,7 @@ public class DbCache {
             }
         }
     }
-
+    
     /**
      * Load or request given resources
      *
@@ -120,7 +120,33 @@ public class DbCache {
             helper.close();
         }
     }
+    
+    /**
+     * update given items in db's resources
+     * @param <E>
+     *
+     * @param persistableResource
+     * @param items
+     * @return updated resource
+     * @throws IOException
+     */
+    public <E> void update(PersistableResource<E> persistableResource,
+    		List<E> items) throws IOException {
+    	SQLiteOpenHelper helper = helperProvider.get();
+    	final SQLiteDatabase db = getWritable(helper);
+        if (db == null)
+            return;
 
+        db.beginTransaction();
+        try {
+            persistableResource.store(db, items);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+    
+    
     private <E> List<E> requestAndStore(final SQLiteOpenHelper helper,
             final PersistableResource<E> persistableResource)
             throws IOException {

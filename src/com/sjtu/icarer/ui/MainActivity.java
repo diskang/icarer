@@ -13,7 +13,7 @@ import butterknife.ButterKnife;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.common.utils.LogUtils;
-import com.sjtu.icarer.core.app.PreferenceManager;
+import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
@@ -81,7 +81,7 @@ public class MainActivity extends IcarerFragmentActivity {
             if(areaId.equals(0)){
             	i = new Intent(this, SetupActivity.class); 
             }else{
-            	i = new Intent(this, LoginActivity.class);
+            	i = new Intent(this, HomeActivity.class);
             }
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);

@@ -1,7 +1,5 @@
 package com.sjtu.icarer.core.utils;
 
-import com.sjtu.icarer.core.app.UserAgentProvider;
-
 import retrofit.RequestInterceptor;
 
 public class RestAdapterRequestInterceptor implements RequestInterceptor {

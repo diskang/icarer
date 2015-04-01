@@ -77,7 +77,7 @@ public class FragmentRoom extends Fragment{
 					.bitmapConfig(Bitmap.Config.RGB_565)
 					.build();
 		Injector.inject(this);
-		checkRetrofit();
+//		checkRetrofit();
 	}
 	
 	@Override
@@ -235,10 +235,10 @@ public class FragmentRoom extends Fragment{
 			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = inflater.inflate(R.layout.item, parent, false);
+				view = inflater.inflate(R.layout.item_item, parent, false);
 				holder = new ViewHolder();
 				//holder.checkbox = (CheckBox) view.findViewById(R.id.ItemCheck);
-				holder.image = (ImageView) view.findViewById(R.id.ItemImage);
+				holder.image = (ImageView) view.findViewById(R.id.iv_item_icon);
 				view.setTag(holder);
 			} else {
 				holder = (ViewHolder) view.getTag();

@@ -17,18 +17,18 @@ import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.authenticator.IcarerAuthenticatorActivity;
 import com.sjtu.icarer.authenticator.LogoutService;
 import com.sjtu.icarer.common.config.Url;
-import com.sjtu.icarer.core.IcarerApplication;
-import com.sjtu.icarer.core.app.PreferenceManager;
-import com.sjtu.icarer.core.app.UserAgentProvider;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PostFromAnyThreadBus;
+import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.core.utils.RestAdapterRequestInterceptor;
 import com.sjtu.icarer.core.utils.RestErrorHandler;
+import com.sjtu.icarer.core.utils.UserAgentProvider;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.HomeActivity;
 import com.sjtu.icarer.ui.MainActivity;
 import com.sjtu.icarer.ui.SetupActivity;
+import com.sjtu.icarer.ui.area.AreaItemFragment;
 import com.sjtu.icarer.ui.login.LoginActivity;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
 import com.squareup.otto.Bus;
@@ -52,9 +52,8 @@ import dagger.Provides;
         AreaPreferenceFragment.class,
         LoginActivity.class,
         HomeActivity.class,
+        AreaItemFragment.class,
         FragmentRoom.class,
-//        PreferenceManager.class
-//        DbManager.class
     },
     library = true
 )
@@ -112,7 +111,7 @@ public class IcarerModule {
          *         .setFieldNamingPolicy(LOWER_CASE_WITH_UNDERSCORES).create();
          */
         return new GsonBuilder().setFieldNamingPolicy(LOWER_CASE_WITH_UNDERSCORES)
-        		.setDateFormat("yyyy-MM-dd HH:mm:ss:SSS")
+        		.setDateFormat("yyyy-MM-dd")
         		.setPrettyPrinting()
 //        		.serializeNulls()
         		.create();

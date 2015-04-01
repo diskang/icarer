@@ -1,4 +1,4 @@
-package com.sjtu.icarer.core.app;
+package com.sjtu.icarer.core.utils;
 
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;

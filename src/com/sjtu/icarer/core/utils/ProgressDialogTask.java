@@ -5,14 +5,10 @@ import java.util.concurrent.Executor;
 import android.app.Activity;
 import android.app.AlertDialog;
 
-import com.sjtu.icarer.service.IcarerService;
-import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.view.LightProgressDialog;
 
 public abstract class ProgressDialogTask<ResultT> extends SafeAsyncTask<ResultT>{
 
-	private  IcarerServiceProvider icarerServiceProvider;
-	protected IcarerService icarerService;
 	private final Activity activity;
 	/**
      * Progress dialog last displayed
@@ -22,20 +18,18 @@ public abstract class ProgressDialogTask<ResultT> extends SafeAsyncTask<ResultT>
 	/**
      * @param context
      */
-    protected ProgressDialogTask(Activity activity, IcarerServiceProvider icarerServiceProvider){
+    protected ProgressDialogTask(Activity activity){
         super();
         this.activity = activity;
-        this.icarerServiceProvider = icarerServiceProvider;
     }
 
     /**
      * @param context
      * @param executor
      */
-    protected ProgressDialogTask(Activity activity, Executor executor, IcarerServiceProvider icarerServiceProvider){
+    protected ProgressDialogTask(Activity activity, Executor executor){
         super(executor);
         this.activity = activity;
-        this.icarerServiceProvider = icarerServiceProvider;
     }
     
     
@@ -73,11 +67,6 @@ public abstract class ProgressDialogTask<ResultT> extends SafeAsyncTask<ResultT>
         progress.show();
     }
     
-    @Override
-    public ResultT call()throws Exception{
-    	icarerService = icarerServiceProvider.getService(activity);
-    	return null;
-    }
     /**
      * Sub-classes may override but should always call super to ensure the
      * progress dialog is dismissed

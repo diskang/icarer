@@ -50,7 +50,7 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "name TEXT,"
             		+ "username TEXT,"
             		+ "photo_url TEXT,"
-            		+ "work_date TEXT,"
+            		+ "work_date DATE,"
             		+ "PRIMARY KEY(id, elder_id));");
             
             db.execSQL("CREATE TABLE area_carer ("
@@ -59,7 +59,7 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "name TEXT,"
             		+ "username TEXT,"
             		+ "photo_url TEXT,"
-            		+ "work_date TEXT,"
+            		+ "work_date DATE,"
             		+ "PRIMARY KEY(id, area_id));");
             
             db.execSQL("CREATE TABLE area_item ("
@@ -69,21 +69,19 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "item_name TEXT,"
             		+ "frequency INTEGER,"
             		+ "period INTEGER,"
-            		//+ "last_date TEXT,"
-            		//+ "next_date TEXT"
             		+ "notes TEXT);");
             db.execSQL("CREATE TABLE elder_item ("
             		+ "id INTEGER PRIMARY KEY,"
             		+ "icon TEXT,"
             		+ "item_id INTEGER,"
             		+ "item_name TEXT,"
-            		+ "start_time TEXT,"//start time in a single day
-            		+ "end_time TEXT,"  //expire time in a single day
-            		+ "last_date TEXT,"  //last record date
-            		+ "next_date TEXT,"  //next plan date base on last_date & period
+            		+ "elder_id INTEGER,"
             		+ "period INTEGER,"
-            		+ "notes TEXT);");
-        
+            		+ "notes TEXT,"
+            		+ "start_time TIME,"//start time in a single day
+            		+ "end_time TIME,"  //expire time in a single day
+            		+ "last_date DATE,"  //last record date
+            		+ "next_date DATE);");  //next plan date base on last_date & period);");
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -93,7 +91,8 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     	db.execSQL("DROP TABLE IF EXISTS elder");
-        db.execSQL("DROP TABLE IF EXISTS carer");
+        db.execSQL("DROP TABLE IF EXISTS elder_carer");
+        db.execSQL("DROP TABLE IF EXISTS area_carer");
         db.execSQL("DROP TABLE IF EXISTS elder_item");
         db.execSQL("DROP TABLE IF EXISTS area_item");
         onCreate(db);

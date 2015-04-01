@@ -24,8 +24,8 @@ import com.sjtu.icarer.R;
 import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
-import com.sjtu.icarer.core.app.PreferenceManager;
 import com.sjtu.icarer.core.utils.Named;
+import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.events.AreaUndoEvent;
 import com.sjtu.icarer.events.SetupSubmitEvent;
@@ -33,6 +33,7 @@ import com.sjtu.icarer.events.TaskCancelEvent;
 import com.sjtu.icarer.model.Area;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
+import com.sjtu.icarer.ui.HomeActivity;
 import com.sjtu.icarer.ui.login.LoginActivity;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -198,7 +199,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     			ToastUtils.show(getActivity(), "信息无修改");
     		}
     	}
-    	final Intent i = new Intent(getActivity(), LoginActivity.class);
+    	final Intent i = new Intent(getActivity(), HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
         getActivity().finish();

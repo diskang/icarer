@@ -42,4 +42,10 @@
     <string name="message_auth_failed_new_account">Please enter a valid username &amp; password</string>
     
     <string name="message_fetch_data">正在获取数据</string>
+    <string name="message_fetch_elder_data">正在获取老人数据</string>
+    <string name="message_fetch_carer_data">正在获取护工数据</string>
+    <string name="message_fetch_careitem_data">正在获取护理项目数据</string>
+    <string name="message_fetch_areaitem_data">正在获取房间项目数据</string>
+    <string name="message_post_careitem_data">正在提交护理项目数据</string>
+    <string name="message_post_areaitem_data">正在提交护理项目数据</string>
 </resources>

@@ -27,7 +27,7 @@ public interface UserService {
 			@Query("digest") String digest
 			);
 	
+	//pad login
 	@POST(Url.URL_USER_KEY)
     HttpWrapper<User> userLogin(@Body User user);
-	
 }

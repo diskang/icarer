@@ -21,6 +21,7 @@
 
     <ImageView
         android:id="@+id/iv_avatar"
+        android:src="@drawable/default_user"
         style="@style/AvatarNXLarge"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/avatar" />

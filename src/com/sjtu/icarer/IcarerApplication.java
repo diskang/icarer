@@ -1,4 +1,4 @@
-package com.sjtu.icarer.core;
+package com.sjtu.icarer;
 
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -6,8 +6,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.sjtu.icarer.BuildConfig;
-import com.sjtu.icarer.Injector;
-import com.sjtu.icarer.RootModule;
 import com.sjtu.icarer.thread.CrashHandler;
 
 import butterknife.ButterKnife;

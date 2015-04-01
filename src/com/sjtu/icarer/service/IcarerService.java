@@ -1,11 +1,10 @@
 package com.sjtu.icarer.service;
 
-import java.util.Date;
+import static com.sjtu.icarer.common.utils.TimeUtils.DATE_FORMAT_DATE;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 import retrofit.RestAdapter;
 
@@ -21,8 +20,6 @@ import com.sjtu.icarer.model.ElderItem;
 import com.sjtu.icarer.model.ElderRecord;
 import com.sjtu.icarer.model.HttpWrapper;
 import com.sjtu.icarer.model.User;
-
-import static com.sjtu.icarer.common.utils.TimeUtils.DATE_FORMAT_DATE;
 /**
  * @author kang shiyong
  * @Date 2015/3/25

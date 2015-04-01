@@ -13,9 +13,6 @@ import android.preference.PreferenceManager;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
-
-import com.sjtu.icarer.core.IcarerApplication;
-
 import dagger.Module;
 import dagger.Provides;
 

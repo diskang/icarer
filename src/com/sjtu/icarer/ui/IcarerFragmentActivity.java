@@ -20,14 +20,13 @@ import com.squareup.otto.Bus;
 /**
  * Base class for all  icarer Activities that need ActionBar.
  */
-public class IcarerFragmentActivity extends ActionBarActivity {
+public abstract class IcarerFragmentActivity extends ActionBarActivity {
 	@InjectView(R.id.toolbar) protected Toolbar toolbar;
     @Inject protected Bus eventBus;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Injector.inject(this);
     }
 

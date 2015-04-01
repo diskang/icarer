@@ -9,10 +9,12 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
-import com.sjtu.icarer.core.app.PreferenceManager;
 import com.sjtu.icarer.core.utils.Named;
+import com.sjtu.icarer.core.utils.PreferenceManager;
+import com.sjtu.icarer.model.AreaItem;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.model.Elder;
+import com.sjtu.icarer.model.ElderItem;
 import com.sjtu.icarer.persistence.utils.RequestReader;
 import com.sjtu.icarer.persistence.utils.RequestWriter;
 import com.sjtu.icarer.service.IcarerService;
@@ -21,7 +23,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.util.Log;
-import android.widget.TabHost;
 
 public class DbManager {
 	 private static final String TAG = "DbManager";
@@ -144,4 +145,53 @@ public class DbManager {
                 : dbCache.loadOrRequest(carerData);
     }
     
+    /**
+     * Get area_items
+     * <p/>
+     * This method may perform file and/or network I/O and should never be
+     * called on the UI-thread
+     *
+     * @param forceReload
+     * @return list of area items
+     * @throws IOException
+     */
+    public List<AreaItem> getAreaItems( boolean forceReload) throws IOException {
+	    AreaItemData areaItemData = new AreaItemData(icarerService);
+        return forceReload ? dbCache.requestAndStore(areaItemData)
+                : dbCache.loadOrRequest(areaItemData);
+    }
+    
+    /**
+     * get elder_items
+     * <p/>
+     * This method may perform file and/or network I/O and should never be
+     * called on the UI-thread
+     *
+     * @param forceReload
+     * @return list of elder items
+     * @throws IOException
+     */
+    public List<ElderItem> getCurrentElderItems(Elder elder, boolean forceReload)throws IOException{
+    	ElderItemData elderItemData = new ElderItemData(icarerService, elder);
+    	return forceReload ? dbCache.requestAndStore(elderItemData)
+                : dbCache.loadOrRequest(elderItemData);
+    }
+    /**
+     * update elder_items' finish state
+     * <p/>
+     * This method may perform file and/or network I/O and should never be
+     * called on the UI-thread
+     *
+     * @param items 
+     * @return list of elder items
+     * @throws IOException
+     */
+    public void updateElderItem(List<ElderItem> items)throws IOException{
+    	ElderItemData elderItemData = new ElderItemData();
+    	dbCache.update(elderItemData, items);
+    }
+    
+//    public List<ElderItem> getAllElderItems(Elder elder){
+//    	dbCache
+//    }
 }

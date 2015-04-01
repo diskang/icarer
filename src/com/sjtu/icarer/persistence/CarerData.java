@@ -10,11 +10,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 
+import com.sjtu.icarer.common.utils.TimeUtils;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.persistence.utils.PersistableResource;
 import com.sjtu.icarer.service.IcarerService;
 
+import static com.sjtu.icarer.common.utils.TimeUtils.DATE_FORMAT_DATE;
 public class CarerData implements PersistableResource<Carer>{
 
 	private final IcarerService icarerService;
@@ -45,16 +47,16 @@ public class CarerData implements PersistableResource<Carer>{
 	public Cursor getCursor(SQLiteDatabase readableDatabase) {
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(tableName);
-        String workToday = "work_date ="+Date.valueOf(new java.util.Date().toString()).toString();
+        String workToday = "work_date ="+TimeUtils.getCurrentTimeInString(DATE_FORMAT_DATE);
         builder.appendWhere(workToday);
         if(elder!=null){
         	builder.appendWhere("elder_id="+elder.getId());
         }else if(areaId!=0){
-        	builder.appendWhere("area_id="+areaId);
+        	builder.appendWhere(" AND area_id="+areaId);
         }
         return builder
-              .query(readableDatabase, new String[] { "carer.id",
-                      "carer.name", "carer.username","carer.photo_url","carer.work_date" },
+              .query(readableDatabase, new String[] { "id",
+                      "name", "username","photo_url","work_date" },
                       null, null, null, null, null);
 	}
 
@@ -83,7 +85,7 @@ public class CarerData implements PersistableResource<Carer>{
             values.put("name", carer.getName());
             values.put("username", carer.getName());
             values.put("photo_url", carer.getPhotoUrl());
-            values.put("work_date", new java.util.Date().toString());
+            values.put("work_date", TimeUtils.getCurrentTimeInString(DATE_FORMAT_DATE));
             if("area_carer".equals(tableName)){
             	values.put("area_id", areaId);
             }else{

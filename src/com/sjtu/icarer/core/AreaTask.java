@@ -1,4 +1,4 @@
-package com.sjtu.icarer.core.setup;
+package com.sjtu.icarer.core;
 
 import java.util.List;
 

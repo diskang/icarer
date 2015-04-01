@@ -365,9 +365,9 @@ public class FragmentElder extends Fragment{
 			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = inflater.inflate(R.layout.item, parent, false);
+				view = inflater.inflate(R.layout.item_item, parent, false);
 				holder = new ViewHolder();
-				holder.image = (ImageView) view.findViewById(R.id.ItemImage);
+				holder.image = (ImageView) view.findViewById(R.id.iv_item_icon);
 				view.setTag(holder);
 			} else {
 				holder = (ViewHolder) view.getTag();
