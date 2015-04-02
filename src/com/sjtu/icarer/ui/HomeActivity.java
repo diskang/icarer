@@ -35,7 +35,8 @@ import com.sjtu.icarer.events.RefreshCarerEvent;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerServiceProvider;
-import com.sjtu.icarer.ui.area.AreaItemFragment;
+import com.sjtu.icarer.ui.area.AreaItemsFragment;
+import com.sjtu.icarer.ui.elder.ElderItemsFragment;
 import com.squareup.otto.Subscribe;
 
 public class HomeActivity extends IcarerFragmentActivity {
@@ -61,7 +62,6 @@ public class HomeActivity extends IcarerFragmentActivity {
 		int frIndex = getIntent().getIntExtra(Constants.FRAGMENT_INDEX, 1);
 		addFragment(frIndex);
 //		roomNumView.setText("·¿¼ä: \n"+ preferenceProvider.getAreaFullName());
-		getCarer();
 
 	}
 
@@ -98,17 +98,18 @@ public class HomeActivity extends IcarerFragmentActivity {
 		
 		case 1:
 //			tag = FragmentRoom.class.getSimpleName();
-			tag = AreaItemFragment.class.getSimpleName();
+			tag = AreaItemsFragment.class.getSimpleName();
 			fr = getSupportFragmentManager().findFragmentByTag(tag);
 			if (fr == null) {
-				fr = new AreaItemFragment();
+				fr = new AreaItemsFragment();
 			}
 			break;
 		case 2:
-			tag = FragmentElder.class.getSimpleName();
+//			tag = FragmentElder.class.getSimpleName();
+			tag = ElderItemsFragment.class.getSimpleName();
 			fr = getSupportFragmentManager().findFragmentByTag(tag);
 			if (fr == null) {
-				fr = new FragmentElder();
+				fr = new ElderItemsFragment();
 			}
 			break;
 		default:
@@ -169,30 +170,7 @@ public class HomeActivity extends IcarerFragmentActivity {
         
         startActivity(mIntent); 
 	}
-	private void getCarer(){
-		new LoadAreaCarerTask(this,dbManager,false){
-    		@Override
-            protected void onSuccess(List<Carer> carers) throws Exception {
-                super.onSuccess(carers);
-                LogUtils.d("area carer fetched");
-                if(carers!=null&&!carers.isEmpty()){
-                	eventBus.post(new RefreshCarerEvent(carers.get(0)));
-                }
-            }
-    		@Override
-    		protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                if (e instanceof OperationCanceledException) {
-                    // User cancelled the authentication process (back button, etc).
-                    // Since auth could not take place, lets finish this activity.
-                    finish();
-                }else{
-                	LogUtils.d(e.getMessage());
-                	e.printStackTrace();
-                }
-            }
-    	}.start();
-	}
+	
 	
 	@Subscribe
 	public void updateCarer(RefreshCarerEvent refreshCarerEvent){

@@ -1,5 +1,7 @@
 package com.sjtu.icarer.ui.elder;
 
+import java.util.List;
+
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.view.CircleButton;
 import com.sjtu.icarer.model.Elder;
@@ -14,21 +16,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ElderAdapter extends BaseAdapter{
-	LayoutInflater inflater;
+	private final LayoutInflater inflater;
+	private final List<Elder> elders;
 	public ElderAdapter(final LayoutInflater inflater,
-			final Elder[] elements) {
+			final List<Elder> elders) {
 		this.inflater= inflater;
+		this.elders = elders;
 		//setItems()
 	}
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(elders==null){
+			return 0;
+		}
+		return elders.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return position;
+	public Elder getItem(int position) {
+		return elders.get(position);
 	}
 
 	@Override
@@ -47,9 +53,12 @@ public class ElderAdapter extends BaseAdapter{
 	      holder = new ViewHolder(view);
 	      view.setTag(holder);
 	    }
-
-	    holder.elderInfoView.setText("John Doe");
-	    // etc...
+	    Elder elder = getItem(position);
+	    String name = elder.getName();
+	    String photoUrl = elder.getPhotoUrl();
+	    
+	    holder.elderInfoView.setText(name);
+	    holder.elderImageImage.setBackgroundResource(R.drawable.default_user);
 
 	    return view;
 	}

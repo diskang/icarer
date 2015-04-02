@@ -28,7 +28,8 @@ import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.HomeActivity;
 import com.sjtu.icarer.ui.MainActivity;
 import com.sjtu.icarer.ui.SetupActivity;
-import com.sjtu.icarer.ui.area.AreaItemFragment;
+import com.sjtu.icarer.ui.area.AreaItemsFragment;
+import com.sjtu.icarer.ui.elder.ElderItemsFragment;
 import com.sjtu.icarer.ui.login.LoginActivity;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
 import com.squareup.otto.Bus;
@@ -52,7 +53,8 @@ import dagger.Provides;
         AreaPreferenceFragment.class,
         LoginActivity.class,
         HomeActivity.class,
-        AreaItemFragment.class,
+        AreaItemsFragment.class,
+        ElderItemsFragment.class,
         FragmentRoom.class,
     },
     library = true
