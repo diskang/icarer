@@ -17,21 +17,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AreaItemAdapter extends BaseAdapter{
-	LayoutInflater inflater;
+	private final LayoutInflater inflater;
+	private final List<AreaItem> areaItems;
 	public AreaItemAdapter(final LayoutInflater inflater,
-			final List<AreaItem> elements) {
+			final List<AreaItem> areaItems) {
 		this.inflater= inflater;
+		this.areaItems = areaItems;
 		//setItems()
 	}
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		if(areaItems==null)return 0;
+		return areaItems.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return position;
+	public AreaItem getItem(int position) {
+		return areaItems.get(position);
 	}
 
 	@Override
@@ -50,9 +52,11 @@ public class AreaItemAdapter extends BaseAdapter{
 	      holder = new ViewHolder(view);
 	      view.setTag(holder);
 	    }
-
-	    holder.itemInfoView.setText("John Doe");
-	    // etc...
+	    String name =  getItem(position).getName();
+	    String icon =  getItem(position).getIcon();
+	    
+	    holder.itemInfoView.setText(name);
+	    holder.itemIconImage.setBackgroundResource(R.drawable.default_user);
 
 	    return view;
 	}

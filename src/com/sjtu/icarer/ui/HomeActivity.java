@@ -175,7 +175,7 @@ public class HomeActivity extends IcarerFragmentActivity {
             protected void onSuccess(List<Carer> carers) throws Exception {
                 super.onSuccess(carers);
                 LogUtils.d("area carer fetched");
-                if(carers!=null){
+                if(carers!=null&&!carers.isEmpty()){
                 	eventBus.post(new RefreshCarerEvent(carers.get(0)));
                 }
             }
