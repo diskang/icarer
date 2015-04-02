@@ -133,16 +133,16 @@ public class IcarerService {
 	 * 
 	 */
 	public List<AreaItem> getAreaItems(){
-		String digestValue = getDigestWithUsername();
+		String digestValue = getDigest("1200ID"+username);
 		HttpWrapper<AreaItem> model = getWorkService().
-				getAreaItems(geroId, username, digestValue);
+				getAreaItems(geroId,"1", "200","ID", username, digestValue);
 		return model.getEntities();
 	}
 	
 	public List<ElderItem> getElderItems(int elderId){
-		String digestValue = getDigestWithUsername();
+		String digestValue = getDigest("1200ID"+username);
 		HttpWrapper<ElderItem> model = getWorkService().
-				getElderItems(geroId, elderId, username, digestValue);
+				getElderItems(geroId, elderId,"1", "200","ID", username, digestValue);
 		return model.getEntities();
 	}
 	

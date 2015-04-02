@@ -22,6 +22,9 @@ public interface WorkService {
     @GET(Url.URL_AREA_ITEMS)
 	HttpWrapper<AreaItem> getAreaItems(
 			@Path("gid") int geroId,
+			@Query("page")String page,
+			@Query("rows")String rows,
+			@Query("sort")String sort,
 			@Query("username")String username,
 			@Query("digest")String digest
 			);
@@ -30,6 +33,9 @@ public interface WorkService {
     HttpWrapper<ElderItem> getElderItems(
     		@Path("gid") int geroId, 
     		@Path("eid")int elderId,
+    		@Query("page")String page,
+			@Query("rows")String rows,
+			@Query("sort")String sort,
 			@Query("username")String username,
 			@Query("digest")String digest
 			);
