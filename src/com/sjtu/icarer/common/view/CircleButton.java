@@ -1,7 +1,5 @@
 package com.sjtu.icarer.common.view;
 
-import com.sjtu.icarer.R;
-
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,11 +8,14 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.widget.Checkable;
 import android.widget.ImageView;
 
+import com.sjtu.icarer.R;
 
-public class CircleButton extends ImageView {
 
+public class CircleButton extends ImageView implements Checkable{
+	private boolean mChecked = false;
 	private static final int PRESSED_COLOR_LIGHTUP = 255 / 25;
 	private static final int PRESSED_RING_ALPHA = 75;
 	private static final int DEFAULT_PRESSED_RING_WIDTH_DIP = 4;
@@ -34,7 +35,6 @@ public class CircleButton extends ImageView {
 	private int buttonOffColor = Color.BLACK;
 	private int buttonOnColor = Color.RED;
 	private int pressedColor;
-	private boolean currentState = false;//button off, true means on
 	private ObjectAnimator pressedAnimator;
 
 	public CircleButton(Context context) {
@@ -51,15 +51,14 @@ public class CircleButton extends ImageView {
 		super(context, attrs, defStyle);
 		init(context, attrs);
 	}
-
 	@Override
 	public void setPressed(boolean pressed) {
 		super.setPressed(pressed);
 		//add by kangshiyong 2015/3/21
 		
 		if (pressed) {
-			int color = currentState?buttonOffColor:buttonOnColor;
-			currentState = !currentState;
+			int color = mChecked?buttonOffColor:buttonOnColor;
+//			currentState = !currentState;
 			if (circlePaint != null) {
 				circlePaint.setColor(pressed ? pressedColor : color);
 			}
@@ -152,5 +151,27 @@ public class CircleButton extends ImageView {
 	private int getHighlightColor(int color, int amount) {
 		return Color.argb(Math.min(255, Color.alpha(color)), Math.min(255, Color.red(color) + amount),
 				Math.min(255, Color.green(color) + amount), Math.min(255, Color.blue(color) + amount));
+	}
+    
+
+	@Override
+	public void setChecked(boolean checked) {
+		if (mChecked != checked) {
+          
+          setPressed(true);
+          setPressed(false);
+          mChecked = checked;
+        }
+		
+	}
+
+	@Override
+	public boolean isChecked() {
+		return mChecked;
+	}
+
+	@Override
+	public void toggle() {
+		setChecked(!mChecked);
 	}
 }

@@ -36,8 +36,8 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
 
         ButterKnife.inject(this);
         toolbar.setLogo(R.drawable.ic_launcher);
-		toolbar.setTitle("¡ªHOUSECARE¡ª ");
-		toolbar.setSubtitle(" »¦ÉÏÑøÀÏ×¨ÒµÆ·ÅÆ");
+		toolbar.setTitle(" -HOUSECARE- ");
+		toolbar.setSubtitle("  æ²ªä¸Šä¸“ä¸šå…»è€æœºæ„");
 		setSupportActionBar(toolbar);
     }
 

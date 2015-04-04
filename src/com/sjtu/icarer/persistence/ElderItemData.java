@@ -34,7 +34,7 @@ public class ElderItemData implements PersistableResource<ElderItem>{
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("elder_item");
         builder.appendWhere("elder_item.elder_id="+elderId);
-        builder.appendWhere("elder_item.next_date is null OR elder_item.next_date is DATE(\"now\")");
+        builder.appendWhere(" AND elder_item.next_date is null OR elder_item.next_date is DATE(\"now\")");
         return builder
               .query(readableDatabase, new String[] { "elder_item.id",
                       "elder_item.icon", "elder_item.item_id","elder_item.item_name", "elder_item.period",

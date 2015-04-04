@@ -6,6 +6,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.sjtu.icarer.R;
+import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.view.CircleButton;
 import com.sjtu.icarer.model.AreaItem;
 
@@ -38,7 +39,7 @@ public class AreaItemAdapter extends BaseAdapter{
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		return areaItems.get(position).getId();
 	}
 
 	@Override
@@ -54,9 +55,10 @@ public class AreaItemAdapter extends BaseAdapter{
 	    }
 	    String name =  getItem(position).getName();
 	    String icon =  getItem(position).getIcon();
-	    
+	    int resId = Mapping.icons.containsKey(icon)?
+	        Mapping.icons.get(icon):R.drawable.default_user;
 	    holder.itemInfoView.setText(name);
-	    holder.itemIconImage.setBackgroundResource(R.drawable.default_user);
+	    holder.itemIconImage.setBackgroundResource(resId);
 
 	    return view;
 	}

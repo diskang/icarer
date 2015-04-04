@@ -10,12 +10,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
+import butterknife.Optional;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -29,9 +33,11 @@ import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.core.LoadAreaCarerTask;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.events.RefreshCarerEvent;
+import com.sjtu.icarer.events.SetupSubmitEvent;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerServiceProvider;
@@ -45,23 +51,21 @@ public class HomeActivity extends IcarerFragmentActivity {
 	@Inject protected PreferenceManager preferenceProvider;
 	@Inject protected DbManager dbManager;
 	
-	LinearLayout carerItemLayout; 
+	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
 	@InjectView(R.id.room_number)protected TextView roomNumView;
 	private TextView carerTextView ;
 	private ImageView carerImageView;
-	private Carer carer;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 //		ButterKnife.inject(this);
 		setContentView(R.layout.activity_home);
-		carerItemLayout = (LinearLayout)findViewById(R.id.carer_item);
 		carerImageView = (ImageView)carerItemLayout.findViewById(R.id.iv_avatar);
 		carerTextView = (TextView)carerItemLayout.findViewById(R.id.tv_item_info);
 
 		int frIndex = getIntent().getIntExtra(Constants.FRAGMENT_INDEX, 1);
 		addFragment(frIndex);
-//		roomNumView.setText("·¿¼ä: \n"+ preferenceProvider.getAreaFullName());
+//		roomNumView.setText("ï¿½ï¿½ï¿½ï¿½: \n"+ preferenceProvider.getAreaFullName());
 
 	}
 
@@ -128,7 +132,6 @@ public class HomeActivity extends IcarerFragmentActivity {
 	
 	private void check_network(){
 		if(!OpUtil.isConnected(this)){
-			//Toast.makeText(this, "Çë¼ì²éÍøÂçÁ¬½ÓÊÇ·ñÕý³£", Toast.LENGTH_LONG).show();
 			display_network_prompt();
 		}else{
 			hide_network_prompt();
@@ -177,7 +180,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 		LogUtils.d("receive refreshcarerevent");
 		Carer carer = refreshCarerEvent.getCarer();
 		if (carer==null)return;
-		carerTextView.setText("½ñÈÕ»¤¹¤£º"+carer.getName());
+		carerTextView.setText("ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½"+carer.getName());
     	loadCarerImage(carer);
 	}
 	
@@ -206,7 +209,12 @@ public class HomeActivity extends IcarerFragmentActivity {
 //             
 //        });
 	}
-	
+    @Optional
+    @OnLongClick(R.id.carer_item)
+    public boolean carerLongClick(){
+        Toaster.showShort(this, "something happened");
+        return true;
+    }
 	@Override
 	public void onBackPressed() {
 		ImageLoader.getInstance().stop();

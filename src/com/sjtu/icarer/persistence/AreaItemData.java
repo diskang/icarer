@@ -53,7 +53,7 @@ public class AreaItemData implements PersistableResource<AreaItem>{
             
             values.put("id", item.getId());
             values.put("icon", item.getIcon());
-            values.put("greo_id", item.getGeroId());
+            values.put("gero_id", item.getGeroId());
             values.put("item_name", item.getName());
             values.put("frequency", item.getFrequency());
             values.put("period", item.getPeriod());

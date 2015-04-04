@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content" xmlns:app="http://schemas.android.com/apk/res/com.sjtu.icarer"
+	android:layout_width="150dp"
+	android:layout_height="170dp" xmlns:app="http://schemas.android.com/apk/res/com.sjtu.icarer"
 	android:background="?android:attr/selectableItemBackground">
-	<ImageView
-	    android:id="@+id/iv_item_icon"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-		android:maxHeight="120dp"
-		android:maxWidth="120dp"
-		android:minHeight="120dip"
-		android:minWidth="120dip"
-	    android:layout_centerHorizontal="true"
-	    android:scaleType="fitXY"
-	    android:contentDescription="@string/empty"
-	    />
+    <ImageView
+     	  android:id="@+id/iv_item_icon"
+	     android:layout_width="match_parent"
+ 	     android:layout_height="match_parent"  
+	     android:layout_centerHorizontal="true"
+	     android:layout_marginBottom="20dp"
+	     android:scaleType="fitXY"
+	     android:contentDescription="@string/empty"
+	   />
 	<TextView
 	    android:id="@+id/tv_item_info"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_below="@id/iv_item_icon"
+	    android:layout_alignParentBottom="true"
 	    android:layout_centerHorizontal="true"
 	    android:textSize="20sp"
 	    android:textColor="@color/black"/>
@@ -47,17 +44,17 @@
             
             /-->
     <com.sjtu.icarer.common.view.CircleButton
-            android:id="@+id/cb_item_hint"
-            android:layout_width="64dip"
-            android:layout_height="64dip"
-            android:layout_centerHorizontal="true"
-            android:layout_alignRight="@id/iv_item_icon"
-            android:focusable="false"
-	        android:clickable="false"
-            
-	        android:src="@drawable/ic_action_tick"
-            app:cb_color_off="@color/bg_checkbox_off" 
-            app:cb_color="@color/bg_checkbox_on"
-            />
+          android:id="@+id/cb_item_hint"
+          android:layout_width="64dip"
+          android:layout_height="64dip"
+          android:layout_centerHorizontal="true"
+          android:layout_alignEnd="@id/iv_item_icon"
+          android:layout_alignRight="@id/iv_item_icon"
+          android:focusable="false"
+          android:clickable="false"
+	       android:src="@drawable/ic_action_tick"
+          app:cb_color_off="@color/bg_checkbox_off" 
+          app:cb_color="@color/bg_checkbox_on"
+      />
 
 </RelativeLayout>

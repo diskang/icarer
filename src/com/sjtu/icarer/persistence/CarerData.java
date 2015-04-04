@@ -50,7 +50,7 @@ public class CarerData implements PersistableResource<Carer>{
         String workToday = "work_date ="+TimeUtils.getCurrentTimeInString(DATE_FORMAT_DATE);
         builder.appendWhere(workToday);
         if(elder!=null){
-        	builder.appendWhere("elder_id="+elder.getId());
+        	builder.appendWhere(" AND elder_id="+elder.getId());
         }else if(areaId!=0){
         	builder.appendWhere(" AND area_id="+areaId);
         }

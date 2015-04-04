@@ -2,12 +2,16 @@ package com.sjtu.icarer.ui.elder;
 
 import java.util.List;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sjtu.icarer.R;
+import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.view.CircleButton;
 import com.sjtu.icarer.model.Elder;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +22,20 @@ import android.widget.TextView;
 public class ElderAdapter extends BaseAdapter{
 	private final LayoutInflater inflater;
 	private final List<Elder> elders;
+	private final DisplayImageOptions options;
 	public ElderAdapter(final LayoutInflater inflater,
 			final List<Elder> elders) {
 		this.inflater= inflater;
 		this.elders = elders;
-		//setItems()
+		this.options = new DisplayImageOptions.Builder()
+		    .showImageOnLoading(R.drawable.default_user)
+		    .showImageForEmptyUri(R.drawable.default_user)
+		    .showImageOnFail(R.drawable.default_user)
+		    .cacheInMemory(true)
+		    .cacheOnDisk(true)
+		    .considerExifParams(true)
+		    .bitmapConfig(Bitmap.Config.RGB_565)
+		    .build();
 	}
 	@Override
 	public int getCount() {
@@ -55,11 +68,10 @@ public class ElderAdapter extends BaseAdapter{
 	    }
 	    Elder elder = getItem(position);
 	    String name = elder.getName();
-	    String photoUrl = elder.getPhotoUrl();
+	    String photoUrl = Url.URL_BASE+Url.URL_OBJECT_DOWNLOAD+"?file_url="+elder.getPhotoUrl();
 	    
 	    holder.elderInfoView.setText(name);
-	    holder.elderImageImage.setBackgroundResource(R.drawable.default_user);
-
+	    loadElderImage(photoUrl,holder.elderImageImage );
 	    return view;
 	}
 	
@@ -76,5 +88,9 @@ public class ElderAdapter extends BaseAdapter{
 	      ButterKnife.inject(this, view);
 	    }
 	  }
+	
+	private void loadElderImage(String photoUrl, ImageView view){
+		 ImageLoader.getInstance().displayImage(photoUrl, view, options);
+	}
 
 }

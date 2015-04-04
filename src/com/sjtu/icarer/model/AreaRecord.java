@@ -4,6 +4,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import com.google.gson.Gson;
+
 public class AreaRecord {
     private int areaId;
     private int staffId;
@@ -11,6 +16,7 @@ public class AreaRecord {
     private Date finishTime;
     
     public AreaRecord() {
+    	areaItem = new HashSet<AreaRecord.item>();
 	}
     
     public AreaRecord(int areaId, int staffId) {
@@ -59,13 +65,45 @@ public class AreaRecord {
 		areaItem.remove(new item(id, name));
 	}
 	
+	public boolean isEmpty(){
+		return areaItem.isEmpty();
+	}
+	
 	protected class item{
+		/*
+		 * equals and hashCode
+		 * see https://stackoverflow.com/questions/27581/what-issues-should-be-considered-when-overriding-equals-and-hashcode-in-java/27609#27609
+		 * */
     	int id;
         String name;
         public item(int id, String name) {
 			this.id = id;
 			this.name = name;
+			
 		}
+        @Override
+	    public boolean equals(Object obj){
+	    	if(!(obj instanceof item)) return false;
+	    	if(obj == this) return true;
+	    	item i = (item) obj;
+	    	return new EqualsBuilder()
+	    	    .append(id, i.id)
+	    	    .append(name, i.name)
+	    	    .isEquals();
+	    }
+        
+        @Override
+        public int hashCode(){
+        	return new HashCodeBuilder(17, 31)
+        	    .append(id)
+        	    .append(name)
+        	    .toHashCode();
+        }
+    }
+    @Override
+    public String toString(){
+    	Gson gson = new Gson();
+    	return gson.toJson(this);
     }
     
 }
