@@ -72,10 +72,14 @@ public class ElderItemData implements PersistableResource<ElderItem>{
             values.put("item_name", item.getCareItemName());
             values.put("period", item.getPeriod());
             values.put("notes", item.getNotes()); 
-            values.put("start_time", item.getStartTime().toString());
-            values.put("end_time", item.getEndTime().toString());
-            values.put("last_date", item.getLastDate().toString());
-            values.put("next_date", item.getNextDate().toString());        
+            String starttime = item.getStartTime()==null?null:item.getStartTime().toString();
+            String endtime = item.getEndTime()==null?null:item.getEndTime().toString();
+            String lastdate = item.getLastDate()==null?null:item.getLastDate().toString();
+            String nextdate = item.getNextDate()==null?null:item.getNextDate().toString();
+            values.put("start_time", starttime);
+            values.put("end_time", endtime);
+            values.put("last_date", lastdate);
+            values.put("next_date", nextdate);        
             
             db.replace("elder_item", null, values);
         }

@@ -3,6 +3,8 @@ package com.sjtu.icarer;
 
 import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
+import java.sql.Time;
+
 import javax.inject.Singleton;
 
 import retrofit.RestAdapter;
@@ -17,6 +19,8 @@ import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.authenticator.IcarerAuthenticatorActivity;
 import com.sjtu.icarer.authenticator.LogoutService;
 import com.sjtu.icarer.common.config.Url;
+import com.sjtu.icarer.core.utils.JsonIntDeserializer;
+import com.sjtu.icarer.core.utils.JsonTimeDeserializer;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PostFromAnyThreadBus;
 import com.sjtu.icarer.core.utils.PreferenceManager;
@@ -114,6 +118,8 @@ public class IcarerModule {
          */
         return new GsonBuilder().setFieldNamingPolicy(LOWER_CASE_WITH_UNDERSCORES)
         		.setDateFormat("yyyy-MM-dd")
+        		.registerTypeAdapter(Time.class, new JsonTimeDeserializer())
+        		.registerTypeAdapter(int.class, new JsonIntDeserializer())
         		.setPrettyPrinting()
 //        		.serializeNulls()
         		.create();
