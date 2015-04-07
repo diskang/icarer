@@ -79,9 +79,16 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "period INTEGER,"
             		+ "notes TEXT,"
             		+ "start_time TIME,"//start time in a single day
-            		+ "end_time TIME,"  //expire time in a single day
-            		+ "last_date DATE,"  //last record date
-            		+ "next_date DATE);");  //next plan date base on last_date & period);");
+            		+ "end_time TIME);");  //expire time in a single day
+            
+            db.execSQL("CREATE TABLE elder_item_record ("
+            		+ "carer_id INTEGER,"
+            		+ "elder_id INTEGER,"
+            		+ "item_id INTEGER,"//elder_item_id
+            		+ "item_name TEXT,"//elder_item_name
+            		+ "finish_time DATE,"
+            		+ "is_submit TEXT);");// a boolean value  
+            
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
@@ -95,6 +102,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS area_carer");
         db.execSQL("DROP TABLE IF EXISTS elder_item");
         db.execSQL("DROP TABLE IF EXISTS area_item");
+        db.execSQL("DROP TABLE IF EXISTS elder_item_record");
         onCreate(db);
     }
 }

@@ -24,6 +24,7 @@ import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.common.view.CircleButton;
 import com.sjtu.icarer.core.LoadAreaCarerTask;
 import com.sjtu.icarer.core.LoadAreaItemTask;
+import com.sjtu.icarer.core.PostAreaWorkRecord;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.events.RefreshCarerEvent;
@@ -41,18 +42,18 @@ public class AreaItemsFragment extends Fragment{
 	@Inject @Named("Auth")IcarerService icarerService;
 	@Inject protected Bus eventBus;
 	@InjectView(R.id.room_service_items)protected GridView areaItemsView;
-	@InjectView(R.id.room_confirm_submit)protected Button confirmButton;
+	@InjectView(R.id.items_submit)protected Button confirmButton;
 	
 	private AreaRecord areaRecords;
-	private Carer carer;
-	private int areaId;
+	private Carer currentCarer;
+//	private int areaId;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Injector.inject(this);
 		areaRecords = new AreaRecord();
-		areaId = preferenceManager.getAreaId();
+//		areaId = preferenceManager.getAreaId();
 		getAreaCarer();
 		getAreaItems();
 	}
@@ -111,20 +112,6 @@ public class AreaItemsFragment extends Fragment{
 			}
 		});
 		
-//		areaItemsView.setOnItemSelectedListener(new OnItemSelectedListener(){
-//
-//			@Override
-//			public void onItemSelected(AdapterView<?> parent, View view,
-//					int position, long id) {
-//				CircleButton cbCheckBox = (CircleButton)view.findViewById(R.id.cb_item_hint);
-//				cbCheckBox.setPressed(true);
-//			}
-//
-//			@Override
-//			public void onNothingSelected(AdapterView<?> parent) {
-//				Toaster.showShort(getActivity(), "nothing selected");
-//			}
-//		});
 	}
 	
 	private void getAreaCarer(){
@@ -134,8 +121,8 @@ public class AreaItemsFragment extends Fragment{
                 super.onSuccess(carers);
                 LogUtils.d("area carer fetched");
                 if(carers!=null&&!carers.isEmpty()){
-                	carer = carers.get(0);
-                	eventBus.post(new RefreshCarerEvent(carer));
+                	currentCarer = carers.get(0);
+                	eventBus.post(new RefreshCarerEvent(currentCarer));
                 }else{
                 	//TODO should do something
                 }
@@ -148,19 +135,38 @@ public class AreaItemsFragment extends Fragment{
     	}.start();
 	}
 	
-	@OnClick(R.id.room_confirm_submit)
+	@OnClick(R.id.items_submit)
 	public void submitAreaRecords(){
-//		long[] itemIds = areaItemsView.getCheckedItemIds();
-		Toaster.showShort(getActivity(), "button click");
-		Toaster.showShort(getActivity(), "button click");
-		if (carer!=null){
-			areaRecords.setStaffId(carer.getId());
-		}else{
-			Toaster.showShort(getActivity(), "don't have a carer !");
-			areaRecords.setStaffId(1);
+//		Toaster.showShort(getActivity(), "button click");
+		
+		if (currentCarer==null){
+			Toaster.showShort(getActivity(), "no carer!");
+			currentCarer = new Carer(1);
 		}
-		areaRecords.setAreaId(areaId);
-		icarerService.insertAreawork(areaRecords);
+		new PostAreaWorkRecord(getActivity(), icarerService, dbManager, preferenceManager, areaRecords, currentCarer){
+			@Override
+			protected void onSuccess(Boolean result){
+				super.onSuccess(result);
+				Toaster.showShort(getActivity(), "提交成功了哦!");
+			}
+			
+			@Override
+			protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                e.printStackTrace();  
+                Toaster.showShort(getActivity(), "出错了，哎呀!");
+            } 
+			@Override
+			protected void onFinally() throws RuntimeException{
+				super.onFinally();
+				for(int i=0;i<areaItemsView.getChildCount();++i){
+					View areaview = areaItemsView.getChildAt(i);
+					CircleButton cbCheckBox = (CircleButton)areaview.findViewById(R.id.cb_item_hint);
+					cbCheckBox.setChecked(false);
+				}
+				confirmButton.setEnabled(false);
+			}
+		}.start();
 	}
 	
 	@Override

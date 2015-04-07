@@ -1,21 +1,22 @@
-package com.sjtu.icarer.core.utils;
+package com.sjtu.icarer.model.utils;
 
 import java.lang.reflect.Type;
-import java.sql.Time;
+import java.sql.Date;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 
-public class JsonTimeDeserializer implements JsonDeserializer<Time>{
+public class JsonSqlDateDeserializer implements JsonDeserializer<Date>{
 
 	@Override
-	public Time deserialize(JsonElement json, Type T,
-			JsonDeserializationContext context) throws JsonParseException {
+	public Date deserialize(JsonElement json, Type T,
+			JsonDeserializationContext arg2) throws JsonParseException {
 		String s = json.getAsJsonPrimitive().getAsString();
 		try{
-			return Time.valueOf(s);
+			Date sqlDate = Date.valueOf(s);
+			return sqlDate;
 		}catch(Exception e){
 			return null;
 		}

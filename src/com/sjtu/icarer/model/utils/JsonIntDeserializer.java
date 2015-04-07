@@ -1,4 +1,4 @@
-package com.sjtu.icarer.core.utils;
+package com.sjtu.icarer.model.utils;
 
 import java.lang.reflect.Type;
 

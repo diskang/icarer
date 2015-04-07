@@ -1,13 +1,17 @@
 package com.sjtu.icarer.common.utils;
 
+import android.annotation.SuppressLint;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * TimeUtils
  * 
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2013-8-24
  */
+@SuppressLint("SimpleDateFormat")
 public class TimeUtils {
 
     public static final SimpleDateFormat DEFAULT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -16,6 +20,11 @@ public class TimeUtils {
 
     private TimeUtils() {
         throw new AssertionError();
+    }
+    
+ 
+	public static Date parse(String strDate, SimpleDateFormat dateFormat) throws ParseException{
+    	return StringUtils.isBlank(strDate)?null:dateFormat.parse(strDate);
     }
 
     /**

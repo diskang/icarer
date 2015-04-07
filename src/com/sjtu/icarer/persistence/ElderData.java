@@ -27,7 +27,6 @@ public class ElderData implements PersistableResource<Elder>{
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 //        builder.setTables("orgs JOIN users ON (orgs.id = users.id)");
         builder.setTables("elder");
-        builder.appendWhere("elder.area_id = "+areaId);
         return builder
                 .query(readableDatabase, new String[] { "elder.id",
                         "elder.name", "elder.username","elder.photo_url", "elder.area_id", "elder.care_level" },

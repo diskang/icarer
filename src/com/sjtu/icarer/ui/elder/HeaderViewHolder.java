@@ -9,11 +9,11 @@ import android.widget.TextView;
 /**
  * Simple view holder for a single text view.
  */
-class ItemSectionViewHolder extends RecyclerView.ViewHolder {
+class HeaderViewHolder extends RecyclerView.ViewHolder {
 
     private TextView mTextView;
 
-    ItemSectionViewHolder(View view) {
+    HeaderViewHolder(View view) {
         super(view);
 
         mTextView = (TextView) view.findViewById(R.id.items_head_text);

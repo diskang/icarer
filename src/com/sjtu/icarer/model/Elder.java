@@ -11,6 +11,13 @@ public class Elder extends User implements Serializable{
 	private int careLevel;
 	private int areaId;
 
+	public Elder(){
+	}
+	
+	public Elder(int id){
+		setId(id);
+	}
+	
 	public int getCareLevel() {
 		return careLevel;
 	}

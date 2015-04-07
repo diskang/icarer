@@ -7,14 +7,18 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import com.google.gson.Gson;
+
 
 public class ElderRecord {
     private int elderId;
     private int staffId;
     private Set<item> elderItem;
     private Date finishTime;
+    private boolean isSubmit;
     
     public ElderRecord() {
+    	elderItem = new HashSet<ElderRecord.item>();
 	}
     
     public ElderRecord(int elderId, int staffId) {
@@ -63,7 +67,11 @@ public class ElderRecord {
 		elderItem.remove(new item(id, name));
 	}
 	
-	protected class item{
+	public boolean isEmpty(){
+		return elderItem.isEmpty();
+	}
+	
+	public class item{
 		/*
 		 * equals and hashCode
 		 * see https://stackoverflow.com/questions/27581/what-issues-should-be-considered-when-overriding-equals-and-hashcode-in-java/27609#27609
@@ -74,6 +82,15 @@ public class ElderRecord {
 			this.id = id;
 			this.name = name;
 		}
+        
+        public int getId(){
+        	return id;
+        }
+        
+        
+        public String getName(){
+        	return name;
+        }
         
        @Override
 	    public boolean equals(Object obj){
@@ -94,5 +111,17 @@ public class ElderRecord {
         	    .toHashCode();
         }
     }
-    
+    @Override
+    public String toString(){
+    	Gson gson = new Gson();
+    	return gson.toJson(this);
+    }
+
+	public boolean isSubmit() {
+		return isSubmit;
+	}
+
+	public void setSubmit(boolean isSubmit) {
+		this.isSubmit = isSubmit;
+	}
 }

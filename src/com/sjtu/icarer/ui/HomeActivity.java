@@ -1,23 +1,17 @@
 package com.sjtu.icarer.ui;
 
-import java.util.List;
-
 import javax.inject.Inject;
 
-import android.accounts.OperationCanceledException;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import butterknife.OnLongClick;
 import butterknife.Optional;
 
@@ -26,18 +20,14 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.sjtu.icarer.FragmentCarer;
-import com.sjtu.icarer.FragmentElder;
-import com.sjtu.icarer.FragmentRoom;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.OpUtil;
 import com.sjtu.icarer.common.utils.view.Toaster;
-import com.sjtu.icarer.core.LoadAreaCarerTask;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.events.RefreshCarerEvent;
-import com.sjtu.icarer.events.SetupSubmitEvent;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerServiceProvider;
@@ -58,7 +48,6 @@ public class HomeActivity extends IcarerFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		ButterKnife.inject(this);
 		setContentView(R.layout.activity_home);
 		carerImageView = (ImageView)carerItemLayout.findViewById(R.id.iv_avatar);
 		carerTextView = (TextView)carerItemLayout.findViewById(R.id.tv_item_info);
@@ -75,15 +64,15 @@ public class HomeActivity extends IcarerFragmentActivity {
 		check_network();
 	}
 	
-	public void onRoomServiceClick(View view){
+	public void onElderServiceClick(View view){
 		if(current_fragment_type!=1){
-			addFragment(1);	
+			addFragment(1);
 		}
 	}
 	
-	public void onElderServiceClick(View view){
+	public void onRoomServiceClick(View view){
 		if(current_fragment_type!=2){
-			addFragment(2);
+			addFragment(2);	
 		}
 	}
 	
@@ -101,19 +90,20 @@ public class HomeActivity extends IcarerFragmentActivity {
 		switch(type){
 		
 		case 1:
-//			tag = FragmentRoom.class.getSimpleName();
-			tag = AreaItemsFragment.class.getSimpleName();
-			fr = getSupportFragmentManager().findFragmentByTag(tag);
-			if (fr == null) {
-				fr = new AreaItemsFragment();
-			}
-			break;
-		case 2:
 //			tag = FragmentElder.class.getSimpleName();
 			tag = ElderItemsFragment.class.getSimpleName();
 			fr = getSupportFragmentManager().findFragmentByTag(tag);
 			if (fr == null) {
 				fr = new ElderItemsFragment();
+			}
+			break;
+
+		case 2:
+//			tag = FragmentRoom.class.getSimpleName();
+			tag = AreaItemsFragment.class.getSimpleName();
+			fr = getSupportFragmentManager().findFragmentByTag(tag);
+			if (fr == null) {
+				fr = new AreaItemsFragment();
 			}
 			break;
 		default:
@@ -180,7 +170,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 		LogUtils.d("receive refreshcarerevent");
 		Carer carer = refreshCarerEvent.getCarer();
 		if (carer==null)return;
-		carerTextView.setText("���ջ�����"+carer.getName());
+		carerTextView.setText(carer.getName());
     	loadCarerImage(carer);
 	}
 	

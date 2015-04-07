@@ -18,19 +18,20 @@ package com.sjtu.icarer.ui.view;
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.FROYO;
 import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-
 import com.sjtu.icarer.R;
 
 
 /**
  * Progress dialog in Holo Light theme
  */
+
 public class LightProgressDialog extends ProgressDialog {
 
     /**
@@ -51,7 +52,9 @@ public class LightProgressDialog extends ProgressDialog {
      * @param message
      * @return dialog
      */
-    public static AlertDialog create(Context context, CharSequence message) {
+    @SuppressWarnings("deprecation")
+    @SuppressLint("InflateParams")
+	public static AlertDialog create(Context context, CharSequence message) {
         if (SDK_INT > FROYO) {
             ProgressDialog dialog;
             if (SDK_INT >= ICE_CREAM_SANDWICH)

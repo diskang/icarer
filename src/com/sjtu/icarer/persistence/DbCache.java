@@ -15,6 +15,7 @@
  */
 package com.sjtu.icarer.persistence;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -29,6 +30,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import com.sjtu.icarer.persistence.utils.DbHelper;
+import com.sjtu.icarer.persistence.utils.NormalResource;
 import com.sjtu.icarer.persistence.utils.PersistableResource;
 
 /**
@@ -41,7 +43,6 @@ public class DbCache {
 
     @Inject
     protected Provider<DbHelper> helperProvider;
-    
 
     /**
      * Get writable database
@@ -49,7 +50,7 @@ public class DbCache {
      * @param helper
      * @return writable database or null if it failed to create/open
      */
-    protected SQLiteDatabase getWritable(SQLiteOpenHelper helper) {
+    public SQLiteDatabase getWritable(SQLiteOpenHelper helper) {
         try {
             return helper.getWritableDatabase();
         } catch (SQLiteException e1) {
@@ -68,7 +69,7 @@ public class DbCache {
      * @param helper
      * @return readable database or null if it failed to create/open
      */
-    protected SQLiteDatabase getReadable(SQLiteOpenHelper helper) {
+    public SQLiteDatabase getReadable(SQLiteOpenHelper helper) {
         try {
             return helper.getReadableDatabase();
         } catch (SQLiteException e1) {
@@ -120,6 +121,47 @@ public class DbCache {
             helper.close();
         }
     }
+    /**
+     * load data by given parameters
+     *  provide more adaptability
+     * */
+    public <E> List<E> load(final NormalResource<E> normalResource,
+    		String table, String selection)throws IOException {
+    	SQLiteOpenHelper helper = helperProvider.get();
+        try {
+            List<E> items = loadFromDB(helper, normalResource,table, selection);
+            if (items != null) {
+                Log.d(TAG, "CACHE HIT: Found " + items.size() + " items for " + normalResource);
+            }else{
+            	items= new ArrayList<E>();
+            	Log.d(TAG,"CACHE : NOT FOUND" + " items for " + normalResource);
+            }
+            return items;
+        } finally {
+            helper.close();
+        }
+    }
+    /*
+     *  insert a single item
+     * */
+    public <E>void insert(final NormalResource<E> normalResource,E item){
+    	SQLiteOpenHelper helper = helperProvider.get();
+    	final SQLiteDatabase db = getWritable(helper);
+        if (db == null)
+            return ;
+       
+        db.beginTransaction();
+        try {
+        	   normalResource.insert(db, item);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        helper.close();
+    }
+    
+    /* TODO insert a list of items*/
+    
     
     /**
      * update given items in db's resources
@@ -130,8 +172,8 @@ public class DbCache {
      * @return updated resource
      * @throws IOException
      */
-    public <E> void update(PersistableResource<E> persistableResource,
-    		List<E> items) throws IOException {
+    public <E> void update(NormalResource<E> normalResource,String table, 
+    		ContentValues values, String selection) throws IOException {
     	SQLiteOpenHelper helper = helperProvider.get();
     	final SQLiteDatabase db = getWritable(helper);
         if (db == null)
@@ -139,13 +181,29 @@ public class DbCache {
 
         db.beginTransaction();
         try {
-            persistableResource.store(db, items);
+        	   normalResource.update(db, table, values, selection);
             db.setTransactionSuccessful();
         } finally {
             db.endTransaction();
         }
+        helper.close();
     }
     
+    public <E> void delete(NormalResource<E> normalResource,
+    		String table,String selection) throws IOException{
+    	SQLiteOpenHelper helper = helperProvider.get();
+    	final SQLiteDatabase db = getWritable(helper);
+        if (db == null)
+            return;
+        db.beginTransaction();
+        try {
+        	normalResource.delete(db, table, selection);
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        helper.close();
+    }
     
     private <E> List<E> requestAndStore(final SQLiteOpenHelper helper,
             final PersistableResource<E> persistableResource)
@@ -166,6 +224,7 @@ public class DbCache {
         return items;
     }
 
+    
     private <E> List<E> loadFromDB(final SQLiteOpenHelper helper,
             final PersistableResource<E> persistableResource) {
         final SQLiteDatabase db = getReadable(helper);
@@ -180,6 +239,27 @@ public class DbCache {
             List<E> cached = new ArrayList<E>();
             do
                 cached.add(persistableResource.loadFrom(cursor));
+            while (cursor.moveToNext());
+            return cached;
+        } finally {
+            cursor.close();
+        }
+    }
+    
+    private <E> List<E> loadFromDB(final SQLiteOpenHelper helper,
+            final NormalResource<E> normalResource,String table, String selection) {
+    	
+        final SQLiteDatabase db = getReadable(helper);
+        if (db == null)
+            return null;
+
+        Cursor cursor = normalResource.getCursor(db, table, selection);
+        try {
+            if (!cursor.moveToFirst())
+                return null;
+            List<E> cached = new ArrayList<E>();
+            do
+                cached.add(normalResource.loadFrom(cursor));
             while (cursor.moveToNext());
             return cached;
         } finally {

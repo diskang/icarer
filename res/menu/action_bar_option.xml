@@ -16,19 +16,33 @@
         android:title="@string/label_refresh"
         android:icon="@drawable/actionbar_spinner"
         app:showAsAction="ifRoom">
-        <!-- menu>  
-            <item  
-                android:id="@+id/menu_theme"  
-                
-                android:showAsAction="always|withText"  
-                android:title="更换主题"/>  
-            <item  
-                android:id="@+id/menu_system"  
-                
-                android:showAsAction="always|withText"  
-                android:title="系统设置"/>  
-        </menu-->      
+           
     </item>
+    <item
+        android:id="@+id/goto_clear"
+        android:orderInCategory="1"
+        android:title="@string/label_clear"
+        android:icon="@drawable/ic_launcher"
+        app:showAsAction="never" >
+        <menu>  
+            <item  
+                android:id="@+id/goto_clear_elders"  
+                android:title="@string/label_clear_elders"
+                android:showAsAction="ifRoom|withText"  
+                app:showAsAction="never"/>  
+            <item  
+                android:id="@+id/goto_clear_elder_items"  
+                android:title="@string/label_clear_elder_items"
+                android:showAsAction="ifRoom|withText"  
+                app:showAsAction="never"/>  
+            <item  
+                android:id="@+id/goto_clear_elder_records"  
+                android:title="@string/label_clear_elder_records"
+                android:showAsAction="ifRoom|withText"  
+                app:showAsAction="never"/>  
+        </menu>           
+    </item>
+
 	<item
         android:id="@+id/goto_logout"
         android:orderInCategory="1"

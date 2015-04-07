@@ -14,6 +14,12 @@ public class Carer extends User implements Serializable{
 	private int areaId;
 	private Date workDate;
 
+	public Carer(){
+	}
+	
+	public Carer(int id){
+		setId(id);
+	}
 	public Date getWorkDate() {
 		return workDate;
 	}

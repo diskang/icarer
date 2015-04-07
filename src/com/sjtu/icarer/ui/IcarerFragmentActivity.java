@@ -21,7 +21,7 @@ import com.squareup.otto.Bus;
  * Base class for all  icarer Activities that need ActionBar.
  */
 public abstract class IcarerFragmentActivity extends ActionBarActivity {
-	@InjectView(R.id.toolbar) protected Toolbar toolbar;
+    @InjectView(R.id.toolbar) protected Toolbar toolbar;
     @Inject protected Bus eventBus;
 
     @Override
@@ -36,9 +36,9 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
 
         ButterKnife.inject(this);
         toolbar.setLogo(R.drawable.ic_launcher);
-		toolbar.setTitle(" -HOUSECARE- ");
-		toolbar.setSubtitle("  沪上专业养老机构");
-		setSupportActionBar(toolbar);
+        toolbar.setTitle(" -HOUSECARE- ");
+        toolbar.setSubtitle("  沪上专业养老机构");
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -77,6 +77,12 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
         		Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
         		sendBroadcast(intent);
 	        	break;
+        	case R.id.goto_clear_elders:
+	        	break;
+        	case R.id.goto_clear_elder_items:
+        		break;
+        	case R.id.goto_clear_elder_records:
+        		break;
         	case R.id.goto_logout:
         		break;//TODO
         	case R.id.goto_quit:

@@ -1,14 +1,13 @@
 package com.sjtu.icarer.ui.elder;
 
+import java.util.List;
+
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.view.superslim.GridSLM;
@@ -18,17 +17,15 @@ import com.sjtu.icarer.model.ElderItem;
 /**
  *
  */
-public class ElderItemsAdapter extends RecyclerView.Adapter<ItemSectionViewHolder> {
+public class ElderItemsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private static final int VIEW_TYPE_HEADER = 0x01;
 
     private static final int VIEW_TYPE_CONTENT = 0x00;
 
     private static final int LINEAR = 0;
-     
-    private final List<ElderItem> elderItems;
     
-    private final List<ElderItemSection> mItems;
+    private final List<HeaderOrItemSection> mItems;
 
     private int mHeaderDisplay;
 
@@ -36,9 +33,10 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ItemSectionViewHolde
 
     private final Context mContext;
 
+    private OnElderItemClickListener onElderItemClickListener;
+    
     public ElderItemsAdapter(Context context, int headerMode, List<ElderItem> elderItems) {
         mContext = context;
-        this.elderItems = elderItems;
         //final String[] countryNames = context.getResources().getStringArray(R.array.country_names);
         mHeaderDisplay = headerMode;
 
@@ -53,25 +51,38 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ItemSectionViewHolde
         return mItems.get(position).text;
     }
 
+    public List<HeaderOrItemSection> getHeaderOrItems(){
+    	return mItems;
+    }
+    
     @Override
-    public ItemSectionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         if (viewType == VIEW_TYPE_HEADER) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.elderitems_section_header, parent, false);
+            
+            return new HeaderViewHolder(view);
         } else {
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.text_line_item, parent, false);
+                    .inflate(R.layout.item_item, parent, false);
+            
+            return new ElderItemViewHolder(view,onElderItemClickListener);
         }
-        return new ItemSectionViewHolder(view);
+        
     }
 
     @Override
-    public void onBindViewHolder(ItemSectionViewHolder holder, int position) {
-        final ElderItemSection item = mItems.get(position);
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        final HeaderOrItemSection item = mItems.get(position);
         final View itemView = holder.itemView;
 
-        holder.bindItem(item.text);
+        if(item.isHeader){
+        	((HeaderViewHolder)holder).bindItem(item.text);
+        	
+        }else{
+        	((ElderItemViewHolder)holder).bindItem(item.elderItem);
+        }
 
         final GridSLM.LayoutParams lp = new GridSLM.LayoutParams(
                 itemView.getLayoutParams());
@@ -102,6 +113,20 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ItemSectionViewHolde
     public int getItemCount() {
         return mItems.size();
     }
+    
+    @Override
+    public long getItemId(int position){
+    	HeaderOrItemSection section= mItems.get(position);
+    	if(section.isHeader){
+    		return position;
+    	}else{
+    		return section.elderItem.getId();
+    	}
+    }
+    
+    public void setElderItemClickListener(OnElderItemClickListener listener){
+    	this.onElderItemClickListener = listener;
+    };
 
     public void setHeaderDisplay(int headerDisplay) {
         mHeaderDisplay = headerDisplay;
@@ -115,7 +140,7 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ItemSectionViewHolde
 
     private void notifyHeaderChanges() {
         for (int i = 0; i < mItems.size(); i++) {
-            ElderItemSection item = mItems.get(i);
+            HeaderOrItemSection item = mItems.get(i);
             if (item.isHeader) {
                 notifyItemChanged(i);
             }

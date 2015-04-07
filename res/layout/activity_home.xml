@@ -67,30 +67,35 @@
                 android:textColor="@color/white"/>
         </RelativeLayout>
 		<View style="@style/Separator" /-->
+		<Button
+            android:id="@+id/btn_elder_service"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="3dp"
+            android:drawableLeft="@drawable/btn_elder_item"
+            android:drawableStart="@drawable/btn_elder_item"
+            android:layout_weight="11"
+            android:onClick="onElderServiceClick"
+            android:background="@drawable/tab_selector_left"
+            android:textSize="35sp"
+            android:textColor="@color/text_light"
+            android:text="老人服务"/>
+        <View style="@style/Separator" />
         <Button
             android:id="@+id/btn_room_service"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="3dp"
-            android:background="@drawable/section_selector"
+            android:drawableLeft="@drawable/btn_area_item"
+            android:drawableStart="@drawable/btn_area_item"
+            android:background="@drawable/tab_selector_left"
             android:layout_weight="11"
             android:onClick="onRoomServiceClick"
-            android:textSize="40sp"
-            android:textColor="@color/black"
+            android:textSize="35sp"
+            android:textColor="@color/text_light"
             android:text="房间服务"/>
         <View style="@style/Separator" />
-        <Button
-            android:id="@+id/btn_elder_service"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="3dp"
-            android:layout_weight="11"
-            android:onClick="onElderServiceClick"
-            android:background="@drawable/tab_selector_left"
-            android:textSize="40sp"
-            android:textColor="@color/black"
-            android:text="老人服务"/>
-        <View style="@style/Separator" />
+        
         <Button
             android:id="@+id/btn_carer_settings"
             android:layout_width="match_parent"
@@ -100,8 +105,8 @@
             android:onClick="onCarerServiceClick"
             android:background="@drawable/tab_selector_left_right"
             android:gravity="center"
-            android:textSize="40sp"
-            android:textColor="@color/black"
+            android:textSize="35sp"
+            android:textColor="@color/text_light"
             android:text="设定"/>
         <View style="@style/Separator" />
         <TextView 
@@ -111,7 +116,7 @@
             android:gravity="center"
             android:layout_weight="11"
             android:textSize="30sp"
-            android:textColor="@color/orange"
+            android:textColor="@color/text_light"
             android:background="@drawable/tab_selector_left_right"
             />
     </LinearLayout>

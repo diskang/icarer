@@ -13,7 +13,7 @@ import static com.sjtu.icarer.common.utils.TimeUtils.TIME_FORMAT;
 public class ItemGrouping {
 	
 	private final List<ElderItem> elderItems;
-	private List<ElderItemSection> itemSections = new ArrayList<ElderItemSection>();
+	private List<HeaderOrItemSection> itemSections = new ArrayList<HeaderOrItemSection>();
 	private final String currentTime;
 	
 	private List<ElderItem> overdueItems= new ArrayList<ElderItem>();//sort by end time
@@ -31,7 +31,7 @@ public class ItemGrouping {
     	collect();
     }
     
-    public List<ElderItemSection> getItemSectionList(){
+    public List<HeaderOrItemSection> getItemSectionList(){
     	return itemSections;
     }
     
@@ -61,10 +61,11 @@ public class ItemGrouping {
     }
     
     private void addToSection(List<ElderItem> items,String header){
+    	if(items==null||items.size()==0)return;
     	int headerPosition = itemSections.size();
-    	itemSections.add(new ElderItemSection(header,true,1,headerPosition));
+    	itemSections.add(new HeaderOrItemSection(header,1,headerPosition));
     	for(ElderItem item : items){
-    		itemSections.add(new ElderItemSection(item.getCareItemName(),false,1,headerPosition));
+    		itemSections.add(new HeaderOrItemSection(item,1,headerPosition));
     	}
     }
     /*
