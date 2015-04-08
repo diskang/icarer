@@ -117,16 +117,16 @@ public class AreaItemsFragment extends Fragment{
 	private void getAreaCarer(){
 		new LoadAreaCarerTask(getActivity(),dbManager,false){
     		@Override
-            protected void onSuccess(List<Carer> carers) throws Exception {
-                super.onSuccess(carers);
-                LogUtils.d("area carer fetched");
-                if(carers!=null&&!carers.isEmpty()){
-                	currentCarer = carers.get(0);
-                	eventBus.post(new RefreshCarerEvent(currentCarer));
-                }else{
-                	//TODO should do something
-                }
-            }
+         protected void onSuccess(List<Carer> carers) throws Exception {
+             super.onSuccess(carers);
+             LogUtils.d("area carer fetched");
+             try{
+                currentCarer = carers.get(0);
+             }catch(Exception e){
+                currentCarer=null;
+                  }
+             eventBus.post(new RefreshCarerEvent(currentCarer));
+             }
     		@Override
     		protected void onException(final Exception e) throws RuntimeException {
                 super.onException(e);
@@ -136,13 +136,12 @@ public class AreaItemsFragment extends Fragment{
 	}
 	
 	@OnClick(R.id.items_submit)
-	public void submitAreaRecords(){
+    public void submitAreaRecords(){
 //		Toaster.showShort(getActivity(), "button click");
-		
-		if (currentCarer==null){
-			Toaster.showShort(getActivity(), "no carer!");
-			currentCarer = new Carer(1);
-		}
+        if (currentCarer==null){
+            Toaster.showShort(getActivity(), "no carer!");
+            currentCarer = new Carer(1);
+            }
 		new PostAreaWorkRecord(getActivity(), icarerService, dbManager, preferenceManager, areaRecords, currentCarer){
 			@Override
 			protected void onSuccess(Boolean result){

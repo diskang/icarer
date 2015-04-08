@@ -25,7 +25,7 @@ public class PostElderWorkRecord extends ProgressDialogTask<Boolean>{
 			ElderRecord elderRecords,Carer carer, Elder elder) {
 		super(activity);
 		int carerId = carer.getId();
-		int elderId = elder.getId();
+		int elderId = elder.getElderId();
 		this.elderRecords =  elderRecords;
 		this.elderRecords.setElderId(elderId);
 		this.elderRecords.setStaffId(carerId);

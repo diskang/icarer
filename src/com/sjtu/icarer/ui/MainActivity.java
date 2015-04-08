@@ -48,7 +48,7 @@ public class MainActivity extends IcarerFragmentActivity {
         Injector.inject(this);
         // Set up navigation drawer
         areaId = preferenceProvider.getAreaId();
-
+        
         checkAuth();
 
     }
@@ -78,6 +78,7 @@ public class MainActivity extends IcarerFragmentActivity {
         if (userHasAuthenticated) {
             LogUtils.d("userHasAuthenticated");
             final Intent i;
+            
             if(areaId.equals(0)){
             	i = new Intent(this, SetupActivity.class); 
             }else{
@@ -113,6 +114,7 @@ public class MainActivity extends IcarerFragmentActivity {
             protected void onSuccess(final Boolean hasAuthenticated) throws Exception {
                 super.onSuccess(hasAuthenticated);
                 userHasAuthenticated = true;
+                startService(new Intent("com.sjtu.icarer.thread.AUTORUN"));
                 initScreen();
             }
         }.execute();

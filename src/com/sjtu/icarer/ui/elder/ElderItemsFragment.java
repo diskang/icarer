@@ -21,17 +21,16 @@ import butterknife.OnClick;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.common.view.CircleButton;
 import com.sjtu.icarer.common.view.superslim.LayoutManager;
 import com.sjtu.icarer.core.LoadElderCarerTask;
 import com.sjtu.icarer.core.LoadElderItemTask;
 import com.sjtu.icarer.core.LoadElderTask;
-import com.sjtu.icarer.core.PostAreaWorkRecord;
 import com.sjtu.icarer.core.PostElderWorkRecord;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.events.RefreshCarerEvent;
+import com.sjtu.icarer.events.RefreshScreenEvent;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.model.ElderItem;
@@ -39,6 +38,7 @@ import com.sjtu.icarer.model.ElderRecord;
 import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerService;
 import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 public class ElderItemsFragment extends Fragment{
 	
@@ -106,8 +106,7 @@ public class ElderItemsFragment extends Fragment{
             protected void onSuccess(List<Elder> elders) throws Exception {
                 super.onSuccess(elders);
                 inflateEldersView(elders);
-
-                initByClickingElder(0);
+                refreshByClickingElder(0);// potential problem: if the elder view has blocked, cannot refresh
             }
 			@Override
     		protected void onException(final Exception e) throws RuntimeException {
@@ -118,7 +117,7 @@ public class ElderItemsFragment extends Fragment{
 	}
 	
 	private void getElderItems(Elder elder){
-		new LoadElderItemTask(getActivity(),dbManager, elder, false){
+		new LoadElderItemTask(getActivity(),dbManager, elder){
 			@Override
             protected void onSuccess(List<ElderItem> elderItems) throws Exception {
                 super.onSuccess(elderItems);
@@ -138,9 +137,6 @@ public class ElderItemsFragment extends Fragment{
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				//TODO   error! item click twice , appearance wrong
-				if(currentElderId==id){
-					return;
-				}
 				currentElderId=(int) id;
 				currentElderPosition = position;
 				for(int i=0,len = elders.size();i<len;i++){// single choice maintenance
@@ -148,11 +144,10 @@ public class ElderItemsFragment extends Fragment{
 					CircleButton cbCheckBox = (CircleButton)elderView.findViewById(R.id.cb_elder_hint);
 					cbCheckBox.setChecked(i==position);
 				}
-				getElderCarer(elders.get(position));
 				getElderItems(elders.get(position));
-//				Toaster.showShort(getActivity(), "checkPosition:"+checkPosition);
+				getElderCarer(elders.get(position));
 			}
-		});
+		});      
 	}
 	private void inflateElderItemsView(final List<ElderItem> items){
 		
@@ -188,6 +183,15 @@ public class ElderItemsFragment extends Fragment{
 					}
 				}
 			}
+
+			@Override
+			public void onElderItemLongClick(View view, int position) {
+				HeaderOrItemSection item = headerOrItems.get(position);
+				if(item.isHeader)return;
+				ElderItem elderItem = item.elderItem;
+				if (elderItem==null)return;
+				Toaster.showShort(getActivity(), elderItem.toString());
+			}
         	
         });
         mViews.setAdapter(mAdapter);
@@ -198,13 +202,13 @@ public class ElderItemsFragment extends Fragment{
     		@Override
             protected void onSuccess(List<Carer> carers) throws Exception {
                 super.onSuccess(carers);
-                if(carers!=null&&!carers.isEmpty()){
-                	LogUtils.d(elder.getName()+"'s carer is"+carers.get(0).getName());
-                	currentCarer = carers.get(0);
-                	eventBus.post(new RefreshCarerEvent(currentCarer));
-                }else{
-                	LogUtils.d(elder.getName()+"'s carer is null");
-                }
+                try{
+                    currentCarer = carers.get(0);
+                 }catch(Exception e){
+                    currentCarer=null;
+                      }
+                 eventBus.post(new RefreshCarerEvent(currentCarer));
+                 
             }
     		@Override
     		protected void onException(final Exception e) throws RuntimeException {
@@ -214,7 +218,7 @@ public class ElderItemsFragment extends Fragment{
     	}.start();
 	}
 	
-	private void initByClickingElder(final int position){
+	private void refreshByClickingElder(final int position){
 		
 		lvEldersView.postDelayed(new Runnable(){
 
@@ -229,8 +233,14 @@ public class ElderItemsFragment extends Fragment{
             		position,
             		lvEldersView.getAdapter().getItemId(position));
 			}
-		}, 200);
+		}, 300);
 	}
+	
+	@Subscribe
+	public void refreshScreen(RefreshScreenEvent event){
+		refreshByClickingElder(currentElderPosition);
+	}
+	
 	@OnClick(R.id.items_submit)
 	public void submitElderRecords(){
 		if (currentCarer==null){
@@ -249,8 +259,6 @@ public class ElderItemsFragment extends Fragment{
 			protected void onSuccess(Boolean result) throws IOException{
 				super.onSuccess(result);
 				Toaster.showShort(getActivity(), "upload successful!");
-				// refresh the elder's item view
-				initByClickingElder(currentElderPosition);
 			}
 			
 			@Override
@@ -258,6 +266,13 @@ public class ElderItemsFragment extends Fragment{
                 super.onException(e);
                 e.printStackTrace();  
             } 
+			@Override
+			protected void onFinally()throws RuntimeException{
+				super.onFinally();
+				confirmButton.setEnabled(false);
+				// refresh the elder's item view
+				refreshByClickingElder(currentElderPosition);
+			}
 		}.start();
 	}
 	@Override

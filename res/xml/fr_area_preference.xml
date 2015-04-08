@@ -13,13 +13,13 @@
 	        android:title="楼层选择" 
 	        android:entries="@array/None" 
 	        android:entryValues="@array/None"
-	        android:dependency="building_setting"/>
+	        />
 	    <ListPreference 
 	        android:key="room_setting"
 	        android:title="房间选择"
 	        android:entries="@array/None" 
 	        android:entryValues="@array/None"
-	        android:dependency="floor_setting"/>
+	        />
 
     </PreferenceCategory>
 

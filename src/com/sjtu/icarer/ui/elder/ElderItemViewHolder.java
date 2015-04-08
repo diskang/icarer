@@ -1,18 +1,14 @@
 package com.sjtu.icarer.ui.elder;
 
-import com.sjtu.icarer.R;
-import com.sjtu.icarer.common.config.Mapping;
-import com.sjtu.icarer.common.view.CircleButton;
-import com.sjtu.icarer.model.ElderItem;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.sjtu.icarer.R;
+import com.sjtu.icarer.common.config.Mapping;
+import com.sjtu.icarer.model.ElderItem;
 
 public class ElderItemViewHolder extends RecyclerView.ViewHolder implements OnClickListener{
 	 private TextView itemInfoView;
@@ -35,6 +31,12 @@ public class ElderItemViewHolder extends RecyclerView.ViewHolder implements OnCl
 		        Mapping.icons.get(icon):R.drawable.default_user;
 		itemInfoView.setText(name);
 		itemIconImage.setBackgroundResource(resId);
+//		String imageUrl = "drawable://"+resId;
+//		DisplayImageOptions options = new DisplayImageOptions.Builder()
+//        .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+//        .displayer(new RoundedBitmapDisplayer(2000))
+//        .build();
+//		ImageLoader.getInstance().displayImage(imageUrl, itemIconImage, options);
     }
 	
 	@Override

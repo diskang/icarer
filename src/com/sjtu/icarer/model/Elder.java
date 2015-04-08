@@ -5,9 +5,12 @@ import java.io.Serializable;
 
 public class Elder extends User implements Serializable{
 	/**
-	 * 
+	 * NOTE: 
+	 *       id:      user_id
+	 *    elder_id:   elder_id
 	 */
 	private static final long serialVersionUID = -737490097890850021L;
+	private int elderId;
 	private int careLevel;
 	private int areaId;
 
@@ -16,6 +19,14 @@ public class Elder extends User implements Serializable{
 	
 	public Elder(int id){
 		setId(id);
+	}
+	
+	public int getElderId() {
+		return elderId;
+	}
+
+	public void setElderId(int elderId) {
+		this.elderId = elderId;
 	}
 	
 	public int getCareLevel() {

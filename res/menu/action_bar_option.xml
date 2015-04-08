@@ -19,6 +19,13 @@
            
     </item>
     <item
+        android:id="@+id/goto_crash"
+        android:title="@string/label_refresh"
+        android:icon="@drawable/ic_launcher"
+        app:showAsAction="ifRoom">
+           
+    </item>
+    <item
         android:id="@+id/goto_clear"
         android:orderInCategory="1"
         android:title="@string/label_clear"

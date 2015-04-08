@@ -38,8 +38,7 @@ public class SetupActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState); 
         Injector.inject(this);
         
-        if(hasHeaders()){  //如有header，则在最下面加一个button。本例无论平板还是phone，都返回true  
-        	//第一个参数为xml文件中view的id，第二个参数为此view的父组件，可以为null，android会自动寻找它是否拥有父组件  
+        if(hasHeaders()){
         	@SuppressLint("InflateParams")
         	LinearLayout view = (LinearLayout)layoutInflater.inflate(R.layout.view_setup_bottom, null);
             setListFooter(view);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     

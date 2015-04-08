@@ -21,7 +21,6 @@ import android.preference.PreferenceScreen;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.core.utils.Named;
@@ -32,13 +31,13 @@ import com.sjtu.icarer.events.SetupSubmitEvent;
 import com.sjtu.icarer.events.TaskCancelEvent;
 import com.sjtu.icarer.model.Area;
 import com.sjtu.icarer.service.IcarerService;
-import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.HomeActivity;
-import com.sjtu.icarer.ui.login.LoginActivity;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 public class AreaPreferenceFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener{
+	
+	private static final String AREA_FULL_NAME_KEY = "areaFullNames";
 	@Inject protected Bus eventBus;
 	@Inject protected PreferenceManager preferenceProvider;
 //	@Inject protected AccountDataProvider accountDataProvider;
@@ -46,6 +45,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
 	@Inject @Named("Auth") protected IcarerService icarerService;
 	private boolean areaIdChanged = false;
 	private int areaId;
+	private String areaFullName;
 	private ListPreference building_lp;
 	private ListPreference floor_lp;
 	private ListPreference room_lp;
@@ -113,15 +113,15 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     
     @Override
 	public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
-		String key=preference.getKey();
+//		String key=preference.getKey();
 //		if(key.equals("download")){
 //			PackageUpdateThread mPackageUpdateThread = new PackageUpdateThread(this);  
 //			mPackageUpdateThread.checkUpdateInfo();
-//		}
-		if(key.equals("building_setting")){
-    	}else if(key.equals("floor_setting")){
-    	}else if(key.equals("room_setting")){	
-    	}
+////		}
+//		if(key.equals("building_setting")){
+//    	}else if(key.equals("floor_setting")){
+//    	}else if(key.equals("room_setting")){	
+//    	}
 		return super.onPreferenceTreeClick(preferenceScreen, preference);
 	}
     
@@ -137,19 +137,28 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     		int floorId = Integer.parseInt(floor_lp.getValue());
     		getAreas(3, floorId,room_lp);
     	}else if(key.equals("room_setting")){
+    		areaIdChanged = true;
     		eventBus.post(new AreaUndoEvent(ROOM_CHANGED));
     		areaId = Integer.parseInt(room_lp.getValue());
-    		areaIdChanged = true;
+    		areaFullName = getAreaFullName(room_lp);
     	}
     }
     
-    
+    private String getAreaFullName(ListPreference lp){
+    	try{
+    	    Bundle bundle = room_lp.peekExtras();
+    	    CharSequence[] areaFullNames = bundle.getCharSequenceArray(AREA_FULL_NAME_KEY);
+		    int location = lp.findIndexOfValue(lp.getValue());
+		    return (String) areaFullNames[location];
+    	}catch(Exception e){
+    		return null;
+    	}	
+    }
     private void getAreas(final int level ,final int parentId,final ListPreference lp){
     	areaTask = new SafeAsyncTask<List<Area>>() {
 
 			@Override
 			public List<Area> call() throws Exception {
-				//IcarerService icarerService = icarerServiceProvider.getService(getActivity());
 				List<Area> areas = icarerService.getAreas(level, parentId);
 				return areas;
 			}
@@ -159,9 +168,9 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
                 if (e instanceof OperationCanceledException) {
                     // User cancelled the authentication process (back button, etc).
                     // Since auth could not take place, lets finish this activity.
-                	ToastUtils.show(getActivity(), "«Î«Û»°œ˚");
+                	ToastUtils.show(getActivity(), "request canceled");
                 }else{
-                	ToastUtils.show(getActivity(), "Œﬁ∑®ªÒ»° ˝æ›");
+                	ToastUtils.show(getActivity(), "cannot get data");
                 }
             }
 			 @Override
@@ -189,14 +198,14 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     @Subscribe
     public void onSetupSubmit(SetupSubmitEvent event){
     	if(areaIdChanged){
-    		preferenceProvider.setAreaFullName(null);
+    		preferenceProvider.setAreaFullName(areaFullName);
         	preferenceProvider.setAreaId(areaId);
     	}else{
     		if(areaId==0){
-    			ToastUtils.show(getActivity(), "…Ë∂®Œ¥ÕÍ≥…");
+    			ToastUtils.show(getActivity(), "ËÆæÂÆöÊú™ÂÆåÊàê");
     			return;
     		}else{
-    			ToastUtils.show(getActivity(), "–≈œ¢Œﬁ–ﬁ∏ƒ");
+    			ToastUtils.show(getActivity(), "‰ø°ÊÅØÊú™‰øÆÊîπ");
     		}
     	}
     	final Intent i = new Intent(getActivity(), HomeActivity.class);
@@ -211,21 +220,26 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
         int size = areas.size();
         String[] areaNames = new String[size];
         String[] areaIds = new String[size];
-        //String[] areaFullNames = new String[size];
+        String[] areaFullNames = new String[size];
         
         for(int i=0;i<size;i++){
         	areaNames[i] = areas.get(i).getName();
         	areaIds[i] = areas.get(i).getId()+"";
+        	areaFullNames[i] = areas.get(i).getFullName();
         }
         lp.setEntries(areaNames);
         lp.setEntryValues(areaIds);
+        Bundle bundle = lp.getExtras();
+        bundle.putCharSequenceArray(AREA_FULL_NAME_KEY,areaFullNames);
     }
     
     private void clearListPreference(ListPreference lp){
     	lp.setSummary(null);
-    	lp.setDefaultValue(null);
     	lp.setEntries(new String[0]);
     	lp.setEntryValues(new String[0]);
+//    	lp.setKey(null);
+    	lp.setDefaultValue(null);
+    	
     }
     /**
      * Hide progress dialog

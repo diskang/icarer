@@ -26,7 +26,7 @@ public class ElderItemData extends NormalResource<ElderItem>{
 	//initialize to get an elder's items
 	public ElderItemData(IcarerService icarerService, Elder elder) {
 		this.icarerService = icarerService;
-		elderId = elder.getId();
+		elderId = elder.getElderId();
 	}
 	
 	@Override

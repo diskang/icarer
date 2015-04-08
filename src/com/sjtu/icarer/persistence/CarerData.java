@@ -50,7 +50,7 @@ public class CarerData implements PersistableResource<Carer>{
         String workToday = "work_date ="+TimeUtils.getCurrentTimeInString(DATE_FORMAT_DATE);
         builder.appendWhere(workToday);
         if(elder!=null){
-        	builder.appendWhere(" AND elder_id="+elder.getId());
+        	builder.appendWhere(" AND elder_id="+elder.getElderId());
         }else if(areaId!=0){
         	builder.appendWhere(" AND area_id="+areaId);
         }
@@ -100,12 +100,12 @@ public class CarerData implements PersistableResource<Carer>{
 	public List<Carer> request() throws IOException {
 		
 		if(elder!=null){
-			carers.addAll(icarerService.getCurrentElderCarers(elder.getId()));
+			carers.addAll(icarerService.getCurrentElderCarers(elder.getElderId()));
 		}else if(areaId!=0){
 			carers.addAll(icarerService.getCurrentAreaCarers(areaId));
 		}else if(elders!=null){//has problems, missing elder info in carers' list
 			for(Elder elder:elders){
-				carers.addAll(icarerService.getCurrentElderCarers(elder.getId()));
+				carers.addAll(icarerService.getCurrentElderCarers(elder.getElderId()));
 			}
 		}
 		return carers;

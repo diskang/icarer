@@ -53,10 +53,8 @@ public class UpdateService extends Service{
 	}
 	
     private void setAlarm(Context context,String actionString,int hour,int minute,int requestCode){
-		//¥¥Ω®Intent∂‘œÛ£¨action÷∏œÚπ„≤•Ω” ’¿‡
 		Intent intent = new Intent(actionString);
-        // intent.putExtra("msg","haha");
-        //¥¥Ω®PendingIntent∂‘œÛ∑‚◊∞Intent£¨”…”⁄ « π”√π„≤•£¨◊¢“‚ π”√getBroadcast∑Ω∑®
+    
         PendingIntent pi = PendingIntent.getBroadcast(context,requestCode,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		Calendar calendar = Calendar.getInstance();
@@ -64,10 +62,9 @@ public class UpdateService extends Service{
 		calendar.set(Calendar.MINUTE, minute);
 		calendar.set(Calendar.SECOND, 0); 
 //      really necessary??
-//		if(calendar.getTimeInMillis()<System.currentTimeMillis()){//»Áπ˚ ±º‰“—π˝£¨º”“ªÃÏ
+//		if(calendar.getTimeInMillis()<System.currentTimeMillis()){//ÔøΩÔøΩÔøΩ ±ÔøΩÔøΩÔøΩ—πÔøΩÔøΩÔøΩÔøΩÔøΩ“ªÔøΩÔøΩ
 //			calendar.add(Calendar.DAY_OF_YEAR, 1);
 //		}			
-		//…Ë÷√ƒ÷÷”¥”÷∏∂® ±º‰ø™ º£¨√ø∏Ù“ªÃÏ÷¥––“ª¥ŒPendingIntent∂‘œÛ£¨◊¢“‚µ⁄“ª∏ˆ≤Œ ˝”Îµ⁄∂˛∏ˆ≤Œ ˝µƒπÿœµ
 		AlarmManager mAlarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 		mAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
 				calendar.getTimeInMillis(),

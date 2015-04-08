@@ -10,11 +10,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -25,6 +23,8 @@ import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.sjtu.icarer.common.utils.TimeUtils;
 
 /**
  * Singleton helper: install a default unhandled exception handler which shows
@@ -38,20 +38,15 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static final String TAG = "CrashHandler";
     private Context mContext; 
     private Thread.UncaughtExceptionHandler mDefaultHandler;      
-    //CrashHandler实例      
+    //CrashHandler instance    
     private static CrashHandler instance;  
          
-    //用来存储设备信息和异常信息      
+    //store device's info and exception info   
     private Map<String, String> infos = new HashMap<String, String>();      
-      
-    //用于格式化日期,作为日志文件名的一部分      
-    @SuppressLint("SimpleDateFormat")
-	private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");      
-      
-    /** 保证只有一个CrashHandler实例 */      
+            
     private CrashHandler() {}      
       
-    /** 获取CrashHandler实例 ,单例模式 */      
+    /** get single instance */      
     public static CrashHandler getInstance() {      
         if(instance == null)  
             instance = new CrashHandler();     
@@ -59,23 +54,23 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }      
     
     /**   
-     * 初始化   
+     *    initialize
      */      
     public void init(Context context) {      
         mContext = context;      
-        //获取系统默认的UncaughtException处理器      
+        //get system's default UncaughtException handler      
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();      
-        //设置该CrashHandler为程序的默认处理器      
+        //set this CrashHandler as default     
         Thread.setDefaultUncaughtExceptionHandler(this);      
     }    
     
     /**   
-     * 当UncaughtException发生时会转入该函数来处理   
+     * enter when UncaughtException occurs   
      */      
     @Override      
     public void uncaughtException(Thread thread, Throwable ex) {      
         if (!handleException(ex) && mDefaultHandler != null) {      
-            //如果用户没有处理则让系统默认的异常处理器来处理      
+            //if user doesn't handle it ,let  out crash handler do it     
             mDefaultHandler.uncaughtException(thread, ex);      
         } else {      
             try {      
@@ -83,41 +78,45 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             } catch (InterruptedException e) {      
                 Log.e(TAG, "error : ", e);      
             }      
-            //退出程序      
+            //exit
+//            Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
+//            mContext.sendBroadcast(intent);
+//            Toast.makeText(mContext, "姝ｅ湪灏濊瘯閲嶅惎锛岃绋嶅悗", Toast.LENGTH_SHORT).show();
             android.os.Process.killProcess(android.os.Process.myPid());      
-            System.exit(1);      
+            System.exit(1);   
+             
         }      
     }  
     
     /**   
-     * 自定义错误处理,收集错误信息 发送错误报告等操作均在此完成.   
+     * define how to handle exception, collect error info, send error report, ... etc   
      *    
      * @param ex   
-     * @return true:如果处理了该异常信息;否则返回false.   
+     * @return true: if exception is handled or return false.   
      */      
     private boolean handleException(Throwable ex) {      
         if (ex == null) {      
             return false;      
         }      
-        //收集设备参数信息       
+        //collect device info
         collectDeviceInfo(mContext);      
           
-        //使用Toast来显示异常信息      
+        //show error in toast      
         new Thread() {      
             @Override      
             public void run() {      
                 Looper.prepare();      
-                Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出.", Toast.LENGTH_SHORT).show();      
+                Toast.makeText(mContext, "sorry, error occurs, will exit now!", Toast.LENGTH_SHORT).show();      
                 Looper.loop();      
             }      
         }.start();      
-        //保存日志文件       
+        //save to log files
         saveCatchInfo2File(ex);    
         return true;      
     }      
           
     /**   
-     * 收集设备参数信息   
+     * collect device info
      * @param ctx   
      */      
     public void collectDeviceInfo(Context ctx) {      
@@ -146,10 +145,10 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }      
       
     /**   
-     * 保存错误信息到文件中   
+     * save error info into log file 
      *    
      * @param ex   
-     * @return  返回文件名称,便于将文件传送到服务器   
+     * @return  file name  
      */      
     @SuppressLint("SdCardPath")
 	private String saveCatchInfo2File(Throwable ex) {      
@@ -165,7 +164,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         
         try {      
             long timestamp = System.currentTimeMillis();      
-            String time = formatter.format(new Date());      
+            String time = TimeUtils.getCurrentTimeInString();     
             String fileName = "crash-" + time + "-" + timestamp + ".log";      
             if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {      
                 String path = "/mnt/sdcard/Android/data/com.sjtu.icarer/crash/";      
@@ -175,7 +174,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
                 }      
                 FileOutputStream fos = new FileOutputStream(path + fileName);      
                 fos.write(sb.toString().getBytes());    
-                //发送给开发人员  
+                // send to developer
                 sendCrashLog2PM(path+fileName);  
                 fos.close();      
             }      
@@ -187,13 +186,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }      
       
     /** 
-     * 将捕获的导致崩溃的错误信息发送给开发人员 
+     * send the captured crash message and error info to developers
      *  
-     * 目前只将log日志保存在sdcard 和输出到LogCat中，并未发送给后台。 
+     *  Now only save in sdcard and print in logCat
+     *  TODO send to server
      */  
     private void sendCrashLog2PM(String fileName){  
         if(!new File(fileName).exists()){  
-            Toast.makeText(mContext, "日志文件不存在！", Toast.LENGTH_SHORT).show();  
+            Toast.makeText(mContext, "鏃ュ織鏂囦欢涓嶅瓨鍦紒", Toast.LENGTH_SHORT).show();  
             return;  
         }  
         FileInputStream fis = null;  
@@ -205,14 +205,14 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             while(true){  
                 s = reader.readLine();  
                 if(s == null) break;  
-                //由于目前尚未确定以何种方式发送，所以先打出log日志。  
+                //TODO send it to server  
                 Log.i("info", s.toString());  
             }  
         } catch (FileNotFoundException e) {  
             e.printStackTrace();  
         } catch (IOException e) {  
             e.printStackTrace();  
-        }finally{   // 关闭流  
+        }finally{
             try {  
                 reader.close();  
                 fis.close();  

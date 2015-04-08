@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
@@ -124,7 +122,16 @@ public class DbManager {
         return forceReload ? dbCache.requestAndStore(elderData)
                 : dbCache.loadOrRequest(elderData);
     }
-
+    /**
+     * delete  an elder in DB 
+     * if elder is null , delete all elders 
+     * */
+    public void deleteElder(Elder elder) throws IOException{
+    	int areaId = preferenceManager.getAreaId();
+    	ElderData elderData = new ElderData(icarerService, areaId);
+    	String selection = elder==null?null:"elder.elder_id="+elder.getElderId();
+    	dbCache.delete(elderData, "elder", selection);
+    }
     /**
      * Get carer
      * <p/>
@@ -201,7 +208,7 @@ where
     public List<ElderItem> getCurrentElderItems(Elder elder)throws IOException{
     	ElderItemData elderItemData = new ElderItemData(icarerService, elder);
     	String whereClause = 
-    			"elder_item.elder_id = "+elder.getId()
+    			"elder_item.elder_id = "+elder.getElderId()
     			+  " AND elder_item.id not in ( "
     			+  " select "
     			+     " distinct temp_table.item_id "
@@ -251,8 +258,8 @@ where
      * */
     public void deleteElderItems(Elder elder) throws IOException{
     	ElderItemData elderItemdata = new ElderItemData();
-    	String selection = elder==null?null:"elder_item.elder_id="+elder.getId();
-    	dbCache.delete(elderItemdata, "elder_item_record", selection);
+    	String selection = elder==null?null:"elder_item.elder_id="+elder.getElderId();
+    	dbCache.delete(elderItemdata, "elder_item", selection);
     }
     
     /*
@@ -272,7 +279,7 @@ where
      * */
     public void deleteElderRecords(Elder elder) throws IOException{
     	ElderItemRecordData elderItemRecordData = new ElderItemRecordData();
-    	String selection = elder==null?null:"elder_item_record.elder_id="+elder.getId();
+    	String selection = elder==null?null:"elder_item_record.elder_id="+elder.getElderId();
     	dbCache.delete(elderItemRecordData, "elder_item_record", selection);
     }
     

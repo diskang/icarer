@@ -12,7 +12,7 @@ import com.sjtu.icarer.model.Area;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 
-public class AreaTask extends SafeAsyncTask<List<Area>>{
+public class LoadAreaTask extends SafeAsyncTask<List<Area>>{
 	@Inject
 	IcarerServiceProvider icarerServiceProvider;
 	protected IcarerService icarerService;
@@ -26,7 +26,7 @@ public class AreaTask extends SafeAsyncTask<List<Area>>{
 //		this.activity = activity;
 //	}
 	
-	public AreaTask(int level,int parentId,Activity activity,Handler handler) {
+	public LoadAreaTask(int level,int parentId,Activity activity,Handler handler) {
 		super(handler);
 		// TODO Auto-generated constructor stub
 		this.level = level;

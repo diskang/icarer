@@ -52,7 +52,7 @@ public class ElderAdapter extends BaseAdapter{
 
 	@Override
 	public long getItemId(int position) {
-		return getItem(position).getId();
+		return getItem(position).getElderId();
 	}
 
 	@Override

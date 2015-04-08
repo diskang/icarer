@@ -12,13 +12,11 @@ import com.sjtu.icarer.persistence.DbManager;
 
 public class LoadElderItemTask extends ProgressDialogTask<List<ElderItem>>{
 	private final DbManager dbManager;
-	private final Boolean forceReload;
 	private final Elder elder;
-	protected LoadElderItemTask(Activity activity,DbManager dbManager, Elder elder, Boolean forceReload) {
+	protected LoadElderItemTask(Activity activity,DbManager dbManager, Elder elder) {
 		super(activity);
 		this.dbManager = dbManager;
 		this.elder = elder;
-		this.forceReload = forceReload;
 	}
 	
 	public LoadElderItemTask start(){

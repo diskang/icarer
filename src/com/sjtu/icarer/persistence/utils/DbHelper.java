@@ -37,16 +37,17 @@ public class DbHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
         	db.execSQL("CREATE TABLE elder ("
-        			+ "id INTEGER PRIMARY KEY,"
-        			+ "name TEXT, "
-        			+ "username TEXT,"
-        			+ "photo_url TEXT,"
+        			+ "id INTEGER PRIMARY KEY,"//user_id
+        			+ "elder_id INTEGER,"      //elder id
+        			+ "name TEXT, "            //elder_name
+        			+ "username TEXT,"         //elder username
+        			+ "photo_url TEXT,"        
         			+ "area_id INTEGER,"
         			+ "care_level INTEGER);");
         	
             db.execSQL("CREATE TABLE elder_carer ("
-            		+ "id INTEGER ,"
-            		+ "elder_id INTEGER,"
+            		+ "id INTEGER ,"          //staff_id
+            		+ "elder_id INTEGER,"     //elder_id
             		+ "name TEXT,"
             		+ "username TEXT,"
             		+ "photo_url TEXT,"
@@ -54,8 +55,8 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "PRIMARY KEY(id, elder_id));");
             
             db.execSQL("CREATE TABLE area_carer ("
-            		+ "id INTEGER ,"
-            		+ "area_id INTEGER,"
+            		+ "id INTEGER ,"         //staff_id
+            		+ "area_id INTEGER," 
             		+ "name TEXT,"
             		+ "username TEXT,"
             		+ "photo_url TEXT,"
@@ -63,19 +64,19 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "PRIMARY KEY(id, area_id));");
             
             db.execSQL("CREATE TABLE area_item ("
-            		+ "id INTEGER PRIMARY KEY,"
+            		+ "id INTEGER PRIMARY KEY," // area item id, TABLE-T_AREA_ITEM
             		+ "icon TEXT,"
             		+ "gero_id INTEGER,"
-            		+ "item_name TEXT,"
+            		+ "item_name TEXT,"         //area item name
             		+ "frequency INTEGER,"
             		+ "period INTEGER,"
             		+ "notes TEXT);");
             db.execSQL("CREATE TABLE elder_item ("
-            		+ "id INTEGER PRIMARY KEY,"
+            		+ "id INTEGER PRIMARY KEY,"  //elder item id, TABLE-T_ELDER_ITEM
             		+ "icon TEXT,"
-            		+ "item_id INTEGER,"
-            		+ "item_name TEXT,"
-            		+ "elder_id INTEGER,"
+            		+ "item_id INTEGER,"         //care item id , TABLE-T_CARE_ITEM
+            		+ "item_name TEXT,"          //care item name
+            		+ "elder_id INTEGER,"        //elder id
             		+ "period INTEGER,"
             		+ "notes TEXT,"
             		+ "start_time TIME,"//start time in a single day
@@ -84,10 +85,12 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL("CREATE TABLE elder_item_record ("
             		+ "carer_id INTEGER,"
             		+ "elder_id INTEGER,"
-            		+ "item_id INTEGER,"//elder_item_id
-            		+ "item_name TEXT,"//elder_item_name
-            		+ "finish_time DATE,"
+            		+ "item_id INTEGER,"  //elder_item_id
+            		+ "item_name TEXT,"   //elder_item_name
+            		+ "finish_time DATE," // item's finish time
             		+ "is_submit TEXT);");// a boolean value  
+            
+            //TODO create table area_item_record
             
             db.setTransactionSuccessful();
         } finally {

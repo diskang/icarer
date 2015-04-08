@@ -3,7 +3,6 @@ package com.sjtu.icarer;
 
 import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
-import java.sql.Date;
 import java.sql.Time;
 
 import javax.inject.Singleton;
@@ -20,7 +19,6 @@ import com.sjtu.icarer.authenticator.AccountDataProvider;
 import com.sjtu.icarer.authenticator.IcarerAuthenticatorActivity;
 import com.sjtu.icarer.authenticator.LogoutService;
 import com.sjtu.icarer.common.config.Url;
-import com.sjtu.icarer.core.PostAreaWorkRecord;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PostFromAnyThreadBus;
 import com.sjtu.icarer.core.utils.PreferenceManager;
@@ -32,6 +30,8 @@ import com.sjtu.icarer.model.utils.JsonSqlDateDeserializer;
 import com.sjtu.icarer.model.utils.JsonTimeDeserializer;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
+import com.sjtu.icarer.thread.UpdateReceiver;
+import com.sjtu.icarer.thread.UpdateService;
 import com.sjtu.icarer.ui.HomeActivity;
 import com.sjtu.icarer.ui.MainActivity;
 import com.sjtu.icarer.ui.SetupActivity;
@@ -62,6 +62,8 @@ import dagger.Provides;
         HomeActivity.class,
         AreaItemsFragment.class,
         ElderItemsFragment.class,
+        UpdateService.class,
+        UpdateReceiver.class,
         FragmentRoom.class
     },
     library = true

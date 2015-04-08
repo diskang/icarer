@@ -28,8 +28,8 @@ import com.sjtu.icarer.common.utils.OpUtil;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.events.RefreshCarerEvent;
+import com.sjtu.icarer.events.RefreshScreenEvent;
 import com.sjtu.icarer.model.Carer;
-import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.area.AreaItemsFragment;
 import com.sjtu.icarer.ui.elder.ElderItemsFragment;
@@ -39,7 +39,6 @@ public class HomeActivity extends IcarerFragmentActivity {
 	private int current_fragment_type ;//1:room  2:elder  3:carer
 	@Inject protected IcarerServiceProvider icarerServiceProvider;
 	@Inject protected PreferenceManager preferenceProvider;
-	@Inject protected DbManager dbManager;
 	
 	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
 	@InjectView(R.id.room_number)protected TextView roomNumView;
@@ -54,8 +53,6 @@ public class HomeActivity extends IcarerFragmentActivity {
 
 		int frIndex = getIntent().getIntExtra(Constants.FRAGMENT_INDEX, 1);
 		addFragment(frIndex);
-//		roomNumView.setText("����: \n"+ preferenceProvider.getAreaFullName());
-
 	}
 
 	@Override
@@ -65,21 +62,16 @@ public class HomeActivity extends IcarerFragmentActivity {
 	}
 	
 	public void onElderServiceClick(View view){
-		if(current_fragment_type!=1){
 			addFragment(1);
-		}
 	}
 	
 	public void onRoomServiceClick(View view){
-		if(current_fragment_type!=2){
 			addFragment(2);	
-		}
 	}
 	
 	public void onCarerServiceClick(View view){
-		if(current_fragment_type!=3){
 			addFragment(3);
-		}
+		
 	}
 	
 	private void addFragment(int type){
@@ -164,14 +156,25 @@ public class HomeActivity extends IcarerFragmentActivity {
         startActivity(mIntent); 
 	}
 	
-	
+    /*
+     * Subscribe event, posted from AreaItemsFragment & ElderItemsFragment
+     * */
 	@Subscribe
 	public void updateCarer(RefreshCarerEvent refreshCarerEvent){
 		LogUtils.d("receive refreshcarerevent");
 		Carer carer = refreshCarerEvent.getCarer();
-		if (carer==null)return;
-		carerTextView.setText(carer.getName());
-    	loadCarerImage(carer);
+		if (carer==null){
+            carerTextView.setText(R.string.text_get_carer_failed);	
+            carerImageView.setBackgroundResource(R.drawable.default_user);
+		}else{
+            carerTextView.setText(carer.getName());
+            loadCarerImage(carer);}
+        }
+	
+	@Subscribe
+	public void refreshScreen(RefreshScreenEvent event){
+		
+		addFragment(current_fragment_type);
 	}
 	
 	private void loadCarerImage(Carer carer){

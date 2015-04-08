@@ -3,6 +3,8 @@ package com.sjtu.icarer.model;
 import java.io.Serializable;
 import java.sql.Time;
 
+import com.google.gson.Gson;
+
 public class ElderItem extends BaseItem implements Serializable{
     /**
 	 * 
@@ -58,5 +60,9 @@ public class ElderItem extends BaseItem implements Serializable{
 	public void setElderId(int elderId) {
 		this.elderId = elderId;
 	}
-	
+    @Override
+    public String toString(){
+    	Gson gson = new Gson();
+    	return gson.toJson(this);
+    }
 }

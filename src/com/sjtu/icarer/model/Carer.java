@@ -8,6 +8,8 @@ public class Carer extends User implements Serializable{
 	/**
 	 * @author shiykang
 	 * @since 
+	 * 
+	 * NOTE: id: staff id
 	 */
 	private static final long serialVersionUID = -1874253476056538032L;
 	private int elderId;

@@ -9,12 +9,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.constant.Constants;
+import com.sjtu.icarer.common.utils.LogUtils;
+import com.sjtu.icarer.core.ClearElderItemRecordTask;
+import com.sjtu.icarer.core.ClearElderItemTask;
+import com.sjtu.icarer.core.ClearElderTask;
+import com.sjtu.icarer.core.utils.PreferenceManager;
+import com.sjtu.icarer.events.RefreshScreenEvent;
+import com.sjtu.icarer.persistence.DbManager;
 import com.squareup.otto.Bus;
 
 /**
@@ -22,8 +30,11 @@ import com.squareup.otto.Bus;
  */
 public abstract class IcarerFragmentActivity extends ActionBarActivity {
     @InjectView(R.id.toolbar) protected Toolbar toolbar;
+    @InjectView(R.id.tb_show_message) protected TextView toolbarHeadMessage;
+    @Inject protected DbManager dbManager;
     @Inject protected Bus eventBus;
-
+    @Inject protected PreferenceManager preferenceManager;
+    
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +49,7 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
         toolbar.setLogo(R.drawable.ic_launcher);
         toolbar.setTitle(" -HOUSECARE- ");
         toolbar.setSubtitle("  沪上专业养老机构");
+        toolbarHeadMessage.setText(preferenceManager.getAreaFullName());
         setSupportActionBar(toolbar);
     }
 
@@ -60,6 +72,7 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
 		inflater.inflate(R.menu.action_bar_option, menu);
 		return true;
     }
+	@SuppressWarnings("null")
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -77,11 +90,36 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
         		Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
         		sendBroadcast(intent);
 	        	break;
+        	case R.id.goto_crash:
+        		String a=null;
+        		if(a.contains(""))LogUtils.d("'go to crash' simulates a nullPointer error");
+        		break;
         	case R.id.goto_clear_elders:
+        		new ClearElderTask(this, dbManager, null){
+        			@Override
+        			protected void onFinally() throws RuntimeException{
+        				super.onFinally();
+        				eventBus.post(new RefreshScreenEvent());
+        			}
+        		}.start();
 	        	break;
         	case R.id.goto_clear_elder_items:
+        		new ClearElderItemTask(this, dbManager, null){
+        			@Override
+        			protected void onFinally() throws RuntimeException{
+        				super.onFinally();
+        				eventBus.post(new RefreshScreenEvent());
+        			}
+        		}.start();
         		break;
         	case R.id.goto_clear_elder_records:
+        		new ClearElderItemRecordTask(this, dbManager, null){
+        			@Override
+        			protected void onFinally() throws RuntimeException{
+        				super.onFinally();
+        				eventBus.post(new RefreshScreenEvent());
+        			}
+        		}.start();
         		break;
         	case R.id.goto_logout:
         		break;//TODO
