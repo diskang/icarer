@@ -1,4 +1,4 @@
-package com.sjtu.icarer;
+package com.sjtu.icarer.ui.deprecated;
 
 
 import java.util.Collections;
@@ -32,11 +32,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.sjtu.icarer.Injector;
+import com.sjtu.icarer.R;
+import com.sjtu.icarer.R.drawable;
+import com.sjtu.icarer.R.id;
+import com.sjtu.icarer.R.layout;
 import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Constants;
-import com.sjtu.icarer.common.utils.DBUtil;
-import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.common.deprecated.DBUtil;
+import com.sjtu.icarer.common.deprecated.OpUtil;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.model.User;
@@ -113,36 +118,36 @@ public class FragmentRoom extends Fragment{
 			@Override
 			public void onClick(View v) {
 				if(!OpUtil.isConnected(v.getContext())){
-					Toast.makeText(v.getContext(), "请检查网络连接是否正常", Toast.LENGTH_SHORT).show();
+					Toast.makeText(v.getContext(), "锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟角凤拷锟斤拷锟斤拷", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				new AlertDialog.Builder(v.getContext())
-        		.setTitle("确认提交 ")
-        		.setMessage("确定提交项目么？")
-        		.setPositiveButton("确定", new DialogInterface.OnClickListener(){
+        		.setTitle("确锟斤拷锟结交 ")
+        		.setMessage("确锟斤拷锟结交锟斤拷目么锟斤拷")
+        		.setPositiveButton("确锟斤拷", new DialogInterface.OnClickListener(){
         			 @Override
          			public void onClick(DialogInterface dialog, int id) {  
      			    	dialog.dismiss();     
      			    		    	
      			    	if(OpUtil.dealItem(finishedRoomItem,"").equals("")) {
-     			    		Toast.makeText(mcontext, "未选择项目!", Toast.LENGTH_SHORT).show();
+     			    		Toast.makeText(mcontext, "未选锟斤拷锟斤拷目!", Toast.LENGTH_SHORT).show();
      			    		return;
      			    	}
-     			    	Toast.makeText(mcontext, "正在提交", Toast.LENGTH_SHORT).show();
+     			    	Toast.makeText(mcontext, "锟斤拷锟斤拷锟结交", Toast.LENGTH_SHORT).show();
      			    	Boolean success = dbUtil.uploadItem(carerId, roomNumber,
 								"", OpUtil.dealItem(finishedRoomItem,""), new String[0]);
      			    	if(success) {
-     			    		Toast.makeText(mcontext, "提交成功", Toast.LENGTH_SHORT).show();
+     			    		Toast.makeText(mcontext, "锟结交锟缴癸拷", Toast.LENGTH_SHORT).show();
      			    		Intent intent = new Intent(mcontext, HomeActivity.class);
      			    		intent.putExtra(Constants.FRAGMENT_INDEX, INDEX);
      			    		startActivity(intent);
      			    	} 
      			    	else {
-     			    		Toast.makeText(mcontext, "提交失败", Toast.LENGTH_SHORT).show();
+     			    		Toast.makeText(mcontext, "锟结交失锟斤拷", Toast.LENGTH_SHORT).show();
      			    	}
          			} 
         		})
-        		.setNegativeButton("取消", new DialogInterface.OnClickListener() {  
+        		.setNegativeButton("取锟斤拷", new DialogInterface.OnClickListener() {  
     			    @Override
         			public void onClick(DialogInterface dialog, int id) {  
     			    	dialog.dismiss();
@@ -162,7 +167,7 @@ public class FragmentRoom extends Fragment{
 		carerName = prefer.getCarerName();
 		
 		if(roomNumber==null || carerId==null || carerName==null){
-			Toast.makeText(mcontext, "请选择护工和房间", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mcontext, "锟斤拷选锟今护癸拷锟酵凤拷锟斤拷", Toast.LENGTH_SHORT).show();
 			Intent intent_setting = new Intent(getActivity(), SettingActivity.class);
 			startActivity(intent_setting);
 			return;

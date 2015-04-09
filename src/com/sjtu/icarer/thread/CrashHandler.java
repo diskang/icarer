@@ -15,6 +15,7 @@ import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -25,6 +26,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.sjtu.icarer.common.utils.TimeUtils;
+import com.sjtu.icarer.ui.MainActivity;
 
 /**
  * Singleton helper: install a default unhandled exception handler which shows
@@ -57,7 +59,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      *    initialize
      */      
     public void init(Context context) {      
-        mContext = context;      
+        mContext = context.getApplicationContext();      
         //get system's default UncaughtException handler      
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();      
         //set this CrashHandler as default     
@@ -74,18 +76,20 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             mDefaultHandler.uncaughtException(thread, ex);      
         } else {      
             try {      
-                Thread.sleep(3000);      
+                Thread.sleep(2000);      
             } catch (InterruptedException e) {      
                 Log.e(TAG, "error : ", e);      
             }      
-            //exit
-//            Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
-//            mContext.sendBroadcast(intent);
-//            Toast.makeText(mContext, "正在尝试重启，请稍后", Toast.LENGTH_SHORT).show();
+            //restart a new activity
+            Intent intent = new Intent(mContext,MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+            //exit current process
             android.os.Process.killProcess(android.os.Process.myPid());      
             System.exit(1);   
              
-        }      
+        } 
+      
     }  
     
     /**   
@@ -106,7 +110,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             @Override      
             public void run() {      
                 Looper.prepare();      
-                Toast.makeText(mContext, "sorry, error occurs, will exit now!", Toast.LENGTH_SHORT).show();      
+                Toast.makeText(mContext, "出现错误！正在尝试重启，请稍后", Toast.LENGTH_SHORT).show();      
                 Looper.loop();      
             }      
         }.start();      

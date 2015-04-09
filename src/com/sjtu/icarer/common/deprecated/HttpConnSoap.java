@@ -1,4 +1,4 @@
-package com.sjtu.icarer.common.utils;
+package com.sjtu.icarer.common.deprecated;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -26,11 +26,11 @@ import android.util.Log;
 
 
 public class HttpConnSoap {
-	public final String TIME_OUT = "²Ù×÷³¬Ê±";
+	public final String TIME_OUT = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±";
 	
 	
 	/**
-	 * ¸Ãº¯Êý°ó¶¨À¶ÑÀÉè±¸
+	 * ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±¸
 	 */
 	public boolean BindBluetoothDevice(String address,int elder_id,String device_name,String device_type){
 		//String ServerUrl = ServerHost + "insertBluetoothDeviceInfo?address="+address+"&elder_id="+elder_id+"&device_name="+device_name+"&type="+device_type;
@@ -64,7 +64,7 @@ public class HttpConnSoap {
 	}
 	
 	/**
-	 * ¸Ãº¯Êý½â³ýÀ¶ÑÀÉè±¸µÄ°ó¶¨
+	 * ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½Ä°ï¿½
 	 */
 	public boolean unBindBluetoothDevice(String address, int elder_id){
 		String ServerUrl = Url.SOAP_URL + "unBindBluetoothDevice";
@@ -87,7 +87,7 @@ public class HttpConnSoap {
 	}
 	
 	/**
-	 * ¸Ãº¯Êý´«Êä²âÁ¿Êý¾Ý
+	 * ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public String InsertData(String methodName, String elder_id, String doctor_id, 
 			String date_str, String duration_str, String start_time, String data) {
@@ -117,7 +117,7 @@ public class HttpConnSoap {
 	}
 	
 	/**
-	 * ¸Ãº¯Êý°ó¶¨padÉè±¸Óë·¿¼ä
+	 * ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½padï¿½è±¸ï¿½ë·¿ï¿½ï¿½
 	 */
 	public String InsertMac(String methodName, String gero_id, String roomNo, String padMac) {
 		String resp = "";
@@ -146,9 +146,9 @@ public class HttpConnSoap {
 	}
 	
 	/**
-	 * ¸Ãº¯ÊýÌá½»Íê³ÉÏîÄ¿
-	 * @param itemElder  ÆäÔªËØ¸öÊýÓÉ¸Ã·¿¼äÀÏÈËÊýÁ¿¾ö¶¨
-	 * @throws Õë¶ÔÖÐÎÄ×Ö·û×ª»»Òì³£
+	 * ï¿½Ãºï¿½ï¿½ï¿½ï¿½á½»ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
+	 * @param itemElder  ï¿½ï¿½Ôªï¿½Ø¸ï¿½ï¿½ï¿½ï¿½É¸Ã·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	 * @throws ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½×ªï¿½ï¿½ï¿½ì³£
 	 */
 	public String InsertItem(String methodName, String carer_id, String roomNo, String itemFloor,
 			String itemRoom, String[] itemElder) throws UnsupportedEncodingException {
@@ -203,7 +203,7 @@ public class HttpConnSoap {
 	}
 	
 	/**
-	 * ¸Ãº¯Êý»ñÈ¡·¿¼äÖÐÉè±¸ÐÅÏ¢
+	 * ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½ï¿½Ï¢
 	 */
 	public InputStream GetDevicesByRoom(String roomNo){
 		InputStream list = null;
@@ -325,7 +325,7 @@ public class HttpConnSoap {
 		}
 	}
 	public	InputStream GetItemList(String methodName,String geroId, int type) {
-		//type   1 Â¥Ãæ2·¿¼ä3¸öÈË
+		//type   1 Â¥ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½3ï¿½ï¿½ï¿½ï¿½
 		if(geroId==null || geroId.isEmpty()){
 			return null;
 		}
@@ -357,7 +357,7 @@ public class HttpConnSoap {
 		}
 	}
 	/**
-	 * ¸Ãº¯Êý½«GBK×Ö·û´®×ª»¯ÎªUTF-8±àÂë
+	 * ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½GBKï¿½Ö·ï¿½ï¿½ï¿½×ªï¿½ï¿½ÎªUTF-8ï¿½ï¿½ï¿½ï¿½
 	 */
 	public static String getGBK2Utf8(String gbkStr) throws UnsupportedEncodingException {
 		String out;

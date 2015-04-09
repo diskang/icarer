@@ -1,24 +1,10 @@
-package com.sjtu.icarer;
+package com.sjtu.icarer.ui.deprecated;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-
-
-
-
-
-
-
-import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.constant.Constants;
-import com.sjtu.icarer.common.utils.ClsUtils;
-import com.sjtu.icarer.common.utils.DBUtil;
-import com.sjtu.icarer.model.RunningDevice;
-import com.sjtu.icarer.thread.BluetoothSocketThread;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -33,12 +19,9 @@ import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,6 +30,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sjtu.icarer.R;
+import com.sjtu.icarer.common.config.Prefer;
+import com.sjtu.icarer.common.deprecated.ClsUtils;
+import com.sjtu.icarer.common.deprecated.DBUtil;
+import com.sjtu.icarer.model.RunningDevice;
+import com.sjtu.icarer.thread.BluetoothSocketThread;
 public class FragmentCarer extends Fragment{
 	private final static String TAG = "RoomService";
 	public static final int INDEX = 3;

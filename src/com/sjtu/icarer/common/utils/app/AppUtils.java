@@ -70,7 +70,8 @@ public class AppUtils {
      */
     public static boolean isApplicationInBackground(Context context) {
         ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<RunningTaskInfo> taskList = am.getRunningTasks(1);
+        @SuppressWarnings("deprecation")
+		List<RunningTaskInfo> taskList = am.getRunningTasks(1);
         if (taskList != null && !taskList.isEmpty()) {
             ComponentName topActivity = taskList.get(0).topActivity;
             if (topActivity != null && !topActivity.getPackageName().equals(context.getPackageName())) {

@@ -13,6 +13,7 @@ import java.net.URL;
 
 
 
+
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Url;
 
@@ -24,6 +25,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnClickListener;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -33,25 +35,16 @@ import android.widget.ProgressBar;
 public class PackageUpdateThread {
 
 	private Context mContext;
-	
-	//ÌáÊ¾Óï
-	private String updateMsg = "ÓĞ×îĞÂµÄÈí¼ş°üÅ¶£¬Ç×¿ìÏÂÔØ°É~";
-	
-	//·µ»ØµÄ°²×°°üurl
 	private String apkUrl = Url.UPDATE_URL;
 	
-	
 	private Dialog noticeDialog;
-	
 	private Dialog downloadDialog;
-	 /* ÏÂÔØ°ü°²×°Â·¾¶ */
-    private static final String savePath = "/sdcard/Download/";
-    
+	//TODO check this savePath valid
+    private static final String savePath = Environment.getExternalStorageDirectory().getPath()+"/download";
     private static final String saveFileName = savePath + "icarer.apk";
 
-    /* ½ø¶ÈÌõÓëÍ¨ÖªuiË¢ĞÂµÄhandlerºÍmsg³£Á¿ */
+    /* è¿›åº¦æ¡ä¸é€šçŸ¥uiåˆ·æ–°çš„handlerå’Œmsgå¸¸é‡ */
     private ProgressBar mProgress;
-
     
     private static final int DOWN_UPDATE = 1;
     
@@ -83,7 +76,7 @@ public class PackageUpdateThread {
 		this.mContext = context;
 	}
 	
-	//Íâ²¿½Ó¿ÚÈÃÖ÷Activityµ÷ÓÃ
+	//ï¿½â²¿ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Activityï¿½ï¿½ï¿½ï¿½
 	public void checkUpdateInfo(){
 		showNoticeDialog();
 	}
@@ -91,16 +84,16 @@ public class PackageUpdateThread {
 	
 	private void showNoticeDialog(){
 		AlertDialog.Builder builder = new Builder(mContext);
-		builder.setTitle("Èí¼ş°æ±¾¸üĞÂ");
-		builder.setMessage(updateMsg);
-		builder.setPositiveButton("ÏÂÔØ", new OnClickListener() {			
+		builder.setTitle("è½¯ä»¶ç‰ˆæœ¬æ›´æ–°");
+		builder.setMessage(R.string.message_software_update);
+		builder.setPositiveButton("ä¸‹è½½", new OnClickListener() {			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				showDownloadDialog();			
 			}
 		});
-		builder.setNegativeButton("ÒÔºóÔÙËµ", new OnClickListener() {			
+		builder.setNegativeButton("ä»¥åå†è¯´", new OnClickListener() {			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();				
@@ -112,14 +105,14 @@ public class PackageUpdateThread {
 	
 	private void showDownloadDialog(){
 		AlertDialog.Builder builder = new Builder(mContext);
-		builder.setTitle("Èí¼ş°æ±¾¸üĞÂ");
+		builder.setTitle("è½¯ä»¶ç‰ˆæœ¬æ›´æ–°");
 		
 		final LayoutInflater inflater = LayoutInflater.from(mContext);
 		View v = inflater.inflate(R.layout.progress_bar, null);
 		mProgress = (ProgressBar)v.findViewById(R.id.progress);
 		
 		builder.setView(v);
-		builder.setNegativeButton("È¡Ïû", new OnClickListener() {	
+		builder.setNegativeButton("å–æ¶ˆ", new OnClickListener() {	
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
@@ -158,15 +151,15 @@ public class PackageUpdateThread {
 		    		int numread = is.read(buf);
 		    		count += numread;
 		    	    progress =(int)(((float)count / length) * 100);
-		    	    //¸üĞÂ½ø¶È
+		    	    //æ›´æ–°è¿›åº¦
 		    	    mHandler.sendEmptyMessage(DOWN_UPDATE);
 		    		if(numread <= 0){	
-		    			//ÏÂÔØÍê³ÉÍ¨Öª°²×°
+		    			//ä¸‹è½½å®Œæˆé€šçŸ¥å®‰è£…
 		    			mHandler.sendEmptyMessage(DOWN_OVER);
 		    			break;
 		    		}
 		    		fos.write(buf,0,numread);
-		    	}while(!interceptFlag);//µã»÷È¡Ïû¾ÍÍ£Ö¹ÏÂÔØ.
+		    	}while(!interceptFlag);//ç‚¹å‡»å–æ¶ˆå°±åœæ­¢ä¸‹è½½
 				
 				fos.close();
 				is.close();
@@ -180,7 +173,7 @@ public class PackageUpdateThread {
 	};
 	
 	 /**
-     * ÏÂÔØapk
+     * ä¸‹è½½apk
      * @param url
      */
 	
@@ -189,7 +182,7 @@ public class PackageUpdateThread {
 		downLoadThread.start();
 	}
 	 /**
-     * °²×°apk
+     * å®‰è£…apk
      * @param url
      */
 	private void installApk(){

@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.persistence.utils.NormalResource;
-import com.sjtu.icarer.persistence.utils.PersistableResource;
 import com.sjtu.icarer.service.IcarerService;
 
 public class ElderData extends NormalResource<Elder>{

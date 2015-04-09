@@ -1,4 +1,4 @@
-package com.sjtu.icarer.common.utils;
+package com.sjtu.icarer.common.deprecated;
 
 
 import java.util.ArrayList;

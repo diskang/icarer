@@ -27,7 +27,6 @@ import android.util.Log;
 
 public class DbManager {
 	 private static final String TAG = "DbManager";
-//	 private int areaId;
 	 
 	 @Inject protected DbCache dbCache;
 	 @Inject protected PreferenceManager preferenceManager;
@@ -50,7 +49,7 @@ public class DbManager {
      * @param file
      * @return data
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","unused"})
     private <V> V read(final File file) {
         long start = System.currentTimeMillis();
         long length = file.length();
@@ -70,7 +69,8 @@ public class DbManager {
      * @param data
      * @return this manager
      */
-    private DbManager write(File file, Object data) {
+    @SuppressWarnings("unused")
+	private DbManager write(File file, Object data) {
         new RequestWriter(file, FORMAT_VERSION).write(data);
         return this;
     }

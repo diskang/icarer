@@ -1,4 +1,4 @@
-package com.sjtu.icarer;
+package com.sjtu.icarer.ui.deprecated;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,15 +18,15 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.view.KeyEvent;
 
+import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Constants;
-import com.sjtu.icarer.common.utils.DBUtil;
-import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.common.deprecated.DBUtil;
+import com.sjtu.icarer.common.deprecated.OpUtil;
 import com.sjtu.icarer.thread.PackageUpdateThread;
 
 @SuppressWarnings("deprecation")
 public class SettingActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener{
-	private static final String TAG = "SettingActivity";
 	private boolean preferenceChangedFlag = false;
 	private ListPreference building_lp;
 	private ListPreference floor_lp;
@@ -65,12 +65,12 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 //		building_lp.setOnPreferenceClickListener(this); 
 		dbu = new DBUtil(this);
 		
-		//×Ô¼ºÐ´µÄÓÃÓÚÖ´ÐÐÏàÓ¦²Ù×÷µÄÀà
+		//ï¿½Ô¼ï¿½Ð´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		prefer = new Prefer(this);
 		GERO_ID = prefer.getGeroId();
 		
 		if(GERO_ID!=null&&!GERO_ID.isEmpty()){
-			//¶¯Ì¬ÉèÖÃListPreference,±ØÐëÔÚoncreateÀïÊµÏÖ£¬ÔÚonclickÊ±ºòÊµÏÖ»á°´ÕÕÔ­À´µÄarrayÀ´Ìî³ä£¬µÚ¶þ´Îonclick²ÅÉúÐ§
+			//ï¿½ï¿½Ì¬ï¿½ï¿½ï¿½ï¿½ListPreference,ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½oncreateï¿½ï¿½Êµï¿½Ö£ï¿½ï¿½ï¿½onclickÊ±ï¿½ï¿½Êµï¿½Ö»á°´ï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½arrayï¿½ï¿½ï¿½ï¿½ä£¬ï¿½Ú¶ï¿½ï¿½ï¿½onclickï¿½ï¿½ï¿½ï¿½Ð§
 	           inflateCarerList();
 	           inflateRoomBegin();
 		}
@@ -109,9 +109,9 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 				BUILDING_NO = slice[0];
 				FLOOR_NO = slice[1];
 				ROOM_NO = slice[2];
-				building_lp.setSummary("Â¥¶°ºÅ: "+BUILDING_NO);
-				floor_lp.setSummary("Â¥²ãºÅ: "+FLOOR_NO);
-				room_lp.setSummary("·¿¼äºÅ: "+ROOM_NO);
+				building_lp.setSummary("Â¥ï¿½ï¿½ï¿½ï¿½: "+BUILDING_NO);
+				floor_lp.setSummary("Â¥ï¿½ï¿½ï¿½: "+FLOOR_NO);
+				room_lp.setSummary("ï¿½ï¿½ï¿½ï¿½ï¿½: "+ROOM_NO);
 				String[] floorlist = OpUtil.filterFloor(longroomlist, BUILDING_NO, "");
 				String[] roomlist = OpUtil.filterRoom(longroomlist, BUILDING_NO, FLOOR_NO, "");
 				setListPreferenceData(building_lp,buildinglist,buildinglist );
@@ -171,7 +171,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 			BUILDING_NO  = building_lp.getValue();
 			if(BUILDING_NO !=null&&!BUILDING_NO.isEmpty()){
 				prefer.setRoomNumber(null);
-				building_lp.setSummary("Â¥¶°ºÅ: "+BUILDING_NO);
+				building_lp.setSummary("Â¥ï¿½ï¿½ï¿½ï¿½: "+BUILDING_NO);
 				floor_lp.setSummary(null);
 				room_lp.setSummary(null);
 				FLOOR_NO= null;
@@ -185,7 +185,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 			FLOOR_NO = floor_lp.getValue();
 			if(FLOOR_NO !=null&&!FLOOR_NO .isEmpty()){
 				prefer.setRoomNumber(null);
-				floor_lp.setSummary("Â¥²ãºÅ: "+FLOOR_NO);
+				floor_lp.setSummary("Â¥ï¿½ï¿½ï¿½: "+FLOOR_NO);
 				room_lp.setSummary(null);
 				ROOM_NO = null;
 				String[] roomlist = OpUtil.filterRoom(longroomlist, BUILDING_NO, FLOOR_NO, "");
@@ -197,7 +197,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 			ROOM_NO = room_lp.getValue();//room_no is integrated now
 			if(ROOM_NO!=null&&!ROOM_NO.isEmpty()){
 				longRoomNumber = BUILDING_NO+"-"+FLOOR_NO+"-"+ROOM_NO;
-				room_lp.setSummary("·¿¼äºÅ: "+ROOM_NO);
+				room_lp.setSummary("ï¿½ï¿½ï¿½ï¿½ï¿½: "+ROOM_NO);
 				prefer.setRoomNumber(longRoomNumber);
 				
 			}
@@ -283,8 +283,8 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 	    			return false;
 	    		}
 	    		new AlertDialog.Builder(this)
-				.setMessage("±£´æÐÞ¸Ä")
-				.setPositiveButton("È·ÈÏÌá½»", new DialogInterface.OnClickListener() {
+				.setMessage("ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½")
+				.setPositiveButton("È·ï¿½ï¿½ï¿½á½»", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.dismiss(); 
@@ -293,7 +293,7 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 		        		finish();
 					}
 				})
-				.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {  
+				.setNegativeButton("È¡ï¿½ï¿½", new DialogInterface.OnClickListener() {  
 				    @Override
 					public void onClick(DialogInterface dialog, int id) {  
 				    	dialog.dismiss();  
@@ -302,15 +302,15 @@ public class SettingActivity extends PreferenceActivity implements OnSharedPrefe
 				.show();
 	    	}else{
 	    		new AlertDialog.Builder(this)
-				.setMessage("ÐÅÏ¢ÈÔ²»ÍêÕû£¬ÍË³ö¿ÉÄÜµ¼ÖÂÐÅÏ¢¶ªÊ§")
-				.setPositiveButton("Ç¿ÖÆÍË³ö", new DialogInterface.OnClickListener() {
+				.setMessage("ï¿½ï¿½Ï¢ï¿½Ô²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½Ê§")
+				.setPositiveButton("Ç¿ï¿½ï¿½ï¿½Ë³ï¿½", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int id) {
 						dialog.dismiss(); 
 						System.exit(0);
 					}
 				})
-				.setNegativeButton("¼ÌÐøÐÞ¸Ä", new DialogInterface.OnClickListener() {  
+				.setNegativeButton("ï¿½ï¿½ï¿½ï¿½ï¿½Þ¸ï¿½", new DialogInterface.OnClickListener() {  
 				    @Override
 					public void onClick(DialogInterface dialog, int id) {  
 				    	dialog.dismiss();  

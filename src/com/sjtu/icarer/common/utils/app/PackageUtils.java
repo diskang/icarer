@@ -445,7 +445,8 @@ public class PackageUtils {
         }
 
         ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(1);
+        @SuppressWarnings("deprecation")
+		List<RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(1);
         if (ListUtils.isEmpty(tasksInfo)) {
             return null;
         }

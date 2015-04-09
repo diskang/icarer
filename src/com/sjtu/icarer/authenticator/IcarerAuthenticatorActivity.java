@@ -51,7 +51,7 @@ import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.events.UnAuthorizedErrorEvent;
 import com.sjtu.icarer.model.User;
 import com.sjtu.icarer.service.IcarerService;
-import com.sjtu.icarer.ui.login.TextWatcherAdapter;
+import com.sjtu.icarer.ui.view.TextWatcherAdapter;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 

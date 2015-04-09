@@ -4,12 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.initdemo.MainActivity" >
 
-    <item
-        android:id="@+id/goto_prefer"
-        android:orderInCategory="1"
-        android:title="@string/label_settings"
-        android:icon="@drawable/ic_launcher"
-        app:showAsAction="never"/>
 	<item
         android:id="@+id/goto_refresh"
         android:orderInCategory="1"
@@ -31,25 +25,14 @@
         android:title="@string/label_clear"
         android:icon="@drawable/ic_launcher"
         app:showAsAction="never" >
-        <menu>  
-            <item  
-                android:id="@+id/goto_clear_elders"  
-                android:title="@string/label_clear_elders"
-                android:showAsAction="ifRoom|withText"  
-                app:showAsAction="never"/>  
-            <item  
-                android:id="@+id/goto_clear_elder_items"  
-                android:title="@string/label_clear_elder_items"
-                android:showAsAction="ifRoom|withText"  
-                app:showAsAction="never"/>  
-            <item  
-                android:id="@+id/goto_clear_elder_records"  
-                android:title="@string/label_clear_elder_records"
-                android:showAsAction="ifRoom|withText"  
-                app:showAsAction="never"/>  
-        </menu>           
     </item>
-
+    <item
+        android:id="@+id/goto_settings"
+        android:orderInCategory="1"
+        android:title="@string/label_settings"
+        android:icon="@drawable/ic_launcher"
+        app:showAsAction="never" >
+    </item>
 	<item
         android:id="@+id/goto_logout"
         android:orderInCategory="1"

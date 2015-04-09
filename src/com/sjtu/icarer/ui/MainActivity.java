@@ -17,7 +17,6 @@ import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.service.IcarerServiceProvider;
-import com.sjtu.icarer.ui.login.LoginActivity;
 
 
 /**

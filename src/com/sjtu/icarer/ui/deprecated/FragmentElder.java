@@ -1,4 +1,4 @@
-package com.sjtu.icarer;
+package com.sjtu.icarer.ui.deprecated;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -34,12 +34,16 @@ import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.sjtu.icarer.R;
+import com.sjtu.icarer.R.drawable;
+import com.sjtu.icarer.R.id;
+import com.sjtu.icarer.R.layout;
 import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
-import com.sjtu.icarer.common.utils.DBUtil;
-import com.sjtu.icarer.common.utils.OpUtil;
+import com.sjtu.icarer.common.deprecated.DBUtil;
+import com.sjtu.icarer.common.deprecated.OpUtil;
 import com.sjtu.icarer.common.view.CircleButton;
 import com.sjtu.icarer.ui.HomeActivity;
 
@@ -108,7 +112,7 @@ public class FragmentElder extends Fragment{
             			refreshItemsByElder(position);
             			finishedChosenElder = position;
             		}else{
-            			Toast.makeText(mcontext, "请选择一个老人", Toast.LENGTH_SHORT).show();
+            			Toast.makeText(mcontext, "锟斤拷选锟斤拷一锟斤拷锟斤拷锟斤拷", Toast.LENGTH_SHORT).show();
             		}
             	}
 			}
@@ -151,7 +155,7 @@ public class FragmentElder extends Fragment{
 		carerId = prefer.getCarerId();
 		carerName = prefer.getCarerName();
 		if(roomNumber==null || carerId==null || carerName==null){
-			Toast.makeText(mcontext, "请选择护工和房间", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mcontext, "锟斤拷选锟今护癸拷锟酵凤拷锟斤拷", Toast.LENGTH_SHORT).show();
 			Intent intent_setting = new Intent(getActivity(), SettingActivity.class);
 			startActivity(intent_setting);
 			return;
@@ -200,43 +204,43 @@ public class FragmentElder extends Fragment{
 			@Override
 			public void onClick(View v) {
 				if(!OpUtil.isConnected(v.getContext())){
-					Toast.makeText(v.getContext(), "请检查网络连接是否正常", Toast.LENGTH_SHORT).show();
+					Toast.makeText(v.getContext(), "锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟角凤拷锟斤拷锟斤拷", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				new AlertDialog.Builder(v.getContext())
-        		.setTitle("确认提交 ")
-        		.setMessage("确定提交项目么？")
-        		.setPositiveButton("确定", new DialogInterface.OnClickListener(){
+        		.setTitle("确锟斤拷锟结交 ")
+        		.setMessage("确锟斤拷锟结交锟斤拷目么锟斤拷")
+        		.setPositiveButton("确锟斤拷", new DialogInterface.OnClickListener(){
         			 @Override
          			public void onClick(DialogInterface dialog, int id) {  
      			    	dialog.dismiss();     
      			    	if(elderIdList==null||elderIdList.length==0){
-     			    		Toast.makeText(mcontext, "不存在老人!", Toast.LENGTH_SHORT).show();
+     			    		Toast.makeText(mcontext, "锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷!", Toast.LENGTH_SHORT).show();
      			    		return;
      			    	}
      			    	if(personItemList==null||personItemList.size()==0){
-     			    		Toast.makeText(mcontext, "不存在项目!", Toast.LENGTH_SHORT).show();
+     			    		Toast.makeText(mcontext, "锟斤拷锟斤拷锟斤拷锟斤拷目!", Toast.LENGTH_SHORT).show();
      			    		return;
      			    	}
      			    	String[] elderItem = new String[elderNameList.length];
      			    	for(int q=0; q<elderNameList.length; q++) {
      			    		elderItem[q] = OpUtil.dealItem(finishedElderItem[q], elderIdList[q]);
      			    	}
-     			    	Toast.makeText(mcontext, "正在提交", Toast.LENGTH_SHORT).show();
+     			    	Toast.makeText(mcontext, "锟斤拷锟斤拷锟结交", Toast.LENGTH_SHORT).show();
      			    	Boolean success = dbUtil.uploadItem(carerId, roomNumber,"", "", elderItem);
      			    	
      			    	if(success) {
-     			    		Toast.makeText(mcontext, "提交成功", Toast.LENGTH_SHORT).show();
+     			    		Toast.makeText(mcontext, "锟结交锟缴癸拷", Toast.LENGTH_SHORT).show();
      			    		Intent intent = new Intent(mcontext, HomeActivity.class);
      			    		intent.putExtra(Constants.FRAGMENT_INDEX, INDEX);
      			    		startActivity(intent);
      			    	} 
      			    	else {
-     			    		Toast.makeText(mcontext, "提交失败", Toast.LENGTH_SHORT).show();
+     			    		Toast.makeText(mcontext, "锟结交失锟斤拷", Toast.LENGTH_SHORT).show();
      			    	}
          			} 
         		})
-        		.setNegativeButton("取消", new DialogInterface.OnClickListener() {  
+        		.setNegativeButton("取锟斤拷", new DialogInterface.OnClickListener() {  
     			    @Override
         			public void onClick(DialogInterface dialog, int id) {  
     			    	dialog.dismiss();

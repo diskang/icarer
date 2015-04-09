@@ -34,11 +34,13 @@ import com.sjtu.icarer.thread.UpdateReceiver;
 import com.sjtu.icarer.thread.UpdateService;
 import com.sjtu.icarer.ui.HomeActivity;
 import com.sjtu.icarer.ui.MainActivity;
+import com.sjtu.icarer.ui.SettingActivity;
 import com.sjtu.icarer.ui.SetupActivity;
 import com.sjtu.icarer.ui.area.AreaItemsFragment;
+import com.sjtu.icarer.ui.deprecated.FragmentRoom;
 import com.sjtu.icarer.ui.elder.ElderItemsFragment;
-import com.sjtu.icarer.ui.login.LoginActivity;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
+import com.sjtu.icarer.ui.setting.ClearCacheFragment;
 import com.squareup.otto.Bus;
 
 import dagger.Module;
@@ -57,8 +59,9 @@ import dagger.Provides;
         IcarerAuthenticatorActivity.class,
         MainActivity.class,
         SetupActivity.class,
+        SettingActivity.class,
         AreaPreferenceFragment.class,
-        LoginActivity.class,
+        ClearCacheFragment.class,
         HomeActivity.class,
         AreaItemsFragment.class,
         ElderItemsFragment.class,

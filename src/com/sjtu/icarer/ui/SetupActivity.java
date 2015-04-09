@@ -47,7 +47,7 @@ public class SetupActivity extends PreferenceActivity {
 	}
 	@Override
     public void onBuildHeaders(List<Header> target){
-        loadHeadersFromResource(R.xml.headers_preference, target);
+        loadHeadersFromResource(R.xml.act_setup_preference, target);
     }
 
     @Override

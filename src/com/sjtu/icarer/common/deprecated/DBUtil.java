@@ -1,4 +1,4 @@
-package com.sjtu.icarer.common.utils;
+package com.sjtu.icarer.common.deprecated;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Constants;
+import com.sjtu.icarer.common.utils.XMLParse;
 import com.sjtu.icarer.model.RunningDevice;
 
 import android.content.Context;
@@ -50,7 +51,7 @@ public class DBUtil {
 	}
 	
 	/**
-	 * ´«ÊäECG¼à²âÊý¾Ý
+	 * ï¿½ï¿½ï¿½ï¿½ECGï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 */
 	public String insertECG(String elder_id,String doctor_id,String date_str,String duration_str,String start_time,String data){
 		String str = "";
@@ -60,7 +61,7 @@ public class DBUtil {
 	}
 	
 	/**
-	 * ÉÏ´«MAC
+	 * ï¿½Ï´ï¿½MAC
 	 */
 	public String uploadMAC(String gero_id, String roomNo, String padMac) {
 		String str = "";
@@ -69,7 +70,7 @@ public class DBUtil {
 	}
 	
 	/**
-	 * ÉÏ´«Íê³ÉÏîÄ¿
+	 * ï¿½Ï´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¿
 	 */
 	public Boolean uploadItem(String carer_id, String roomNo, String itemFloor, String itemRoom, String[] itemElder) {
 		String str = "";

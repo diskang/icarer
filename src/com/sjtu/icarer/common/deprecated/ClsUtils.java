@@ -1,4 +1,4 @@
-package com.sjtu.icarer.common.utils;
+package com.sjtu.icarer.common.deprecated;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -16,7 +16,7 @@ public class ClsUtils {
 	}
 
 	/**
-	 * 与设备解除配�?参�?源码：platform/packages/apps/Settings.git
+	 * 与设备解除配�?参�?源码：platform/packages/apps/Settings.git
 	 * /Settings/src/com/android/settings/bluetooth/CachedBluetoothDevice.java
 	 */
 	static public boolean removeBond(Class btClass, BluetoothDevice btDevice)
@@ -90,7 +90,7 @@ public class ClsUtils {
 	{
 		try
 		{
-			// 取得�?��方法
+			// 取得�?��方法
 			Method[] hideMethod = clsShow.getMethods();
 			int i = 0;
 			for (; i < hideMethod.length; i++)
@@ -98,7 +98,7 @@ public class ClsUtils {
 				Log.e("method name", hideMethod[i].getName() + ";and the i is:"
 						+ i);
 			}
-			// 取得�?��常量
+			// 取得�?��常量
 			Field[] allFields = clsShow.getFields();
 			for (i = 0; i < allFields.length; i++)
 			{
