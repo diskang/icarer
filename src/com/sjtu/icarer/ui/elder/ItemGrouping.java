@@ -11,7 +11,13 @@ import com.sjtu.icarer.model.ElderItem;
 
 import static com.sjtu.icarer.common.utils.TimeUtils.TIME_FORMAT;
 public class ItemGrouping {
-	
+	/*special requirements:
+	 * if time is not filled in, the server returns 00:00:00 in default
+	 * normal items will not be done at midnight
+	 * so we just regard 00:00:00 as null
+	 * @see  JsonTimeDeserializer
+	 * @author KangShiyong
+	 * */
 	private final List<ElderItem> elderItems;
 	private List<HeaderOrItemSection> itemSections = new ArrayList<HeaderOrItemSection>();
 	private final String currentTime;
@@ -67,6 +73,10 @@ public class ItemGrouping {
     	for(ElderItem item : items){
     		itemSections.add(new HeaderOrItemSection(item,1,headerPosition));
     	}
+    }
+    
+    private void translateZeroToNull(){
+    	
     }
     /*
      * set comparator for the given list

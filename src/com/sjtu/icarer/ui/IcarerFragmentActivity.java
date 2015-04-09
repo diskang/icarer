@@ -15,12 +15,10 @@ import butterknife.InjectView;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
+import com.sjtu.icarer.authenticator.LogoutService;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.utils.LogUtils;
-import com.sjtu.icarer.core.ClearElderTask;
 import com.sjtu.icarer.core.utils.PreferenceManager;
-import com.sjtu.icarer.events.RefreshScreenEvent;
-import com.sjtu.icarer.persistence.DbManager;
 import com.squareup.otto.Bus;
 
 /**
@@ -29,9 +27,10 @@ import com.squareup.otto.Bus;
 public abstract class IcarerFragmentActivity extends ActionBarActivity {
     @InjectView(R.id.toolbar) protected Toolbar toolbar;
     @InjectView(R.id.tb_show_message) protected TextView toolbarHeadMessage;
-    @Inject protected DbManager dbManager;
+//    @Inject protected DbManager dbManager;
     @Inject protected Bus eventBus;
     @Inject protected PreferenceManager preferenceManager;
+    @Inject protected LogoutService logoutService;
     
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -87,24 +86,25 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
         		String a=null;
         		if(a.contains(""))LogUtils.d("'go to crash' simulates a nullPointer error");
         		break;
-        	case R.id.goto_clear://clear all elders' data, can clear data in setting screen also
-        		new ClearElderTask(this, dbManager, null){
-        			@Override
-        			protected void onFinally() throws RuntimeException{
-        				super.onFinally();
-        				eventBus.post(new RefreshScreenEvent());
-        			}
-        		}.start();
-	        	break;
+
         	case R.id.goto_settings:
         		Intent intent_setting = new Intent(this, SettingActivity.class);
         		startActivity(intent_setting);
 	        	break;
         	case R.id.goto_logout:
+        		logoutService.logout(new Runnable(){
+					@Override
+					public void run() {
+						//restart to login
+						Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
+		        		sendBroadcast(intent);
+		        		finish();
+					}	
+        		});
         		break;//TODO
         	case R.id.goto_quit:
         		System.exit(0);
-        		break;//TODO
+        		break;
             default:
             	break;
             }

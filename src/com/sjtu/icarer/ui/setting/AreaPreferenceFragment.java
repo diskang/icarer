@@ -23,6 +23,7 @@ import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
+import com.sjtu.icarer.core.ClearElderTask;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
@@ -30,6 +31,7 @@ import com.sjtu.icarer.events.AreaUndoEvent;
 import com.sjtu.icarer.events.SetupSubmitEvent;
 import com.sjtu.icarer.events.TaskCancelEvent;
 import com.sjtu.icarer.model.Area;
+import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.ui.HomeActivity;
 import com.squareup.otto.Bus;
@@ -39,10 +41,10 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
 	
 	private static final String AREA_FULL_NAME_KEY = "areaFullNames";
 	@Inject protected Bus eventBus;
+	@Inject protected DbManager dbManager;
 	@Inject protected PreferenceManager preferenceProvider;
-//	@Inject protected AccountDataProvider accountDataProvider;
-//	@Inject protected IcarerServiceProvider icarerServiceProvider;
 	@Inject @Named("Auth") protected IcarerService icarerService;
+	
 	private boolean areaIdChanged = false;
 	private int areaId;
 	private String areaFullName;
@@ -61,7 +63,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
 		this.floor_lp    = (ListPreference) findPreference("floor_setting");
 		this.room_lp     = (ListPreference) findPreference("room_setting");
 		initPreference();
-		getAreas(1,0,building_lp);
+		
     }
     private void initPreference(){
     	if(areaId==0){
@@ -70,10 +72,17 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
 			clearListPreference(building_lp);
 			clearListPreference(floor_lp);
 			clearListPreference(room_lp);
+			getAreas(1,0,building_lp);
 		}else{
-			this.building_lp.setSummary(building_lp.getValue());
-			this.floor_lp.setSummary(floor_lp.getValue());
-			this.room_lp.setSummary(room_lp.getValue());
+			//TODO useless, entry is empty
+			this.building_lp.setSummary(building_lp.getEntry());
+			this.floor_lp.setSummary(floor_lp.getEntry());
+			this.room_lp.setSummary(room_lp.getEntry());
+			int buildingId = Integer.parseInt(building_lp.getValue());
+			int floorId = Integer.parseInt(floor_lp.getValue());
+			getAreas(1,0,building_lp);
+    		getAreas(2, buildingId,floor_lp);
+    		getAreas(3, floorId,room_lp);
 		}
     }
     @Subscribe
@@ -200,6 +209,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     	if(areaIdChanged){
     		preferenceProvider.setAreaFullName(areaFullName);
         	preferenceProvider.setAreaId(areaId);
+        	new ClearElderTask(getActivity(), dbManager, null){}.start();
     	}else{
     		if(areaId==0){
     			ToastUtils.show(getActivity(), "设定未完成");

@@ -37,7 +37,6 @@ import com.sjtu.icarer.ui.MainActivity;
 import com.sjtu.icarer.ui.SettingActivity;
 import com.sjtu.icarer.ui.SetupActivity;
 import com.sjtu.icarer.ui.area.AreaItemsFragment;
-import com.sjtu.icarer.ui.deprecated.FragmentRoom;
 import com.sjtu.icarer.ui.elder.ElderItemsFragment;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
 import com.sjtu.icarer.ui.setting.ClearCacheFragment;
@@ -59,15 +58,14 @@ import dagger.Provides;
         IcarerAuthenticatorActivity.class,
         MainActivity.class,
         SetupActivity.class,
-        SettingActivity.class,
-        AreaPreferenceFragment.class,
-        ClearCacheFragment.class,
         HomeActivity.class,
+        SettingActivity.class,
         AreaItemsFragment.class,
         ElderItemsFragment.class,
+        AreaPreferenceFragment.class,
+        ClearCacheFragment.class,
         UpdateService.class,
-        UpdateReceiver.class,
-        FragmentRoom.class
+        UpdateReceiver.class
     },
     library = true
 )

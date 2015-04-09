@@ -56,12 +56,7 @@
             android:theme="@style/Theme.GitHub">
             
         </activity>
-        
-        <activity
-            android:name="com.sjtu.icarer.ui.login.LoginActivity"
-            android:label="@string/app_name">
-            
-        </activity>
+
         
         <!-- need to be removed -->
         <activity

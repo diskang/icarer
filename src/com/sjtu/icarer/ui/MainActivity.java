@@ -45,10 +45,11 @@ public class MainActivity extends IcarerFragmentActivity {
         //setContentView(R.layout.activity_welcome);
             
         Injector.inject(this);
+        checkAuth();
         // Set up navigation drawer
         areaId = preferenceProvider.getAreaId();
         
-        checkAuth();
+        
 
     }
     @Override

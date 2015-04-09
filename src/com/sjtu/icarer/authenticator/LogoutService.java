@@ -65,7 +65,7 @@ public class LogoutService {
             super.onSuccess(accountWasRemoved);
 
             Ln.d("Logout succeeded: %s", accountWasRemoved);
-            onSuccess.run();
+            if(onSuccess!=null) onSuccess.run();
 
         }
 

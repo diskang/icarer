@@ -40,7 +40,7 @@ public class SetupActivity extends PreferenceActivity {
         
         if(hasHeaders()){
         	@SuppressLint("InflateParams")
-        	LinearLayout view = (LinearLayout)layoutInflater.inflate(R.layout.view_setup_bottom, null);
+        	LinearLayout view = (LinearLayout)layoutInflater.inflate(R.layout.preference_setup_bottom, null);
             setListFooter(view);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
         } 
         ButterKnife.inject(this);

@@ -15,6 +15,7 @@ public class JsonTimeDeserializer implements JsonDeserializer<Time>{
 			JsonDeserializationContext context) throws JsonParseException {
 		String s = json.getAsJsonPrimitive().getAsString();
 		try{
+			if(s.startsWith("00:00:00"))return null;//special processing, see explain in ItemGrouping
 			return Time.valueOf(s);
 		}catch(Exception e){
 			return null;

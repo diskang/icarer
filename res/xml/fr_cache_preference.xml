@@ -3,12 +3,12 @@
     <PreferenceCategory android:title="清除数据缓存" android:key="cache_clear">
         <Preference 
 	        android:key="cache_clear_elder"
-	        android:title="清除老人所有数据" 
+	        android:title="清除所有老人数据" 
 	        android:summary="会同时清除所以项目数据和老人项目记录"/>
         <Preference 
 	        android:key="cache_clear_elder_item"
 	        android:title="清除所有老人项目" 
-	        android:summary="会同时清除老人项目记录，但不影响；老人基本信息"/>
+	        android:summary="会同时清除老人项目记录，但不影响老人基本信息"/>
         <Preference 
 	        android:key="cache_clear_elder_item_record"
 	        android:title="清除所有老人项目记录" 

@@ -76,7 +76,7 @@ public class PackageUpdateThread {
 		this.mContext = context;
 	}
 	
-	//�ⲿ�ӿ�����Activity����
+	//外部接口让主Activity调用
 	public void checkUpdateInfo(){
 		showNoticeDialog();
 	}
