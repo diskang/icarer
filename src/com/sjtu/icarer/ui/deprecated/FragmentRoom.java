@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,17 +33,12 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.R.drawable;
-import com.sjtu.icarer.R.id;
-import com.sjtu.icarer.R.layout;
 import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.deprecated.DBUtil;
 import com.sjtu.icarer.common.deprecated.OpUtil;
 import com.sjtu.icarer.core.utils.Named;
-import com.sjtu.icarer.core.utils.SafeAsyncTask;
-import com.sjtu.icarer.model.User;
 import com.sjtu.icarer.service.IcarerService;
 import com.sjtu.icarer.ui.HomeActivity;
 
@@ -52,7 +46,6 @@ public class FragmentRoom extends Fragment{
 	Context mcontext;
 	DisplayImageOptions options;
 	
-	private final static String TAG = "FragmentRoom"; 
 	public static final int INDEX = 1;
 	private List<String> roomItemList;
 	private String[] finishedRoomItem;
@@ -279,18 +272,5 @@ public class FragmentRoom extends Fragment{
 	public void onDestroy() {
 		super.onDestroy();
 		AnimateFirstDisplayListener.displayedImages.clear();
-	}
-	
-	private void checkRetrofit(){
-	    new SafeAsyncTask<Boolean>(){
-
-			@Override
-			public Boolean call() throws Exception {
-				User user = icarerService.authenticate("su", "admin");
-				Log.d(TAG, user.getDigest());
-				return user.getDigest()!=null;
-			}
-	    	
-	    }.execute();
 	}
 }

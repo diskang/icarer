@@ -44,8 +44,6 @@ public class HttpConnSoap {
 		params.add(new BasicNameValuePair("elder_id",elder_id+""));
 		params.add(new BasicNameValuePair("device_name",device_name));
 		params.add(new BasicNameValuePair("type",device_type));
-		String trueStr = "true";
-		
 		try{
 			httpRequest.setEntity(new UrlEncodedFormEntity(params,HTTP.UTF_8));
 			HttpResponse response=new DefaultHttpClient().execute(httpRequest);

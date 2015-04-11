@@ -19,13 +19,7 @@
         app:showAsAction="ifRoom">
            
     </item>
-    <item
-        android:id="@+id/goto_clear"
-        android:orderInCategory="1"
-        android:title="@string/label_clear"
-        android:icon="@drawable/ic_launcher"
-        app:showAsAction="never" >
-    </item>
+
     <item
         android:id="@+id/goto_settings"
         android:orderInCategory="1"

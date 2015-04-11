@@ -89,9 +89,9 @@ public class ImageUtils {
      * @param b
      * @return
      */
-    public static Drawable bitmapToDrawable(Bitmap b) {
-        return b == null ? null : new BitmapDrawable(b);
-    }
+//    public static Drawable bitmapToDrawable(Bitmap b) {
+//        return b == null ? null : new BitmapDrawable(b);
+//    }
 
     /**
      * convert Drawable to byte array
@@ -109,9 +109,9 @@ public class ImageUtils {
      * @param b
      * @return
      */
-    public static Drawable byteToDrawable(byte[] b) {
-        return bitmapToDrawable(byteToBitmap(b));
-    }
+//    public static Drawable byteToDrawable(byte[] b) {
+//        return bitmapToDrawable(byteToBitmap(b));
+//    }
 
     /**
      * get input stream from network by imageurl, you need to close inputStream yourself

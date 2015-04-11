@@ -227,7 +227,8 @@ public class ViewFinder {
    * @param drawable
    * @return image view
    */
-  public ImageView setDrawable(final int id, final int drawable) {
+  @SuppressWarnings("deprecation")
+public ImageView setDrawable(final int id, final int drawable) {
     ImageView image = imageView(id);
     image.setImageDrawable(image.getResources().getDrawable(drawable));
     return image;

@@ -102,8 +102,8 @@
       	<!-- service 自启动监听-->
 	     <receiver android:name="com.sjtu.icarer.thread.UpdateReceiver" android:enabled="true" android:priority="90000">  
 	         <intent-filter> 
-				<action android:name="android.Intent.action.USER_PRESENT" />
-				<action android:name="android.Intent.action.BOOT_COMPLETED" />
+				<!--action android:name="android.intent.action.USER_PRESENT" /-->
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
 				<category android:name="android.intent.category.LAUNCHER" />
    			 </intent-filter>
 	         <intent-filter>

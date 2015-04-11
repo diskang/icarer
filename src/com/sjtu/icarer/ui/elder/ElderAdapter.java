@@ -6,7 +6,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Url;
-import com.sjtu.icarer.common.view.CircleButton;
+import com.sjtu.icarer.common.utils.lang.StringUtils;
 import com.sjtu.icarer.model.Elder;
 
 import butterknife.ButterKnife;
@@ -68,21 +68,18 @@ public class ElderAdapter extends BaseAdapter{
 	    }
 	    Elder elder = getItem(position);
 	    String name = elder.getName();
-	    String photoUrl = Url.URL_BASE+Url.URL_OBJECT_DOWNLOAD+"?file_url="+elder.getPhotoUrl();
+	    String photoUrl = elder.getPhotoUrl();
+	    String FullPhotoUrl = StringUtils.isBlank(photoUrl)?"drawable://"+R.drawable.default_user://TODO change to another picture
+	    		Url.URL_BASE+Url.URL_OBJECT_DOWNLOAD+"?file_url="+photoUrl;
 	    
 	    holder.elderInfoView.setText(name);
-	    loadElderImage(photoUrl,holder.elderImageImage );
+	    loadElderImage(FullPhotoUrl, holder.elderImageImage );
 	    return view;
 	}
 	
-//	@Override
-//	protected void update(final int positon, final ElderAdapter elder){
-//		
-//	}
 	static class ViewHolder {
 	    @InjectView(R.id.tv_elder_info) TextView elderInfoView;
 	    @InjectView(R.id.iv_elder_image) ImageView elderImageImage;
-	    @InjectView(R.id.cb_elder_hint) CircleButton elderHintView;
 
 	    public ViewHolder(View view) {
 	      ButterKnife.inject(this, view);

@@ -62,7 +62,7 @@ public class UpdateService extends Service{
 		calendar.set(Calendar.MINUTE, minute);
 		calendar.set(Calendar.SECOND, 0); 
 //      really necessary??
-//		if(calendar.getTimeInMillis()<System.currentTimeMillis()){//���ʱ���ѹ�����һ��
+//		if(calendar.getTimeInMillis()<System.currentTimeMillis()){
 //			calendar.add(Calendar.DAY_OF_YEAR, 1);
 //		}			
 		AlarmManager mAlarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);

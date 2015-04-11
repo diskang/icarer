@@ -179,7 +179,7 @@ select
 from 
     elder_item
 where
-    elder_item.elder_id =???
+    elder_item.elder_id =8
     AND
     elder_item.id not in (
         select 
@@ -221,12 +221,14 @@ where
     			+  " group by "
     			+     " temp_table.item_id "
     			+  " having "
-    			+     " datetime(max(temp_table.finish_time), '+' || temp_table.period || ' day') > datetime('now') "
+    			+     " date(max(temp_table.finish_time), '+' || temp_table.period || ' day') > date('now') "
     			+  " ) ";
     	List<ElderItem> items =dbCache.load(elderItemData, "elder_item", whereClause);
     	if(items.isEmpty()){
-    		List<ElderItem> items_check_if_exist =dbCache.load(elderItemData, "elder_item", null);
-    		if(items_check_if_exist.isEmpty()){// whereClause is null,data not even exist in db
+    		List<ElderItem> items_check_if_exist =dbCache.load(elderItemData, 
+    				"elder_item", 
+    				"elder_item.elder_id = "+elder.getElderId());
+    		if(items_check_if_exist.isEmpty()){// elder's data not even exist in db
     			return dbCache.requestAndStore(elderItemData);// fetch from web
     		}else{
     			return new ArrayList<ElderItem>();// not empty in db, just get empty result under the query conditions

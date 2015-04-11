@@ -1,5 +1,7 @@
 package com.sjtu.icarer.ui.elder;
 
+import static com.sjtu.icarer.common.utils.TimeUtils.TIME_FORMAT;
+
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,8 +10,6 @@ import java.util.List;
 
 import com.sjtu.icarer.common.utils.TimeUtils;
 import com.sjtu.icarer.model.ElderItem;
-
-import static com.sjtu.icarer.common.utils.TimeUtils.TIME_FORMAT;
 public class ItemGrouping {
 	/*special requirements:
 	 * if time is not filled in, the server returns 00:00:00 in default
@@ -60,10 +60,10 @@ public class ItemGrouping {
     }
     
     private void collect(){
-    	addToSection(overdueItems,"overdue");
-    	addToSection(currentItems, "current");
-    	addToSection(futureItems, "future");
-    	addToSection(unknownItems,"unknown");
+    	addToSection(overdueItems,"超时项目");
+    	addToSection(currentItems, "当前项目");
+    	addToSection(futureItems, "今日项目");
+    	addToSection(unknownItems,"其他可选项目");
     }
     
     private void addToSection(List<ElderItem> items,String header){
@@ -75,9 +75,6 @@ public class ItemGrouping {
     	}
     }
     
-    private void translateZeroToNull(){
-    	
-    }
     /*
      * set comparator for the given list
      * */

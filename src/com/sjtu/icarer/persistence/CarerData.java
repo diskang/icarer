@@ -47,7 +47,7 @@ public class CarerData implements PersistableResource<Carer>{
 	public Cursor getCursor(SQLiteDatabase readableDatabase) {
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(tableName);
-        String workToday = "work_date ="+TimeUtils.getCurrentTimeInString(DATE_FORMAT_DATE);
+        String workToday = "work_date = date('now')";
         builder.appendWhere(workToday);
         if(elder!=null){
         	builder.appendWhere(" AND elder_id="+elder.getElderId());
@@ -89,7 +89,7 @@ public class CarerData implements PersistableResource<Carer>{
             if("area_carer".equals(tableName)){
             	values.put("area_id", areaId);
             }else{
-            	values.put("elder_id", elder.getId());
+            	values.put("elder_id", elder.getElderId());
             }
             db.replace(tableName, null, values);
         }

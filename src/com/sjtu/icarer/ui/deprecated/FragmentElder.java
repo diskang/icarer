@@ -35,9 +35,6 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.sjtu.icarer.R;
-import com.sjtu.icarer.R.drawable;
-import com.sjtu.icarer.R.id;
-import com.sjtu.icarer.R.layout;
 import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.config.Url;
@@ -188,9 +185,9 @@ public class FragmentElder extends Fragment{
 		    	View elderGrid = elderView.getChildAt(finishedChosenElder);//- elderGridView.getFirstVisiblePosition()
 				if(elderGrid!=null){
 					
-					CircleButton cbElderHintButton = (CircleButton)elderGrid.findViewById(R.id.cb_elder_hint);
-					cbElderHintButton.setPressed(true);
-					cbElderHintButton.setPressed(true);
+//					CircleButton cbElderHintButton = (CircleButton)elderGrid.findViewById(R.id.cb_elder_hint);
+//					cbElderHintButton.setPressed(true);
+//					cbElderHintButton.setPressed(true);
 				}else{
 					Log.d(TAG,"null"+finishedChosenElder);
 				}
@@ -290,7 +287,6 @@ public class FragmentElder extends Fragment{
 	class ElderImageAdapter extends BaseAdapter {
 
 		private LayoutInflater inflater;
-		private ImageLoadingListener animateFirstListener ;
 
 		ElderImageAdapter(ImageLoadingListener mAnimateFirstListener) {
 			inflater = LayoutInflater.from(getActivity());

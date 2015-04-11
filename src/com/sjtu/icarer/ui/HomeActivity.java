@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,7 +25,6 @@ import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.deprecated.OpUtil;
 import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
-import com.sjtu.icarer.core.ClearElderTask;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.events.RefreshCarerEvent;
 import com.sjtu.icarer.events.RefreshScreenEvent;
@@ -210,21 +208,21 @@ public class HomeActivity extends IcarerFragmentActivity {
 	 *   cause IcarerFragmentActivity cannot have DbManager, or MainActivity will throw an error
 	 *    now I just put --R.id.goto_clear--  here, it's not clear!!
 	*/
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-    	int id = item.getItemId();
-    	switch(id) {
-    	case R.id.goto_clear://clear all elders' data, can clear data in setting screen also
-    		new ClearElderTask(this, dbManager, null){
-    			@Override
-    			protected void onFinally() throws RuntimeException{
-    				super.onFinally();
-    				eventBus.post(new RefreshScreenEvent());
-    			}
-    		}.start();
-    		return true;
-    	}
-    	return super.onOptionsItemSelected(item);
-	}
+//	@Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//    	int id = item.getItemId();
+//    	switch(id) {
+//    	case R.id.goto_clear://clear all elders' data, can clear data in setting screen also
+//    		new ClearElderTask(this, dbManager, null){
+//    			@Override
+//    			protected void onFinally() throws RuntimeException{
+//    				super.onFinally();
+//    				eventBus.post(new RefreshScreenEvent());
+//    			}
+//    		}.start();
+//    		return true;
+//    	}
+//    	return super.onOptionsItemSelected(item);
+//	}
 
 }

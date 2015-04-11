@@ -4,7 +4,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,21 +13,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sjtu.icarer.common.config.Prefer;
-import com.sjtu.icarer.common.constant.Constants;
-import com.sjtu.icarer.common.utils.XMLParse;
-import com.sjtu.icarer.model.RunningDevice;
-
 import android.content.Context;
 import android.util.Log;
+
+import com.sjtu.icarer.common.config.Prefer;
+import com.sjtu.icarer.common.utils.XMLParse;
+import com.sjtu.icarer.model.RunningDevice;
 
 public class DBUtil {
 	private ArrayList<String> arrayList = new ArrayList<String>();
 	private ArrayList<String> brrayList = new ArrayList<String>();
 	private ArrayList<String> crrayList = new ArrayList<String>();
-	private ArrayList<String> drrayList = new ArrayList<String>();
-	private ArrayList<String> errayList = new ArrayList<String>();
-	private ArrayList<String> frrayList = new ArrayList<String>();
 	private List<HashMap<String, String>> infoList = new ArrayList<HashMap<String, String>>();
 	private HttpConnSoap Soap = new HttpConnSoap();
 	private Prefer prefer;
@@ -182,8 +177,6 @@ public class DBUtil {
 	
 	public List<String> getItem(int type) {
 		crrayList.clear();
-		
-		List<List<String>> item = new ArrayList<List<String>>();
 		
 		InputStream allItem =  Soap.GetItemList("selectAllCarerItem",GERO_ID,type);
 		if(allItem == null){

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -29,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Prefer;
 import com.sjtu.icarer.common.deprecated.ClsUtils;
@@ -111,7 +110,7 @@ public class FragmentCarer extends Fragment{
 				String selectedRoom = roomNumber;
 				elderInfoList = dbUtil.getELder(selectedRoom);
 			}else if(msg.what ==4){
-				Toast.makeText(mcontext, "网络链接失败", 50000).show();
+				Toast.makeText(mcontext, "网络链接失败", Toast.LENGTH_SHORT).show();
 			}else if(msg.what == 5){
 			}else if(msg.what ==12){
 				Log.d("bowen","begin to handle msg 12");
@@ -144,7 +143,7 @@ public class FragmentCarer extends Fragment{
 						String strPwd = "1234";
 						LinearLayout ply = (LinearLayout) v.getParent();
 						String tagOfMac = ply.getTag().toString();
-						Toast.makeText(mcontext, tagOfMac, 5000).show();
+						Toast.makeText(mcontext, tagOfMac, Toast.LENGTH_SHORT).show();
 						BluetoothDevice device = getBluetoothDeviceFromBondedListByMac(tagOfMac,searchedDeviceList);
 						
 						Log.d("Bowen Xie",device.getAddress());			
@@ -227,10 +226,10 @@ public class FragmentCarer extends Fragment{
 											ply.setVisibility(View.GONE);
 										}
 										else{
-											Toast.makeText(mcontext, "网络连接失败", 5000).show();
+											Toast.makeText(mcontext, "网络连接失败", Toast.LENGTH_SHORT).show();
 										}
 									}catch(Exception e){
-										Toast.makeText(mcontext, "操作异常", 3000).show();
+										Toast.makeText(mcontext, "操作异常", Toast.LENGTH_SHORT).show();
 									}
 								}
 							});
@@ -262,7 +261,7 @@ public class FragmentCarer extends Fragment{
 							ply.setVisibility(View.GONE);
 							
 						}else{
-							Toast.makeText(mcontext, "绑定失败", 3000).show();
+							Toast.makeText(mcontext, "绑定失败", Toast.LENGTH_SHORT).show();
 						}
 					}
 				});
@@ -292,6 +291,7 @@ public class FragmentCarer extends Fragment{
 		}
 	};
 	
+	@SuppressLint("InflateParams")
 	private void initDevice(){
 		runningDevice = dbUtil.getCurrentDevicesByRoom(roomNumber);
 		
@@ -339,10 +339,10 @@ public class FragmentCarer extends Fragment{
 							ply.setVisibility(View.GONE);
 						}
 						else{
-							Toast.makeText(mcontext, "网络连接失败", 5000).show();
+							Toast.makeText(mcontext, "网络连接失败", Toast.LENGTH_SHORT).show();
 						}
 					}catch(Exception e){
-						Toast.makeText(mcontext, "操作异常", 3000).show();
+						Toast.makeText(mcontext, "操作异常", Toast.LENGTH_SHORT).show();
 					}
 				}
 			});
@@ -376,7 +376,6 @@ public class FragmentCarer extends Fragment{
 	private class GetCurrentDeviceThread extends Thread{
 		@Override
 		public void run(){
-			Message msg = new Message();
 			Log.d("bowen","getCurrentDeviceThread begin");			
 		}
 	}
@@ -426,7 +425,7 @@ public class FragmentCarer extends Fragment{
 				Log.d("Bowen Xie",String.valueOf(device.getBondState()));
 //				Toast.makeText(MainActivity.this, device.getName(), 5000).show();
 				if(device.getBondState() == BluetoothDevice.BOND_NONE){	
-					Toast.makeText(mcontext, device.getName()+"not bonded",5000).show();
+					Toast.makeText(mcontext, device.getName()+"not bonded",Toast.LENGTH_SHORT).show();
 				}
 				try{
 					ClsUtils.setPin(device.getClass(), device, strPwd);
@@ -465,7 +464,7 @@ public class FragmentCarer extends Fragment{
 				
 				Set<BluetoothDevice> devices=adapter.getBondedDevices();
 				if(devices.size()>0){
-					for(Iterator iterator = devices.iterator();iterator.hasNext();){
+					for(Iterator<BluetoothDevice> iterator = devices.iterator();iterator.hasNext();){
 						device = (BluetoothDevice)iterator.next();
 						bondedDeviceList.add(device);
 						String name = device.getName();
@@ -475,11 +474,11 @@ public class FragmentCarer extends Fragment{
 //						}
 					}
 					nameList.substring(0,nameList.length()-2);
-					Toast.makeText(mcontext, nameList,5000).show();
+					Toast.makeText(mcontext, nameList,Toast.LENGTH_SHORT).show();
 					
 				}
 			}else{
-				Toast.makeText(mcontext, "当前设备没有蓝牙功能", 5000).show();
+				Toast.makeText(mcontext, "当前设备没有蓝牙功能", Toast.LENGTH_SHORT).show();
 			}
 		}
 	};

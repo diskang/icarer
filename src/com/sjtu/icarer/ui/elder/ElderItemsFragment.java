@@ -136,13 +136,15 @@ public class ElderItemsFragment extends Fragment{
 		lvEldersView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				//TODO   error! item click twice , appearance wrong
 				currentElderId=(int) id;
 				currentElderPosition = position;
 				for(int i=0,len = elders.size();i<len;i++){// single choice maintenance
 					View elderView = (View)lvEldersView.getChildAt(i-lvEldersView.getFirstVisiblePosition());
-					CircleButton cbCheckBox = (CircleButton)elderView.findViewById(R.id.cb_elder_hint);
-					cbCheckBox.setChecked(i==position);
+					if(i==position){
+					    elderView.setBackgroundResource(R.drawable.border_photo);//add a border to photo
+					}else{
+						 elderView.setBackgroundResource(0);//remove background resource
+					}
 				}
 				getElderItems(elders.get(position));
 				getElderCarer(elders.get(position));
@@ -171,12 +173,12 @@ public class ElderItemsFragment extends Fragment{
 				cbCheckBox.toggle();
 				if(cbCheckBox.isChecked()){
 					confirmButton.setEnabled(true);
-					Toaster.showShort(getActivity(), itemName+" checked");
+//					Toaster.showShort(getActivity(), itemName+" checked");
 					elderRecords.addElderItem(itemId,itemName );//item.getId() --equals-- new Long(id).intValue()
 				}else{
 					Toaster.showShort(getActivity(), itemName+" canceled");
 					elderRecords.removeElderItem(itemId, itemName);
-					Toaster.showShort(getActivity(), elderRecords.toString());
+//					Toaster.showShort(getActivity(), elderRecords.toString());
 					if(elderRecords.isEmpty()){
 						//TODO should do something else
 						confirmButton.setEnabled(false);
@@ -245,16 +247,13 @@ public class ElderItemsFragment extends Fragment{
 	public void submitElderRecords(){
 		if (currentCarer==null){
 			Toaster.showShort(getActivity(), "no carer!");
-			currentCarer = new Carer(1);
+			currentCarer = new Carer(1);//TODO
 		}
-		Elder currentElder;
-		if(currentElderId>0){
-			currentElder = new Elder(currentElderId);
-		}else{
+		if(currentElderId<=0){
 			Toaster.showShort(getActivity(), "no elder!");
 			return;
 		}
-		new PostElderWorkRecord(getActivity(), icarerService, dbManager, elderRecords, currentCarer, currentElder){
+		new PostElderWorkRecord(getActivity(), icarerService, dbManager, elderRecords, currentCarer, currentElderId){
 			@Override
 			protected void onSuccess(Boolean result) throws IOException{
 				super.onSuccess(result);
@@ -270,7 +269,6 @@ public class ElderItemsFragment extends Fragment{
 			protected void onFinally()throws RuntimeException{
 				super.onFinally();
 				confirmButton.setEnabled(false);
-				// refresh the elder's item view
 				refreshByClickingElder(currentElderPosition);
 			}
 		}.start();

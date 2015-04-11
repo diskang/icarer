@@ -23,7 +23,7 @@ import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
-import com.sjtu.icarer.core.ClearElderTask;
+import com.sjtu.icarer.core.RefreshElderTask;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.core.utils.SafeAsyncTask;
@@ -209,7 +209,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     	if(areaIdChanged){
     		preferenceProvider.setAreaFullName(areaFullName);
         	preferenceProvider.setAreaId(areaId);
-        	new ClearElderTask(getActivity(), dbManager, null){}.start();
+        	new RefreshElderTask(getActivity(), dbManager, null){}.start();
     	}else{
     		if(areaId==0){
     			ToastUtils.show(getActivity(), "设定未完成");

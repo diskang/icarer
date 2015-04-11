@@ -39,7 +39,7 @@ import com.sjtu.icarer.ui.SetupActivity;
 import com.sjtu.icarer.ui.area.AreaItemsFragment;
 import com.sjtu.icarer.ui.elder.ElderItemsFragment;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
-import com.sjtu.icarer.ui.setting.ClearCacheFragment;
+import com.sjtu.icarer.ui.setting.CacheRefreshFragment;
 import com.squareup.otto.Bus;
 
 import dagger.Module;
@@ -63,7 +63,7 @@ import dagger.Provides;
         AreaItemsFragment.class,
         ElderItemsFragment.class,
         AreaPreferenceFragment.class,
-        ClearCacheFragment.class,
+        CacheRefreshFragment.class,
         UpdateService.class,
         UpdateReceiver.class
     },

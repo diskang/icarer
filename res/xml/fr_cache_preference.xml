@@ -2,13 +2,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="清除数据缓存" android:key="cache_clear">
         <Preference 
-	        android:key="cache_clear_elder"
-	        android:title="清除所有老人数据" 
-	        android:summary="会同时清除所以项目数据和老人项目记录"/>
+	        android:key="cache_refresh_elder"
+	        android:title="更新老人" 
+	        android:summary="不影响项目数据和老人项目记录"/>
         <Preference 
-	        android:key="cache_clear_elder_item"
-	        android:title="清除所有老人项目" 
-	        android:summary="会同时清除老人项目记录，但不影响老人基本信息"/>
+	        android:key="cache_refresh_elder_item"
+	        android:title="更新所有老人项目" 
+	        android:summary="不影响老人基本信息和老人项目记录"/>
         <Preference 
 	        android:key="cache_clear_elder_item_record"
 	        android:title="清除所有老人项目记录" 

@@ -52,7 +52,7 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "username TEXT,"
             		+ "photo_url TEXT,"
             		+ "work_date DATE,"
-            		+ "PRIMARY KEY(id, elder_id));");
+            		+ "PRIMARY KEY (id,elder_id));");
             
             db.execSQL("CREATE TABLE area_carer ("
             		+ "id INTEGER ,"         //staff_id
@@ -61,7 +61,7 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "username TEXT,"
             		+ "photo_url TEXT,"
             		+ "work_date DATE,"
-            		+ "PRIMARY KEY(id, area_id));");
+            		+ "PRIMARY KEY (id,area_id));");
             
             db.execSQL("CREATE TABLE area_item ("
             		+ "id INTEGER PRIMARY KEY," // area item id, TABLE-T_AREA_ITEM

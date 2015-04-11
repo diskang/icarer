@@ -16,7 +16,6 @@ import com.sjtu.icarer.R;
 
 public class CircleButton extends ImageView implements Checkable{
 	private boolean mChecked = false;
-	private static final int PRESSED_COLOR_LIGHTUP = 255 / 25;
 	private static final int PRESSED_RING_ALPHA = 75;
 	private static final int DEFAULT_PRESSED_RING_WIDTH_DIP = 4;
 	private static final int ANIMATION_TIME_ID = android.R.integer.config_shortAnimTime;
@@ -34,7 +33,6 @@ public class CircleButton extends ImageView implements Checkable{
 	private int pressedRingWidth;
 	private int buttonOffColor = Color.BLACK;
 	private int buttonOnColor = Color.RED;
-	private int pressedColor;
 	private ObjectAnimator pressedAnimator;
 
 	public CircleButton(Context context) {
@@ -55,14 +53,14 @@ public class CircleButton extends ImageView implements Checkable{
 	public void setPressed(boolean pressed) {
 		super.setPressed(pressed);
 		//add by kangshiyong 2015/3/21
+		//modified 2015/4/10, show pressed effect
 		
 		if (pressed) {
-			int color = mChecked?buttonOffColor:buttonOnColor;
-//			currentState = !currentState;
-			if (circlePaint != null) {
-				circlePaint.setColor(pressed ? pressedColor : color);
-			}
-			setColor(color);
+//			int color = mChecked?buttonOffColor:buttonOnColor;
+//			if (circlePaint != null) {
+//				circlePaint.setColor(pressed ? pressedColor : color);
+//			}
+//			setColor(color);
 			showPressedRing();
 		} else {
 			hidePressedRing();
@@ -96,7 +94,7 @@ public class CircleButton extends ImageView implements Checkable{
 
 	public void setColor(int color) {
 		//this.buttonOffColor = color;
-		this.pressedColor = getHighlightColor(color, PRESSED_COLOR_LIGHTUP);
+		
 
 //		circlePaint.setColor(buttonOffColor);
 //		focusPaint.setColor(buttonOffColor);
@@ -148,6 +146,7 @@ public class CircleButton extends ImageView implements Checkable{
 		pressedAnimator.setDuration(pressedAnimationTime);
 	}
 
+	@SuppressWarnings("unused")
 	private int getHighlightColor(int color, int amount) {
 		return Color.argb(Math.min(255, Color.alpha(color)), Math.min(255, Color.red(color) + amount),
 				Math.min(255, Color.green(color) + amount), Math.min(255, Color.blue(color) + amount));
@@ -158,11 +157,13 @@ public class CircleButton extends ImageView implements Checkable{
 	public void setChecked(boolean checked) {
 		if (mChecked != checked) {
           
-          setPressed(true);
-          setPressed(false);
+			int color = mChecked?buttonOffColor:buttonOnColor;
+			if (circlePaint != null) {
+				circlePaint.setColor(color);
+			}
+			setColor(color);
           mChecked = checked;
         }
-		
 	}
 
 	@Override
