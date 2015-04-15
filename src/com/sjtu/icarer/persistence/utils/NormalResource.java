@@ -7,10 +7,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 
 public abstract class NormalResource<T> implements PersistableResource<T>{
 	
-	public Cursor getCursor(SQLiteDatabase readableDatabase,String table,String selection) {
+	public Cursor getCursor(SQLiteDatabase readableDatabase,String table,String[]projectionIn,
+			String selection, String groupBy) {
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
 		builder.setTables(table);
-		return builder.query(readableDatabase, null, selection, null, null, null, null);
+		return builder.query(readableDatabase, projectionIn, selection, null, groupBy, null, null);
 	}
 	//MENTION: loadFrom method is defined in PersistableResource
 	

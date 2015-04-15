@@ -365,7 +365,7 @@ public class FragmentElder extends Fragment{
 			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = inflater.inflate(R.layout.item_item, parent, false);
+				view = inflater.inflate(R.layout.item_checkable_item, parent, false);
 				holder = new ViewHolder();
 				holder.image = (ImageView) view.findViewById(R.id.iv_item_icon);
 				view.setTag(holder);

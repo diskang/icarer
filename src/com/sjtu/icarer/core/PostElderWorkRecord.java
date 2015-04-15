@@ -9,8 +9,6 @@ import android.app.Activity;
 
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.core.utils.ProgressDialogTask;
-import com.sjtu.icarer.model.Carer;
-import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.model.ElderRecord;
 import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerService;
@@ -22,12 +20,10 @@ public class PostElderWorkRecord extends ProgressDialogTask<Boolean>{
 	@Inject
 	protected PostElderWorkRecord(Activity activity,
 			IcarerService icarerService, DbManager dbManager,
-			ElderRecord elderRecords,Carer carer, int elderId) {
+			ElderRecord elderRecords) {
 		super(activity);
-		int carerId = carer.getId();
 		this.elderRecords =  elderRecords;
-		this.elderRecords.setElderId(elderId);
-		this.elderRecords.setStaffId(carerId);
+		
 		this.icarerService = icarerService;
 		this.dbManager = dbManager;
 	}

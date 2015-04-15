@@ -21,7 +21,9 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private static final int VIEW_TYPE_HEADER = 0x01;
 
-    private static final int VIEW_TYPE_CONTENT = 0x00;
+    private static final int VIEW_TYPE_ITEM_CHECKABLE = 0x00;
+    
+    private static final int VIEW_TYPE_ITEM_CUMULATE = 0x10;
 
     private static final int LINEAR = 0;
     
@@ -63,13 +65,16 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ViewHolder> {
                     .inflate(R.layout.elderitems_section_header, parent, false);
             
             return new HeaderViewHolder(view);
-        } else {
+        } else if(viewType==VIEW_TYPE_ITEM_CHECKABLE){
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_item, parent, false);
+                    .inflate(R.layout.item_checkable_item, parent, false);
             
-            return new ElderItemViewHolder(view,onElderItemClickListener);
+            return new ElderCheckableItemViewHolder(view,onElderItemClickListener);
+        } else{//VIEW_TYPE_ITEM_CUMULATE for unknown elder items
+        	view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_cumulate_item, parent, false);
+        	return new ElderCumulateItemViewHolder(view,onElderItemClickListener);
         }
-        
     }
 
     @Override
@@ -80,8 +85,10 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ViewHolder> {
         if(item.isHeader){
         	((HeaderViewHolder)holder).bindItem(item.text);
         	
+        }else if(item.tag==HeaderOrItemSection.ELDER_ITEM_TAG.UNKNOWN){
+        	((ElderCumulateItemViewHolder)holder).bindItem(item.elderItem);
         }else{
-        	((ElderItemViewHolder)holder).bindItem(item.elderItem);
+        	((ElderCheckableItemViewHolder)holder).bindItem(item.elderItem);
         }
 
         final GridSLM.LayoutParams lp = new GridSLM.LayoutParams(
@@ -106,7 +113,16 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        return mItems.get(position).isHeader ? VIEW_TYPE_HEADER : VIEW_TYPE_CONTENT;
+    	HeaderOrItemSection hiSection= mItems.get(position);
+    	if(hiSection.isHeader)return VIEW_TYPE_HEADER;
+    	
+    	switch(hiSection.tag){//unknown items can be post multiple times
+    	case UNKNOWN:
+    		return VIEW_TYPE_ITEM_CUMULATE;
+    	default:
+    		return VIEW_TYPE_ITEM_CHECKABLE;
+    	}
+    	
     }
 
     @Override

@@ -55,9 +55,12 @@ public class ElderItemsFragment extends Fragment{
     @InjectView(R.id.items_submit)protected Button confirmButton;
     
     private ElderRecord elderRecords;
-    private Carer currentCarer;
+    private int currentCarerId = 0;
+	private List<Carer> historyCarers;
+    
     private int currentElderId = 0;
     private int currentElderPosition = 0;
+    
     private HeaderOrItemViewHolder mViews;
     private ElderItemsAdapter mAdapter;
     private int mHeaderDisplay;
@@ -67,7 +70,6 @@ public class ElderItemsFragment extends Fragment{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Injector.inject(this);
-		elderRecords=new ElderRecord();
 	}
 	
 	@Override
@@ -138,16 +140,19 @@ public class ElderItemsFragment extends Fragment{
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				currentElderId=(int) id;
 				currentElderPosition = position;
-				for(int i=0,len = elders.size();i<len;i++){// single choice maintenance
-					View elderView = (View)lvEldersView.getChildAt(i-lvEldersView.getFirstVisiblePosition());
-					if(i==position){
+				for(int i=0,len = lvEldersView.getChildCount();i<len;i++){// single choice maintenance
+					View elderView = (View)lvEldersView.getChildAt(i);
+					if(i==position-lvEldersView.getFirstVisiblePosition()){
 					    elderView.setBackgroundResource(R.drawable.border_photo);//add a border to photo
 					}else{
 						 elderView.setBackgroundResource(0);//remove background resource
 					}
 				}
+				//Toaster.showLong(getActivity(), lvEldersView.getChildCount()+":"+position+":"+lvEldersView.getFirstVisiblePosition());
 				getElderItems(elders.get(position));
 				getElderCarer(elders.get(position));
+				confirmButton.setEnabled(false);
+				elderRecords=new ElderRecord(currentElderId, currentCarerId);
 			}
 		});      
 	}
@@ -163,54 +168,48 @@ public class ElderItemsFragment extends Fragment{
 
 			@Override
 			public void onElderItemClick(View view, int position) {
-				CircleButton cbCheckBox = (CircleButton)view.findViewById(R.id.cb_item_hint);
 				HeaderOrItemSection item = headerOrItems.get(position);
 				if(item.isHeader)return;
 				ElderItem elderItem = item.elderItem;
 				if (elderItem==null)return;
+				
+				CircleButton cbCheckBox = (CircleButton)view.findViewById(R.id.cb_item_hint);
 				String itemName = elderItem.getCareItemName();
 				int itemId = elderItem.getId();
 				cbCheckBox.toggle();
 				if(cbCheckBox.isChecked()){
 					confirmButton.setEnabled(true);
-//					Toaster.showShort(getActivity(), itemName+" checked");
+					Toaster.showShort(getActivity(), itemName+" checked");
 					elderRecords.addElderItem(itemId,itemName );//item.getId() --equals-- new Long(id).intValue()
 				}else{
-					Toaster.showShort(getActivity(), itemName+" canceled");
 					elderRecords.removeElderItem(itemId, itemName);
-//					Toaster.showShort(getActivity(), elderRecords.toString());
+					Toaster.showShort(getActivity(), elderRecords.toString());
 					if(elderRecords.isEmpty()){
 						//TODO should do something else
 						confirmButton.setEnabled(false);
 					}
 				}
 			}
-
-			@Override
-			public void onElderItemLongClick(View view, int position) {
-				HeaderOrItemSection item = headerOrItems.get(position);
-				if(item.isHeader)return;
-				ElderItem elderItem = item.elderItem;
-				if (elderItem==null)return;
-				Toaster.showShort(getActivity(), elderItem.toString());
-			}
         	
         });
         mViews.setAdapter(mAdapter);
 	}
 	
-	private void getElderCarer(final Elder elder){
-		new LoadElderCarerTask(getActivity(),dbManager,elder,false){
+	private void getElderCarer(final Elder elder){//TODO
+		new LoadElderCarerTask(getActivity(),dbManager,elder){
     		@Override
             protected void onSuccess(List<Carer> carers) throws Exception {
                 super.onSuccess(carers);
-                try{
-                    currentCarer = carers.get(0);
-                 }catch(Exception e){
-                    currentCarer=null;
+                if(carers!=null&&carers.size()>0){
+                    
+                    historyCarers = carers;
+                    Carer currentCarer = historyCarers.get(0);
+                    currentCarerId = carers.get(0).getId();
+                    eventBus.post(new RefreshCarerEvent(currentCarer));
+                 }else{
+                	 currentCarerId=0;
+                	 eventBus.post(new RefreshCarerEvent(null));
                       }
-                 eventBus.post(new RefreshCarerEvent(currentCarer));
-                 
             }
     		@Override
     		protected void onException(final Exception e) throws RuntimeException {
@@ -234,8 +233,11 @@ public class ElderItemsFragment extends Fragment{
             		lvEldersView.getChildAt(position),
             		position,
             		lvEldersView.getAdapter().getItemId(position));
+            
 			}
 		}, 300);
+		confirmButton.setEnabled(false);
+		elderRecords=new ElderRecord(currentElderId, currentCarerId);
 	}
 	
 	@Subscribe
@@ -245,30 +247,29 @@ public class ElderItemsFragment extends Fragment{
 	
 	@OnClick(R.id.items_submit)
 	public void submitElderRecords(){
-		if (currentCarer==null){
-			Toaster.showShort(getActivity(), "no carer!");
-			currentCarer = new Carer(1);//TODO
+		if(currentCarerId==0){
+			Toaster.showShort(getActivity(), getResources().getString(R.string.message_no_carer));
+			refreshByClickingElder(currentElderPosition);
+			return ;
+		}else{
+			elderRecords.setStaffId(currentCarerId);
 		}
-		if(currentElderId<=0){
-			Toaster.showShort(getActivity(), "no elder!");
-			return;
-		}
-		new PostElderWorkRecord(getActivity(), icarerService, dbManager, elderRecords, currentCarer, currentElderId){
+		new PostElderWorkRecord(getActivity(), icarerService, dbManager, elderRecords){
 			@Override
 			protected void onSuccess(Boolean result) throws IOException{
 				super.onSuccess(result);
-				Toaster.showShort(getActivity(), "upload successful!");
+				Toaster.showShort(getActivity(), getResources().getString(R.string.message_upload_success));
 			}
 			
 			@Override
 			protected void onException(final Exception e) throws RuntimeException {
                 super.onException(e);
+                Toaster.showShort(getActivity(), getResources().getString(R.string.message_upload_failed));
                 e.printStackTrace();  
             } 
 			@Override
 			protected void onFinally()throws RuntimeException{
 				super.onFinally();
-				confirmButton.setEnabled(false);
 				refreshByClickingElder(currentElderPosition);
 			}
 		}.start();

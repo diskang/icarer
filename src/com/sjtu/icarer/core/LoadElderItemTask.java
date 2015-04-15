@@ -27,7 +27,7 @@ public class LoadElderItemTask extends ProgressDialogTask<List<ElderItem>>{
 	
 	@Override
 	public List<ElderItem> call() throws Exception {
-		List<ElderItem> elderItems = dbManager.getCurrentElderItems(elder);
+		List<ElderItem> elderItems = dbManager.getAllElderItems(elder, false);
 		return elderItems;
 	}
 }

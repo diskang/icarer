@@ -16,6 +16,7 @@ public class ElderItem extends BaseItem implements Serializable{
     private int elderId;
     private Time startTime;
     private Time EndTime;
+    private int submitTimesToday;
     
 	public ElderItem() {
     	super();
@@ -60,6 +61,15 @@ public class ElderItem extends BaseItem implements Serializable{
 	public void setElderId(int elderId) {
 		this.elderId = elderId;
 	}
+
+	public int getSubmitTimesToday() {
+		return submitTimesToday;
+	}
+
+	public void setSubmitTimesToday(int submitTimesToday) {
+		this.submitTimesToday = submitTimesToday;
+	}
+	
     @Override
     public String toString(){
     	Gson gson = new Gson();

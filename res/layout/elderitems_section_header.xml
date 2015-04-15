@@ -9,7 +9,7 @@
     android:gravity="start"
     android:padding="16dip"
     android:textSize="24sp"
-    android:background="@color/black"
+    android:background="@color/bg_items_section_header"
     app:slm_headerDisplay="end|sticky"
     app:slm_isHeader="true"
     app:slm_section_headerMarginStart="56dip"

@@ -49,7 +49,7 @@ public class AreaItemAdapter extends BaseAdapter{
 	    if (view != null) {
 	      holder = (ViewHolder) view.getTag();
 	    } else {
-	      view = inflater.inflate(R.layout.item_item, parent, false);
+	      view = inflater.inflate(R.layout.item_checkable_item, parent, false);
 	      holder = new ViewHolder(view);
 	      view.setTag(holder);
 	    }

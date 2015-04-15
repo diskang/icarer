@@ -126,10 +126,10 @@ public class DbCache {
      *  provide more adaptability
      * */
     public <E> List<E> load(final NormalResource<E> normalResource,
-    		String table, String selection)throws IOException {
+    		String table, String[] projectionIn, String selection, String groupBy)throws IOException {
     	SQLiteOpenHelper helper = helperProvider.get();
         try {
-            List<E> items = loadFromDB(helper, normalResource,table, selection);
+            List<E> items = loadFromDB(helper, normalResource,table, projectionIn, selection,groupBy);
             if (items != null) {
                 Log.d(TAG, "CACHE HIT: Found " + items.size() + " items for " + normalResource);
             }else{
@@ -247,13 +247,14 @@ public class DbCache {
     }
     
     private <E> List<E> loadFromDB(final SQLiteOpenHelper helper,
-            final NormalResource<E> normalResource,String table, String selection) {
+            final NormalResource<E> normalResource,String table, String[] projectionIn,
+            String selection, String groupBy) {
     	
         final SQLiteDatabase db = getReadable(helper);
         if (db == null)
             return null;
 
-        Cursor cursor = normalResource.getCursor(db, table, selection);
+        Cursor cursor = normalResource.getCursor(db, table, projectionIn, selection,groupBy);
         try {
             if (!cursor.moveToFirst())
                 return null;

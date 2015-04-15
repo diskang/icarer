@@ -56,6 +56,10 @@
     <string name="message_post_careitem_data">正在提交护理项目数据</string>
     <string name="message_post_areaitem_data">正在提交房间项目数据</string>
     <string name="message_clear_data">正在清除数据</string>
+    
+    <string name="message_upload_success">上传成功</string>
+    <string name="message_upload_failed">上传失败</string>
+    <string name="message_no_carer">无法获取护工，请先排班</string>
     <string name="text_get_carer_failed">没有值班护工</string>
     <string name="message_software_update">有新的软件包哦，快下载吧～</string>
 </resources>

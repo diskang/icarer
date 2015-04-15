@@ -19,9 +19,6 @@ public class ElderItemData extends NormalResource<ElderItem>{
 	private IcarerService icarerService;
 	private int elderId=0;
 	
-	/*initialize to update item's state*/
-	public ElderItemData(){
-	}
 	
 	//initialize to get an elder's items
 	public ElderItemData(IcarerService icarerService, Elder elder) {
@@ -29,16 +26,35 @@ public class ElderItemData extends NormalResource<ElderItem>{
 		elderId = elder.getElderId();
 	}
 	
-	@Override
-	public Cursor getCursor(SQLiteDatabase readableDatabase) {
-		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-        builder.setTables("elder_item");
-        builder.appendWhere("elder_item.elder_id="+elderId);
+/*	
+ * ignore item's period now TODO
+ * all items will show when new day comes
+ * 
+select 
+    item.*,count(record.item_id) 
+from 
+    elder_item as item  
+        left join 
+    elder_item_record as record 
+        on 
+    item.id=record.item_id 
+        and
+    date(record.finish_time) = date('now','+8 hours')
+where 
+    item.elder_id=?
+group by 
+    item.id
+	*/
+    @Override
+    public Cursor getCursor(SQLiteDatabase readableDatabase) {
+        SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+        String table = "elder_item as item  left join elder_item_record as record on item.id=record.item_id and date(record.finish_time) = date('now','+8 hours')"; 
+        String whereClause = " item.elder_id="+elderId;
+        String groupBy = "item.id";
+        builder.setTables(table);
         return builder
-              .query(readableDatabase, new String[] { "elder_item.id",
-                      "elder_item.icon", "elder_item.item_id","elder_item.item_name",
-                      "elder_item.period","elder_item.start_time","elder_item.end_time"},
-                      null, null, null, null, null);
+              .query(readableDatabase, new String[]{"item.*","count(record.item_id)"},
+            		  whereClause, null, groupBy, null, null);
 	}
 
 	@Override
@@ -50,6 +66,7 @@ public class ElderItemData extends NormalResource<ElderItem>{
 		elderItem.setCareItemName(cursor.getString(3));
 		elderItem.setElderId(cursor.getInt(4));
 		elderItem.setPeriod(cursor.getInt(5));
+		elderItem.setNotes(cursor.getString(6));
 		try{
 			String startTime = cursor.getString(7);
 			String endTime = cursor.getString(8);
@@ -60,6 +77,7 @@ public class ElderItemData extends NormalResource<ElderItem>{
 			e.printStackTrace();
 			LogUtils.d("time value parse error");
 		}
+		elderItem.setSubmitTimesToday(cursor.getInt(9));
 		return elderItem;
 	}
 

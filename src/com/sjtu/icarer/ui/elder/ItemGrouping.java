@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.sjtu.icarer.common.utils.TimeUtils;
 import com.sjtu.icarer.model.ElderItem;
+import com.sjtu.icarer.ui.elder.HeaderOrItemSection.ELDER_ITEM_TAG;
 public class ItemGrouping {
 	/*special requirements:
 	 * if time is not filled in, the server returns 00:00:00 in default
@@ -41,17 +42,25 @@ public class ItemGrouping {
     	return itemSections;
     }
     
+    //think it out why it goes like this
     private void dispatch(){
     	for(ElderItem item:elderItems){
     		Time start = item.getStartTime();
     		Time end = item.getEndTime();
+    		int submitTimes = item.getSubmitTimesToday();
+    		//unknown items can be done multiple times in one day, so we check and handle it specifically
+    		if(submitTimes!=0 && //already did today
+//    				item.getPeriod()!=0 &&//TODO consider period time later
+    				(start!=null || end!=null )){// means it's not unknown item, required only once in a day
+    			continue;//will not appear in the screen ,just continue
+    		}
+    		
     		if(start!=null && (currentTime.compareTo(start.toString()))<=0){
     			futureItems.add(item);
     		}else if(end!=null &&(currentTime.compareTo(end.toString())>=0)){
     			overdueItems.add(item);
-    		}else if(start!=null && end!=null 
-    				&& currentTime.compareTo(start.toString())>=0
-    				&& currentTime.compareTo(end.toString())<=0){
+    		}else if((start!=null && currentTime.compareTo(start.toString())>0)
+    				|| (end!=null && currentTime.compareTo(end.toString())<0)){
     			currentItems.add(item);
     		}else{
     			unknownItems.add(item);
@@ -60,18 +69,18 @@ public class ItemGrouping {
     }
     
     private void collect(){
-    	addToSection(overdueItems,"超时项目");
-    	addToSection(currentItems, "当前项目");
-    	addToSection(futureItems, "今日项目");
-    	addToSection(unknownItems,"其他可选项目");
+    	addToSection(overdueItems,"超时项目",ELDER_ITEM_TAG.OVERDUE);
+    	addToSection(currentItems, "当前项目",ELDER_ITEM_TAG.CURRENT);
+    	addToSection(futureItems, "今日项目",ELDER_ITEM_TAG.FUTURE);
+    	addToSection(unknownItems,"其他可选项目",ELDER_ITEM_TAG.UNKNOWN);
     }
     
-    private void addToSection(List<ElderItem> items,String header){
+    private void addToSection(List<ElderItem> items,String header,ELDER_ITEM_TAG tag){
     	if(items==null||items.size()==0)return;
     	int headerPosition = itemSections.size();
-    	itemSections.add(new HeaderOrItemSection(header,1,headerPosition));
+    	itemSections.add(new HeaderOrItemSection(header,1,headerPosition,tag));
     	for(ElderItem item : items){
-    		itemSections.add(new HeaderOrItemSection(item,1,headerPosition));
+    		itemSections.add(new HeaderOrItemSection(item,1,headerPosition,tag));
     	}
     }
     

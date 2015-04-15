@@ -38,6 +38,7 @@ public class AreaItemData implements PersistableResource<AreaItem>{
 	    areaItem.setName(cursor.getString(3));
 	    areaItem.setFrequency(cursor.getInt(4));
 	    areaItem.setPeriod(cursor.getInt(5));
+	    //setNotes  (cursor.getString(6))
 	    return areaItem;
 	}
 

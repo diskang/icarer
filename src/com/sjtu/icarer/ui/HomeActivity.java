@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.InjectView;
@@ -23,7 +24,7 @@ import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.deprecated.OpUtil;
-import com.sjtu.icarer.common.utils.LogUtils;
+import com.sjtu.icarer.common.utils.TimeUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.events.RefreshCarerEvent;
@@ -42,7 +43,8 @@ public class HomeActivity extends IcarerFragmentActivity {
 	@Inject protected DbManager dbManager;
 	
 	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
-	@InjectView(R.id.room_number)protected TextView roomNumView;
+	@InjectView(R.id.btn_elder_service)protected RadioButton elderServiceBtn;
+	@InjectView(R.id.btn_area_service)protected RadioButton areaServiceBtn;
 	private TextView carerTextView ;
 	private ImageView carerImageView;
 	@Override
@@ -85,6 +87,9 @@ public class HomeActivity extends IcarerFragmentActivity {
 			if (fr == null) {
 				fr = new ElderItemsFragment();
 			}
+			//TODO wrap a radioGroup can remove this 
+			elderServiceBtn.setChecked(true);
+		   areaServiceBtn.setChecked(false);
 			break;
 
 		default:
@@ -93,6 +98,8 @@ public class HomeActivity extends IcarerFragmentActivity {
 			if (fr == null) {
 				fr = new AreaItemsFragment();
 			}
+			elderServiceBtn.setChecked(false);
+			areaServiceBtn.setChecked(true);
 			break;
 		}
 		
@@ -150,14 +157,19 @@ public class HomeActivity extends IcarerFragmentActivity {
      * */
 	@Subscribe
 	public void updateCarer(RefreshCarerEvent refreshCarerEvent){
-		LogUtils.d("receive refreshcarerevent");
+//		LogUtils.d("receive refreshcarerevent");
 		Carer carer = refreshCarerEvent.getCarer();
+		loadCarerImage(carer);
 		if (carer==null){
             carerTextView.setText(R.string.text_get_carer_failed);	
-            carerImageView.setBackgroundResource(R.drawable.default_user);
 		}else{
-            carerTextView.setText(carer.getName());
-            loadCarerImage(carer);}
+			String workDateString = carer.getWorkDate().toString();
+			String carerText =
+					TimeUtils.getCurrentTimeInString(TimeUtils.DATE_FORMAT_DATE)
+					.equals(workDateString)?
+							"今日护工\n":workDateString+"\n";
+            carerTextView.setText(carerText+carer.getName());
+            }
         }
 	
 	@Subscribe
@@ -167,7 +179,10 @@ public class HomeActivity extends IcarerFragmentActivity {
 	}
 	
 	private void loadCarerImage(Carer carer){
-		String imageUrl = Url.URL_BASE+Url.URL_OBJECT_DOWNLOAD+"?file_url="+carer.getPhotoUrl();
+		String imageUrl = 
+				carer!=null?
+				Url.URL_BASE+Url.URL_OBJECT_DOWNLOAD+"?file_url="+carer.getPhotoUrl()
+				:"drawable://"+R.drawable.default_user;
 		
 		DisplayImageOptions options = new DisplayImageOptions.Builder()
             .showImageOnLoading(R.drawable.default_user) // resource or drawable

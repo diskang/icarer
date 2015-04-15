@@ -124,4 +124,5 @@ public class ElderRecord {
 	public void setSubmit(boolean isSubmit) {
 		this.isSubmit = isSubmit;
 	}
+
 }

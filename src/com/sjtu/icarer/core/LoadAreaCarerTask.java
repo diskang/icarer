@@ -1,5 +1,6 @@
 package com.sjtu.icarer.core;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -28,6 +29,7 @@ public class LoadAreaCarerTask extends ProgressDialogTask<List<Carer>>{
 	@Override
 	public List<Carer> call() throws Exception {
 		List<Carer> carers = dbManager.getCarerByArea(forceReload);
+		if(carers==null)return new ArrayList<Carer>();
 		return carers;
 	}
 }

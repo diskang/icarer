@@ -233,7 +233,7 @@ public class FragmentRoom extends Fragment{
 			View view = convertView;
 			final ViewHolder holder;
 			if (convertView == null) {
-				view = inflater.inflate(R.layout.item_item, parent, false);
+				view = inflater.inflate(R.layout.item_checkable_item, parent, false);
 				holder = new ViewHolder();
 				//holder.checkbox = (CheckBox) view.findViewById(R.id.ItemCheck);
 				holder.image = (ImageView) view.findViewById(R.id.iv_item_icon);

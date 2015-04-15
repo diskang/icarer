@@ -3,6 +3,8 @@ package com.sjtu.icarer.model;
 import java.io.Serializable;
 import java.sql.Date;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Carer extends User implements Serializable{
 	
 	/**
@@ -14,7 +16,8 @@ public class Carer extends User implements Serializable{
 	private static final long serialVersionUID = -1874253476056538032L;
 	private int elderId;
 	private int areaId;
-	private Date workDate;
+	@SerializedName("end_date")
+	private Date workDate;//there is a mismatch , HTTP returns as end_date!
 
 	public Carer(){
 	}

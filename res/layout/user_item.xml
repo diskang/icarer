@@ -15,14 +15,15 @@
   limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ListItem"
+    android:background="@drawable/btn_nav_states"
     android:gravity="center_vertical"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/iv_avatar"
         android:src="@drawable/default_user"
-        style="@style/AvatarNXLarge"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/avatar" />
 
@@ -30,6 +31,7 @@
         android:id="@+id/tv_item_info"
         style="@style/ListTitleText"
         android:layout_width="match_parent"
-        android:singleLine="true"
+        android:layout_gravity="center_horizontal"
+        android:maxLines="2"
         android:textStyle="normal"/>
 </LinearLayout>

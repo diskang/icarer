@@ -13,11 +13,11 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import com.sjtu.icarer.common.utils.TimeUtils;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.model.Elder;
-import com.sjtu.icarer.persistence.utils.PersistableResource;
+import com.sjtu.icarer.persistence.utils.NormalResource;
 import com.sjtu.icarer.service.IcarerService;
 
 import static com.sjtu.icarer.common.utils.TimeUtils.DATE_FORMAT_DATE;
-public class CarerData implements PersistableResource<Carer>{
+public class CarerData extends NormalResource<Carer>{
 
 	private final IcarerService icarerService;
 	private List<Elder> elders;
@@ -43,21 +43,23 @@ public class CarerData implements PersistableResource<Carer>{
 		this.tableName = "area_carer";
 	}
 	
+    /*
+    * get today's carers
+     * */
 	@Override
 	public Cursor getCursor(SQLiteDatabase readableDatabase) {
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables(tableName);
-        String workToday = "work_date = date('now')";
-        builder.appendWhere(workToday);
+        String whereClause = "work_date = date('now','+8 hours')";
         if(elder!=null){
-        	builder.appendWhere(" AND elder_id="+elder.getElderId());
+        	   whereClause+=" AND elder_id="+elder.getElderId();
         }else if(areaId!=0){
-        	builder.appendWhere(" AND area_id="+areaId);
+        	   whereClause+=" AND area_id="+areaId;
         }
         return builder
               .query(readableDatabase, new String[] { "id",
                       "name", "username","photo_url","work_date" },
-                      null, null, null, null, null);
+                      whereClause, null, null, null, null);
 	}
 
 	@Override
@@ -109,6 +111,12 @@ public class CarerData implements PersistableResource<Carer>{
 			}
 		}
 		return carers;
+	}
+	
+	@Override
+	public Boolean insert(SQLiteDatabase writableDatabase, Carer singleItem) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

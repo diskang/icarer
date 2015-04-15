@@ -3,7 +3,6 @@ package com.sjtu.icarer.persistence;
 import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -132,6 +131,7 @@ public class DbManager {
     	String selection = elder==null?null:"elder.elder_id="+elder.getElderId();
     	dbCache.delete(elderData, "elder", selection);
     }
+    
     /**
      * Get carer
      * <p/>
@@ -143,16 +143,46 @@ public class DbManager {
      * @throws IOException
      */
     public List<Carer> getCarerByElder(Elder elder, boolean forceReload) throws IOException {
-	    CarerData carerData = new CarerData(icarerService, elder);
-        return forceReload ? dbCache.requestAndStore(carerData)
-                : dbCache.loadOrRequest(carerData);
+        CarerData carerData = new CarerData(icarerService, elder);
+        List<Carer> todayCarers = dbCache.loadOrRequest(carerData);
+        if(todayCarers==null||todayCarers.isEmpty()){
+            List<Carer> historyCarers =dbCache.load(carerData, "elder_carer", 
+            		new String[]{"id","name","username","photo_url","max(work_date)"},
+            		"elder_id="+elder.getElderId(),"id order by work_date desc");
+        	   return historyCarers;
+        }else{
+            return todayCarers;
+        }
     }
-    
+	/*
+	 * select 
+	 *     id,elder_id,name,username,photo_url,max(work_date) 
+	 * from 
+	 *     xxxx_carer 
+	 * where 
+	 *     xxxx_id=?
+	 * group by 
+	 *     id 
+	 * order by 
+	 *     work_date 
+	 * desc;
+	 * 
+	 * 
+	 * get most recent carers by elder or area,
+	 * return common part in between TABLE elder_carer & area_carer
+	 * */
     public List<Carer> getCarerByArea( boolean forceReload) throws IOException {
-    	int areaId = preferenceManager.getAreaId();
-	    CarerData carerData = new CarerData(icarerService, areaId);
-        return forceReload ? dbCache.requestAndStore(carerData)
-                : dbCache.loadOrRequest(carerData);
+        int areaId = preferenceManager.getAreaId();
+        CarerData carerData = new CarerData(icarerService, areaId);
+        List<Carer> todayCarers = dbCache.loadOrRequest(carerData);
+        if(todayCarers==null||todayCarers.isEmpty()){
+            List<Carer> historyCarers =dbCache.load(carerData, "area_carer", 
+            		new String[]{"id","name","username","photo_url","max(work_date)"},
+            		"area_id="+areaId,"id order by work_date desc");
+        	   return historyCarers;
+        }else{
+            return todayCarers;
+        }
     }
     
     /**
@@ -171,75 +201,10 @@ public class DbManager {
                 : dbCache.loadOrRequest(areaItemData);
     }
     
-    /**
-     * 
-     * SQL:
-select 
-    elder_item.*
-from 
-    elder_item
-where
-    elder_item.elder_id =8
-    AND
-    elder_item.id not in (
-        select 
-            distinct temp_table.item_id
-        from
-            (
-            select 
-                elder_item_record.item_id as item_id, elder_item_record.finish_time as finish_time,  elder_item.period as period
-            from
-                elder_item_record inner join elder_item on elder_item.id = elder_item_record.item_id
-            ) as temp_table
-        group by
-            temp_table.item_id
-        having
-            datetime(max(temp_table.finish_time), '+' || temp_table.period || ' day') > datetime('now')
-    );
-    
-     * get elder_items that needs to be done now
-     * <p/>
-     * This method may perform file and should never be
-     * called on the UI-thread
- 
-     * @return list of elder items
-     * @throws IOException
-     */
-    public List<ElderItem> getCurrentElderItems(Elder elder)throws IOException{
-    	ElderItemData elderItemData = new ElderItemData(icarerService, elder);
-    	String whereClause = 
-    			"elder_item.elder_id = "+elder.getElderId()
-    			+  " AND elder_item.id not in ( "
-    			+  " select "
-    			+     " distinct temp_table.item_id "
-    			+  " from "
-    			+     " (select "
-    			+         " elder_item_record.item_id as item_id, elder_item_record.finish_time as finish_time,  elder_item.period as period "
-    			+     " from "
-    			+         " elder_item_record inner join elder_item on elder_item.id = elder_item_record.item_id "
-    			+     " ) as temp_table "
-    			+  " group by "
-    			+     " temp_table.item_id "
-    			+  " having "
-    			+     " date(max(temp_table.finish_time), '+' || temp_table.period || ' day') > date('now') "
-    			+  " ) ";
-    	List<ElderItem> items =dbCache.load(elderItemData, "elder_item", whereClause);
-    	if(items.isEmpty()){
-    		List<ElderItem> items_check_if_exist =dbCache.load(elderItemData, 
-    				"elder_item", 
-    				"elder_item.elder_id = "+elder.getElderId());
-    		if(items_check_if_exist.isEmpty()){// elder's data not even exist in db
-    			return dbCache.requestAndStore(elderItemData);// fetch from web
-    		}else{
-    			return new ArrayList<ElderItem>();// not empty in db, just get empty result under the query conditions
-    		}
-    	}else{
-    		return items;
-    	}
-    }
+
     
     /**
-     * get elder's items in all
+     * get elder's items with a submission times record
      * <p/>
      * This method may perform file and/or network I/O and should never be
      * called on the UI-thread
@@ -259,7 +224,7 @@ where
      * if elder is null , delete all elder items 
      * */
     public void deleteElderItems(Elder elder) throws IOException{
-    	ElderItemData elderItemdata = new ElderItemData();
+    	ElderItemData elderItemdata = new ElderItemData(icarerService,elder);
     	String selection = elder==null?null:"elder_item.elder_id="+elder.getElderId();
     	dbCache.delete(elderItemdata, "elder_item", selection);
     }
