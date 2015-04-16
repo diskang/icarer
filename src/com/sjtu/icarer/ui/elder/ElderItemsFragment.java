@@ -179,11 +179,11 @@ public class ElderItemsFragment extends Fragment{
 				cbCheckBox.toggle();
 				if(cbCheckBox.isChecked()){
 					confirmButton.setEnabled(true);
-					Toaster.showShort(getActivity(), itemName+" checked");
+//					Toaster.showShort(getActivity(), itemName+" checked");
 					elderRecords.addElderItem(itemId,itemName );//item.getId() --equals-- new Long(id).intValue()
 				}else{
 					elderRecords.removeElderItem(itemId, itemName);
-					Toaster.showShort(getActivity(), elderRecords.toString());
+//					Toaster.showShort(getActivity(), elderRecords.toString());
 					if(elderRecords.isEmpty()){
 						//TODO should do something else
 						confirmButton.setEnabled(false);

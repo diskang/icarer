@@ -17,7 +17,6 @@ import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.authenticator.LogoutService;
 import com.sjtu.icarer.common.constant.Constants;
-import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.squareup.otto.Bus;
 
@@ -69,7 +68,6 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
 		inflater.inflate(R.menu.action_bar_option, menu);
 		return true;
     }
-	@SuppressWarnings("null")
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -82,10 +80,10 @@ public abstract class IcarerFragmentActivity extends ActionBarActivity {
         		Intent intent = new Intent(Constants.ACTION_UPDATE_INFO);
         		sendBroadcast(intent);
 	        	break;
-        	case R.id.goto_crash:
-        		String a=null;
-        		if(a.contains(""))LogUtils.d("'go to crash' simulates a nullPointer error");
-        		break;
+//        	case R.id.goto_crash:
+//        		String a=null;
+//        		if(a.contains(""))LogUtils.d("'go to crash' simulates a nullPointer error");
+//        		break;
 
         	case R.id.goto_settings:
         		Intent intent_setting = new Intent(this, SettingActivity.class);

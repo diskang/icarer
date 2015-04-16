@@ -5,7 +5,6 @@ import javax.inject.Inject;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.common.constant.Constants;
@@ -27,8 +26,8 @@ public class UpdateReceiver extends BroadcastReceiver{
 	public void onReceive(Context context, Intent intent) {
 		
 		mcontext = context;
-		Toast msg = Toast.makeText(context,intent.getAction(), Toast.LENGTH_SHORT);
-        msg.show();
+		/*Toast msg = Toast.makeText(context,intent.getAction(), Toast.LENGTH_SHORT);
+        msg.show();*/
 
 		String actionContent = intent.getAction();
 		if (Constants.ACTION_UPDATE_INFO.equals(actionContent)) {	

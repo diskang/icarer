@@ -160,7 +160,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 //		LogUtils.d("receive refreshcarerevent");
 		Carer carer = refreshCarerEvent.getCarer();
 		loadCarerImage(carer);
-		if (carer==null){
+		if (carer==null || carer.getWorkDate()==null){
             carerTextView.setText(R.string.text_get_carer_failed);	
 		}else{
 			String workDateString = carer.getWorkDate().toString();

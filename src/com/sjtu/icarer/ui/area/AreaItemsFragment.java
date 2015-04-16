@@ -97,18 +97,17 @@ public class AreaItemsFragment extends Fragment{
 				cbCheckBox.toggle();
 				if(cbCheckBox.isChecked()){
 					confirmButton.setEnabled(true);
-					Toaster.showShort(getActivity(), item.getName()+" checked");
+//					Toaster.showShort(getActivity(), item.getName()+" checked");
 					areaRecords.addAreaItem(item.getId(),item.getName() );//item.getId() --equals-- new Long(id).intValue()
 				}else{
 					Toaster.showShort(getActivity(), item.getName()+" canceled");
 					areaRecords.removeAreaItem(item.getId(), item.getName());
-					Toaster.showLong(getActivity(), areaRecords.toString());
+//					Toaster.showLong(getActivity(), areaRecords.toString());
 					if(areaRecords.isEmpty()){
 						//TODO should do something else
 						confirmButton.setEnabled(false);
 					}
 				}
-				
 			}
 		});
 		

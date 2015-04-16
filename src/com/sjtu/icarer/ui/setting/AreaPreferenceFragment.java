@@ -22,7 +22,6 @@ import android.preference.PreferenceScreen;
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.utils.view.ToastUtils;
-import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.core.RefreshElderTask;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PreferenceManager;
@@ -87,7 +86,7 @@ public class AreaPreferenceFragment extends PreferenceFragment implements OnShar
     }
     @Subscribe
     public void onUndoSetup(AreaUndoEvent areaUndoEvent){
-    	Toaster.showLong(getActivity(), "post success");
+//    	Toaster.showLong(getActivity(), "post success");
     	
     	switch (areaUndoEvent.undoEvent) {
     	case UNDO_ALL:

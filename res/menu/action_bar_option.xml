@@ -12,13 +12,13 @@
         app:showAsAction="ifRoom">
            
     </item>
-    <item
+    <!--  item
         android:id="@+id/goto_crash"
         android:title="@string/label_refresh"
         android:icon="@drawable/ic_launcher"
         app:showAsAction="ifRoom">
            
-    </item>
+    </item-->
 
     <item
         android:id="@+id/goto_settings"
