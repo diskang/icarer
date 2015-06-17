@@ -27,6 +27,10 @@ public class ItemGrouping {
 	private List<ElderItem> currentItems= new ArrayList<ElderItem>();//sort by start time
 	private List<ElderItem> futureItems = new ArrayList<ElderItem>();//sort by start time
 	private List<ElderItem> unknownItems= new ArrayList<ElderItem>();
+	//new requirement 2015/6/17 :combine overdueItems & currentItems & futureItems into todayItems
+	//display todayItems instead of the above three on the screen 
+	private List<ElderItem> todayItems= new ArrayList<ElderItem>();
+	
 	
     public ItemGrouping(List<ElderItem> elderItems){
     	this.elderItems = elderItems;
@@ -69,9 +73,13 @@ public class ItemGrouping {
     }
     
     private void collect(){
-    	addToSection(overdueItems,"超时项目",ELDER_ITEM_TAG.OVERDUE);
-    	addToSection(currentItems, "当前项目",ELDER_ITEM_TAG.CURRENT);
-    	addToSection(futureItems, "今日项目",ELDER_ITEM_TAG.FUTURE);
+    	//addToSection(overdueItems,"超时项目",ELDER_ITEM_TAG.OVERDUE);
+    	//addToSection(currentItems, "当前项目",ELDER_ITEM_TAG.CURRENT);
+    	//addToSection(futureItems, "今日项目",ELDER_ITEM_TAG.FUTURE);
+    	todayItems.addAll(overdueItems);
+    	todayItems.addAll(currentItems);
+    	todayItems.addAll(futureItems);
+    	addToSection(todayItems, "今日项目",ELDER_ITEM_TAG.TODAY);
     	addToSection(unknownItems,"其他可选项目",ELDER_ITEM_TAG.UNKNOWN);
     }
     

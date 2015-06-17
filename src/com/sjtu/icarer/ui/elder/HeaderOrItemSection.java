@@ -6,6 +6,7 @@ public class HeaderOrItemSection {
     
     public static enum ELDER_ITEM_TAG{
     	FUTURE,CURRENT,OVERDUE,UNKNOWN
+    	,TODAY //today=FUTURE+CURRENT+OVERDUE, to replace these three
     }
 	 public int sectionManager;
 
