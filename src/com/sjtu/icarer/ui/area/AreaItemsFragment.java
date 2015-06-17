@@ -145,14 +145,14 @@ public class AreaItemsFragment extends Fragment{
 			@Override
 			protected void onSuccess(Boolean result){
 				super.onSuccess(result);
-				Toaster.showShort(getActivity(), "提交成功了哦!");
+				Toaster.showShort(getActivity(), getResources().getString(R.string.message_upload_success));
 			}
 			
 			@Override
 			protected void onException(final Exception e) throws RuntimeException {
                 super.onException(e);
                 e.printStackTrace();  
-                Toaster.showShort(getActivity(), "出错了，哎呀!");
+                Toaster.showShort(getActivity(), getResources().getString(R.string.message_upload_failed));
             } 
 			@Override
 			protected void onFinally() throws RuntimeException{
