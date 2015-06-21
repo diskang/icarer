@@ -63,6 +63,7 @@ public class Mapping {
 	    icons.put("toilet_clean",       R.drawable.toilet_clean);
 	    icons.put("water_drink",        R.drawable.water_drink);
 	    icons.put("water_get",          R.drawable.water_get);
+	    icons.put("hair_cut",          R.drawable.hair_cut);
 	   
 	}
 
