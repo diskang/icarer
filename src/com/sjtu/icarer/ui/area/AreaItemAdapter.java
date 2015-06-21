@@ -8,6 +8,7 @@ import butterknife.InjectView;
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.view.CircleButton;
+import com.sjtu.icarer.common.view.IconNumberView;
 import com.sjtu.icarer.model.AreaItem;
 
 import android.view.LayoutInflater;
@@ -49,17 +50,20 @@ public class AreaItemAdapter extends BaseAdapter{
 	    if (view != null) {
 	      holder = (ViewHolder) view.getTag();
 	    } else {
-	      view = inflater.inflate(R.layout.item_checkable_item, parent, false);
+	      view = inflater.inflate(R.layout.item_cumulate_item, parent, false);
 	      holder = new ViewHolder(view);
 	      view.setTag(holder);
 	    }
 	    String name =  getItem(position).getName();
 	    String icon =  getItem(position).getIcon();
+	    Integer number = getItem(position).getSubmitTimesToday();
+	    String numberString = number<100?number+"":"…";
+		
 	    int resId = Mapping.icons.containsKey(icon)?
 	        Mapping.icons.get(icon):R.drawable.default_user;
 	    holder.itemInfoView.setText(name);
 	    holder.itemIconImage.setBackgroundResource(resId);
-
+	    holder.itemNumberView.setNumber(numberString);
 	    return view;
 	}
 	
@@ -71,7 +75,7 @@ public class AreaItemAdapter extends BaseAdapter{
 	    @InjectView(R.id.tv_item_info) TextView itemInfoView;
 	    @InjectView(R.id.iv_item_icon) ImageView itemIconImage;
 	    @InjectView(R.id.cb_item_hint) CircleButton itemHintView;
-
+	    @InjectView(R.id.iv_item_number) IconNumberView itemNumberView;
 	    public ViewHolder(View view) {
 	      ButterKnife.inject(this, view);
 	    }

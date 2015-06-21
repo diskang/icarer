@@ -10,6 +10,7 @@ public class AreaItem extends BaseItem implements Serializable{
 	private int geroId;
 	private String name;
 	private int frequency;
+	private int submitTimesToday;
 	
 	public AreaItem() {
 		super();
@@ -32,5 +33,11 @@ public class AreaItem extends BaseItem implements Serializable{
 	public void setFrequency(int frequency) {
 		this.frequency = frequency;
 	}
+	public int getSubmitTimesToday() {
+		return submitTimesToday;
+	}
 
+	public void setSubmitTimesToday(int submitTimesToday) {
+		this.submitTimesToday = submitTimesToday;
+	}
 }

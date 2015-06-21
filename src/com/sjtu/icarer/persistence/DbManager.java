@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PreferenceManager;
 import com.sjtu.icarer.model.AreaItem;
+import com.sjtu.icarer.model.AreaRecord;
 import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.model.ElderItem;
@@ -196,12 +197,22 @@ public class DbManager {
      * @throws IOException
      */
     public List<AreaItem> getAreaItems( boolean forceReload) throws IOException {
-	    AreaItemData areaItemData = new AreaItemData(icarerService);
-        return forceReload ? dbCache.requestAndStore(areaItemData)
+    	int areaId = preferenceManager.getAreaId();
+    	AreaItemData areaItemData = new AreaItemData(icarerService,areaId);
+    	return forceReload ? dbCache.requestAndStore(areaItemData)
                 : dbCache.loadOrRequest(areaItemData);
     }
     
-
+    /*
+     * store a record for areaItem ,
+     *   is_submit inside areaRecord must be set True explicitly
+     *   after successfully uploading the record
+     *    or it'll be set to false 
+     * */
+    public void storeAreaRecord(AreaRecord areaRecord) throws IOException{
+    	AreaItemRecordData areaItemRecordData = new AreaItemRecordData();
+    	dbCache.insert(areaItemRecordData, areaRecord);
+    }
     
     /**
      * get elder's items with a submission times record

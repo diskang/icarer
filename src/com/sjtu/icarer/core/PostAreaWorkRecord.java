@@ -1,5 +1,6 @@
 package com.sjtu.icarer.core;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.inject.Inject;
@@ -16,9 +17,9 @@ import com.sjtu.icarer.service.IcarerService;
 
 public class PostAreaWorkRecord extends ProgressDialogTask<Boolean>{
 	private IcarerService icarerService;
-//	private DbManager dbManager;
-	
+	private DbManager dbManager;
 	private AreaRecord areaRecords;
+	
 	@Inject
 	protected PostAreaWorkRecord(Activity activity,
 			IcarerService icarerService, DbManager dbManager, 
@@ -30,7 +31,7 @@ public class PostAreaWorkRecord extends ProgressDialogTask<Boolean>{
 		this.areaRecords.setAreaId(areaId);
 		this.areaRecords.setStaffId(carerId);
 		this.icarerService = icarerService;
-//		this.dbManager = dbManager;
+		this.dbManager = dbManager;
 	}
 	
 	public PostAreaWorkRecord start(){
@@ -49,17 +50,22 @@ public class PostAreaWorkRecord extends ProgressDialogTask<Boolean>{
     @Override
     protected void onException(Exception e) throws RuntimeException {
         super.onException(e);
-        storeIntoDb();
+        try{
+            storeIntoDb(false);
+        }catch(IOException err){
+        	   throw new RuntimeException(err);
+        }
     }
     
     @Override
-    protected void onSuccess(Boolean result){
-    	if(!result){
-    		storeIntoDb();
-    	}
+    protected void onSuccess(Boolean result) throws IOException{
+    	//if(!result){//store anyway
+    		storeIntoDb(result);
+    	//}
     }
     
-    private void storeIntoDb(){
-    	//TODO write a copy to the SQlite
+    private void storeIntoDb(Boolean result) throws IOException{
+    	areaRecords.setSubmit(result);
+    	dbManager.storeAreaRecord(areaRecords);
     }
 }

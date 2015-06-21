@@ -14,6 +14,7 @@ public class AreaRecord {
     private int staffId;
     private Set<item> areaItem;
     private Date finishTime;
+    private boolean isSubmit;
     
     public AreaRecord() {
     	areaItem = new HashSet<AreaRecord.item>();
@@ -69,7 +70,7 @@ public class AreaRecord {
 		return areaItem.isEmpty();
 	}
 	
-	protected class item{
+	public class item{
 		/*
 		 * equals and hashCode
 		 * see https://stackoverflow.com/questions/27581/what-issues-should-be-considered-when-overriding-equals-and-hashcode-in-java/27609#27609
@@ -79,8 +80,16 @@ public class AreaRecord {
         public item(int id, String name) {
 			this.id = id;
 			this.name = name;
-			
 		}
+        
+        public int getId(){
+        	return id;
+        }
+        
+        public String getName(){
+        	return name;
+        }
+        
         @Override
 	    public boolean equals(Object obj){
 	    	if(!(obj instanceof item)) return false;
@@ -106,4 +115,11 @@ public class AreaRecord {
     	return gson.toJson(this);
     }
     
+    public boolean isSubmit() {
+		return isSubmit;
+	}
+
+	public void setSubmit(boolean isSubmit) {
+		this.isSubmit = isSubmit;
+	}
 }

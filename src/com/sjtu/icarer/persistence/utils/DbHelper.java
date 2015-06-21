@@ -82,6 +82,14 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "start_time TIME,"//start time in a single day
             		+ "end_time TIME);");  //expire time in a single day
             
+            db.execSQL("CREATE TABLE area_item_record ("
+            		+ "carer_id INTEGER,"
+            		+ "area_id INTEGER,"
+            		+ "item_id INTEGER,"  //area_item_id
+            		+ "item_name TEXT,"   //area_item_name
+            		+ "finish_time DATE," // item's finish time
+            		+ "is_submit TEXT);");// a boolean value 
+            
             db.execSQL("CREATE TABLE elder_item_record ("
             		+ "carer_id INTEGER,"
             		+ "elder_id INTEGER,"
@@ -90,7 +98,6 @@ public class DbHelper extends SQLiteOpenHelper {
             		+ "finish_time DATE," // item's finish time
             		+ "is_submit TEXT);");// a boolean value  
             
-            //TODO create table area_item_record
             
             db.setTransactionSuccessful();
         } finally {

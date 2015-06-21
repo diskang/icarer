@@ -14,19 +14,29 @@ import com.sjtu.icarer.service.IcarerService;
 
 public class AreaItemData implements PersistableResource<AreaItem>{
 	private final IcarerService icarerService;
+	private final int areaId;
 	
-	public AreaItemData(IcarerService icarerService) {
+	public AreaItemData(IcarerService icarerService,int areaId) {
 	    this.icarerService = icarerService;
+	    this.areaId = areaId;
 	}
 	
 	@Override
 	public Cursor getCursor(SQLiteDatabase readableDatabase) {
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
         builder.setTables("area_item");
+//        return builder.query(readableDatabase, new String[] { "area_item.id",
+//                      "area_item.icon", "area_item.gero_id","area_item.item_name", "area_item.frequency", "area_item.period" },
+//                      null, null, null, null, null);
+        
+        String table = "area_item as item  left join area_item_record as record on item.id=record.item_id and date(record.finish_time) = date('now','+8 hours')"; 
+        String whereClause = " record.area_id="+areaId;
+        String groupBy = "item.id";
+        builder.setTables(table);
         return builder
-              .query(readableDatabase, new String[] { "area_item.id",
-                      "area_item.icon", "area_item.gero_id","area_item.item_name", "area_item.frequency", "area_item.period" },
-                      null, null, null, null, null);
+              .query(readableDatabase, new String[]{"item.*","count(record.item_id)"},
+            		  whereClause, null, groupBy, null, null);
+        
 	}
 
 	@Override
@@ -38,7 +48,8 @@ public class AreaItemData implements PersistableResource<AreaItem>{
 	    areaItem.setName(cursor.getString(3));
 	    areaItem.setFrequency(cursor.getInt(4));
 	    areaItem.setPeriod(cursor.getInt(5));
-	    //setNotes  (cursor.getString(6))
+	    areaItem.setNotes(cursor.getString(6));
+	    areaItem.setSubmitTimesToday(cursor.getInt(7));
 	    return areaItem;
 	}
 
