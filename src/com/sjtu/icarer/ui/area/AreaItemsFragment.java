@@ -1,5 +1,6 @@
 package com.sjtu.icarer.ui.area;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -143,7 +144,7 @@ public class AreaItemsFragment extends Fragment{
             }
 		new PostAreaWorkRecord(getActivity(), icarerService, dbManager, preferenceManager, areaRecords, currentCarer){
 			@Override
-			protected void onSuccess(Boolean result){
+			protected void onSuccess(Boolean result)throws IOException {
 				super.onSuccess(result);
 				Toaster.showShort(getActivity(), getResources().getString(R.string.message_upload_success));
 			}
@@ -157,14 +158,19 @@ public class AreaItemsFragment extends Fragment{
 			@Override
 			protected void onFinally() throws RuntimeException{
 				super.onFinally();
-				for(int i=0;i<areaItemsView.getChildCount();++i){
-					View areaview = areaItemsView.getChildAt(i);
-					CircleButton cbCheckBox = (CircleButton)areaview.findViewById(R.id.cb_item_hint);
-					cbCheckBox.setChecked(false);
-				}
-				confirmButton.setEnabled(false);
+				refreshAreaItems();
 			}
 		}.start();
+	}
+	
+	private void refreshAreaItems(){
+//		for(int i=0;i<areaItemsView.getChildCount();++i){
+//			View areaview = areaItemsView.getChildAt(i);
+//			CircleButton cbCheckBox = (CircleButton)areaview.findViewById(R.id.cb_item_hint);
+//			cbCheckBox.setChecked(false);
+//		}
+		getAreaItems();
+		confirmButton.setEnabled(false);
 	}
 	
 	@Override

@@ -20,7 +20,23 @@ public class AreaItemData implements PersistableResource<AreaItem>{
 	    this.icarerService = icarerService;
 	    this.areaId = areaId;
 	}
-	
+	/*	
+	 *
+	select 
+	    item.*,count(record.item_id) 
+	from 
+	    area_item as item  
+	        left join 
+	    area_item_record as record 
+	        on 
+	    item.id=record.item_id 
+	        and
+	    date(record.finish_time) = date('now','+8 hours')
+			  and
+	    record.area_id=7
+	group by 
+	    item.id;
+		*/
 	@Override
 	public Cursor getCursor(SQLiteDatabase readableDatabase) {
 		SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
@@ -29,13 +45,15 @@ public class AreaItemData implements PersistableResource<AreaItem>{
 //                      "area_item.icon", "area_item.gero_id","area_item.item_name", "area_item.frequency", "area_item.period" },
 //                      null, null, null, null, null);
         
-        String table = "area_item as item  left join area_item_record as record on item.id=record.item_id and date(record.finish_time) = date('now','+8 hours')"; 
-        String whereClause = " record.area_id="+areaId;
+        String table = "area_item as item  left join area_item_record as record on "
+        		+ "item.id=record.item_id "
+        		+ "and date(record.finish_time) = date('now','+8 hours') "
+        		+ "and record.area_id="+areaId;
         String groupBy = "item.id";
         builder.setTables(table);
         return builder
               .query(readableDatabase, new String[]{"item.*","count(record.item_id)"},
-            		  whereClause, null, groupBy, null, null);
+            		  null, null, groupBy, null, null);
         
 	}
 
