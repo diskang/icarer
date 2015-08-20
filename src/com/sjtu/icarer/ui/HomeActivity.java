@@ -1,14 +1,20 @@
 package com.sjtu.icarer.ui;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,15 +30,22 @@ import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Url;
 import com.sjtu.icarer.common.constant.Constants;
 import com.sjtu.icarer.common.deprecated.OpUtil;
+import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.TimeUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
+import com.sjtu.icarer.core.LoadAreaCarerTask;
+import com.sjtu.icarer.core.LoadElderCarerTask;
+import com.sjtu.icarer.core.LoadElderTask;
 import com.sjtu.icarer.core.utils.PreferenceManager;
+import com.sjtu.icarer.events.ElderClickEvent;
 import com.sjtu.icarer.events.RefreshCarerEvent;
 import com.sjtu.icarer.events.RefreshScreenEvent;
 import com.sjtu.icarer.model.Carer;
+import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.persistence.DbManager;
 import com.sjtu.icarer.service.IcarerServiceProvider;
 import com.sjtu.icarer.ui.area.AreaItemsFragment;
+import com.sjtu.icarer.ui.elder.ElderAdapter;
 import com.sjtu.icarer.ui.elder.ElderItemsFragment;
 import com.squareup.otto.Subscribe;
 
@@ -41,12 +54,18 @@ public class HomeActivity extends IcarerFragmentActivity {
 	@Inject protected IcarerServiceProvider icarerServiceProvider;
 	@Inject protected PreferenceManager preferenceProvider;
 	@Inject protected DbManager dbManager;
+	@Inject LayoutInflater layoutInflater;
 	
 	@InjectView(R.id.carer_item)protected LinearLayout carerItemLayout; 
 	@InjectView(R.id.btn_elder_service)protected RadioButton elderServiceBtn;
 	@InjectView(R.id.btn_area_service)protected RadioButton areaServiceBtn;
+	@InjectView(R.id.lv_elders)      protected ListView lvEldersView;
+	
 	private TextView carerTextView ;
 	private ImageView carerImageView;
+	
+	private List<Carer> historyCarers;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,6 +75,7 @@ public class HomeActivity extends IcarerFragmentActivity {
 
 		int frIndex = getIntent().getIntExtra(Constants.FRAGMENT_INDEX, 1);
 		addFragment(frIndex);
+		getElders(frIndex==1);//if elder service, then get elder items by clicking elder
 	}
 
 	@Override
@@ -66,10 +86,14 @@ public class HomeActivity extends IcarerFragmentActivity {
 	
 	public void onElderServiceClick(View view){
 			addFragment(1);
+			getElders(true);
+			//elder clickable TODO
 	}
 	
 	public void onAreaServiceClick(View view){
 			addFragment(2);	
+			getAreaCarer();
+			//elder not clickable TODO
 	}
 	
 	
@@ -152,13 +176,69 @@ public class HomeActivity extends IcarerFragmentActivity {
         startActivity(mIntent); 
 	}
 	
-    /*
-     * Subscribe event, posted from AreaItemsFragment & ElderItemsFragment
-     * */
-	@Subscribe
-	public void updateCarer(RefreshCarerEvent refreshCarerEvent){
+	private void getElders(final boolean click){
+        new LoadElderTask(this,dbManager,false) {
+            @Override
+            protected void onSuccess(List<Elder> elders) throws Exception {
+                super.onSuccess(elders);
+                inflateEldersView(elders);
+                if(click==true){
+            	    refreshByClickingElder(0);// potential problem: if the elder view has blocked, cannot refresh
+                }
+            }
+			@Override
+    		protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                e.printStackTrace();  
+            }
+		}.start();
+	}
+	
+	private void inflateEldersView(final List<Elder> elders){
+		lvEldersView.setAdapter(new ElderAdapter(layoutInflater,elders));
+		lvEldersView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//				int currentElderId=(int) id;
+				for(int i=0,len = lvEldersView.getChildCount();i<len;i++){// single choice maintenance
+					View elderView = (View)lvEldersView.getChildAt(i);
+					if(i==position-lvEldersView.getFirstVisiblePosition()){
+					    elderView.setBackgroundResource(R.color.bg_elder_selected);//add a border to photo
+					}else{
+						 //elderView.setBackgroundResource(0);//remove background resource
+						elderView.setBackgroundResource(R.color.bg_elder);
+					}
+				}
+				//Toaster.showLong(getActivity(), lvEldersView.getChildCount()+":"+position+":"+lvEldersView.getFirstVisiblePosition());
+				eventBus.post(new ElderClickEvent(elders.get(position)));
+				getElderCarer(elders.get(position));
+			}
+		});      
+	}
+	
+	private void refreshByClickingElder(final int position){
+		
+		lvEldersView.postDelayed(new Runnable(){
+
+			@Override
+			public void run() {
+				if(lvEldersView.getChildCount()<=0){
+					//Toaster.showShort(context, "cannot init because no elders' view");
+					return;
+				}
+            lvEldersView.performItemClick(
+            		lvEldersView.getChildAt(position),
+            		position,
+            		lvEldersView.getAdapter().getItemId(position));
+            
+			}
+		}, 300);
+		
+	}
+    
+	private void updateCarer(Carer carer){
 //		LogUtils.d("receive refreshcarerevent");
-		Carer carer = refreshCarerEvent.getCarer();
+//		Carer carer = refreshCarerEvent.getCarer();
 		loadCarerImage(carer);
 		if (carer==null || carer.getWorkDate()==null){
             carerTextView.setText(R.string.text_get_carer_failed);	
@@ -169,13 +249,59 @@ public class HomeActivity extends IcarerFragmentActivity {
 					.equals(workDateString)?
 							"今日护工\n":workDateString+"\n";
             carerTextView.setText(carerText+carer.getName());
+            eventBus.post(new RefreshCarerEvent(carer));
             }
         }
 	
+	private void getElderCarer(final Elder elder){
+		new LoadElderCarerTask(this,dbManager,elder){
+    		@Override
+            protected void onSuccess(List<Carer> carers) throws Exception {
+                super.onSuccess(carers);
+                if(carers!=null&&carers.size()>0){
+                    
+                    historyCarers = carers;
+                    Carer currentCarer = historyCarers.get(0);
+                    updateCarer(currentCarer);
+                 }else{
+                	 updateCarer(null);
+                      }
+            }
+    		@Override
+    		protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                	e.printStackTrace();
+            }
+    	}.start();
+	}
+	
+	private void getAreaCarer(){
+		new LoadAreaCarerTask(this,dbManager,false){
+    		@Override
+         protected void onSuccess(List<Carer> carers) throws Exception {
+             super.onSuccess(carers);
+             LogUtils.d("area carer fetched");
+             Carer currentCarer;
+             try{
+            	 currentCarer = carers.get(0);
+             }catch(Exception e){
+            	 currentCarer=null;
+                  }
+             updateCarer(currentCarer);
+             }
+    		@Override
+    		protected void onException(final Exception e) throws RuntimeException {
+                super.onException(e);
+                	e.printStackTrace();
+            }
+    	}.start();
+	}
+	
 	@Subscribe
 	public void refreshScreen(RefreshScreenEvent event){
-		
+		getElders(current_fragment_type==1);
 		addFragment(current_fragment_type);
+		
 	}
 	
 	private void loadCarerImage(Carer carer){

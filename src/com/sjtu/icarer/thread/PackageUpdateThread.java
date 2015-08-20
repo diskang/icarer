@@ -16,7 +16,7 @@ import java.net.URL;
 
 import com.sjtu.icarer.R;
 import com.sjtu.icarer.common.config.Url;
-
+import com.sjtu.icarer.ui.WebviewActivity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.AlertDialog.Builder;
@@ -90,7 +90,10 @@ public class PackageUpdateThread {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-				showDownloadDialog();			
+//				showDownloadDialog();
+				final Intent i = new Intent(mContext,WebviewActivity.class);
+				i.putExtra("downloadUrl", "http://www.baidu.com");
+				mContext.startActivity(i);
 			}
 		});
 		builder.setNegativeButton("以后再说", new OnClickListener() {			

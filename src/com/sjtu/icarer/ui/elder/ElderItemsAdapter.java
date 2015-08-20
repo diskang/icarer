@@ -96,6 +96,7 @@ public class ElderItemsAdapter extends RecyclerView.Adapter<ViewHolder> {
         // Overrides xml attrs, could use different layouts too.
         if (item.isHeader) {
             lp.headerDisplay = mHeaderDisplay;
+            lp.setMargins(0, 0, 0, 20);
             if (lp.isHeaderInline() || (mMarginsFixed && !lp.isHeaderOverlay())) {
                 lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
             } else {

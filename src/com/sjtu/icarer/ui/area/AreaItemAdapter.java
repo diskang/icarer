@@ -59,8 +59,15 @@ public class AreaItemAdapter extends BaseAdapter{
 	    Integer number = getItem(position).getSubmitTimesToday();
 	    String numberString = number<100?number+"":"…";
 		
-	    int resId = Mapping.icons.containsKey(icon)?
-	        Mapping.icons.get(icon):R.drawable.default_user;
+	    int resId=0;
+	    if(holder.itemHintView.isChecked()){
+	    	resId = Mapping.icons_selected.containsKey(icon)?
+			        Mapping.icons_selected.get(icon):R.drawable.default_user;
+	    }else{
+	    	resId = Mapping.icons.containsKey(icon)?
+			        Mapping.icons.get(icon):R.drawable.default_user;
+	    }
+	        
 	    holder.itemInfoView.setText(name);
 	    holder.itemIconImage.setBackgroundResource(resId);
 	    holder.itemNumberView.setNumber(numberString);

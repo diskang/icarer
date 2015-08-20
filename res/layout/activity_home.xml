@@ -11,7 +11,7 @@
         android:paddingTop="@dimen/toolbar_top_padding"
         app:theme="@style/ToolbarStyle"
         android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="?attr/colorPrimaryDark"
         android:id="@+id/toolbar">
         
         <TextView
@@ -19,59 +19,40 @@
          android:layout_width="wrap_content"
          android:layout_height="match_parent"
          android:textSize="30sp"
+         android:textColor="@color/text_light"
          android:layout_centerHorizontal="true"
          android:layout_marginLeft="40dp"
          android:layout_marginStart="40dp"/>  
 	</android.support.v7.widget.Toolbar>
         
-   <LinearLayout
+   <RelativeLayout
         android:layout_width="200dp"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
         android:orientation="vertical"
         android:layout_below="@id/toolbar"
-        android:id="@+id/ll_navbar">
+        android:id="@+id/ll_navbar"
+        android:background="@color/nav_background">
 		<include
             android:id="@+id/carer_item"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_weight="9"
+            android:layout_height="120dp"
+            android:background="@color/bg_carer"
             layout="@layout/user_item" 
             />
+		<ListView 
+        android:id="@+id/lv_elders"
+        style="@style/ListView"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_margin="15dp"
+	    android:layout_below="@id/carer_item"
+	    android:background="@color/bg_elder_list"
+	    android:choiceMode="singleChoice">
+    	</ListView>
+		
 
-		<RadioButton
-            android:id="@+id/btn_elder_service"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_weight="11"
-            android:layout_gravity="end"
-            android:background="@drawable/btn_nav_states"
-            android:button="@null"
-            android:drawableStart="@drawable/btn_elder_item"
-            android:drawableLeft="@drawable/btn_elder_item"
-            android:onClick="onElderServiceClick"
-            android:textSize="35sp"
-            android:textColor="@drawable/btn_text_color_selector"
-            android:text="@string/label_nav_button_elder_item"/>
-        <RadioButton
-            android:id="@+id/btn_area_service"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
-            android:button="@null"
-            android:drawableStart="@drawable/btn_area_item"
-            android:drawableLeft="@drawable/btn_area_item"
-            android:background="@drawable/btn_nav_states"
-            android:layout_weight="11"
-            android:onClick="onAreaServiceClick"
-            android:textSize="35sp"
-            android:textColor="@drawable/btn_text_color_selector"
-            android:text="@string/label_nav_button_area_item"/>
-
-    </LinearLayout>
-    <LinearLayout
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@id/ll_navbar"
@@ -79,20 +60,61 @@
         android:layout_below="@id/toolbar"
         android:orientation="vertical"
          ><!-- android:background="@drawable/main_background" -->
-        
+        <RadioGroup
+            android:id="@+id/tab_service"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="2dp"
+            android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/btn_elder_service"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:button="@null"
+            android:drawableStart="@drawable/btn_elder_item"
+            android:drawableLeft="@drawable/btn_elder_item"
+            android:background="@drawable/btn_tab_states"
+            android:onClick="onElderServiceClick"
+            android:textSize="30sp"
+            android:textColor="@drawable/btn_text_color_selector"
+            android:text="@string/label_nav_button_elder_item"/>
+        <RadioButton
+            android:id="@+id/btn_area_service"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:button="@null"
+            android:drawableStart="@drawable/btn_area_item"
+            android:drawableLeft="@drawable/btn_area_item"
+            android:background="@drawable/btn_tab_states"
+            
+            android:onClick="onAreaServiceClick"
+            android:textSize="30sp"
+            android:textColor="@drawable/btn_text_color_selector"
+            android:text="@string/label_nav_button_area_item"/> 
+        </RadioGroup>
         <!-- here may add a network prompt -->
         <RelativeLayout
             android:id="@+id/network_prompt_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tab_service"
             />
             
         <RelativeLayout
             android:id="@+id/main_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@id/network_prompt_container">
             
         </RelativeLayout>
         
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

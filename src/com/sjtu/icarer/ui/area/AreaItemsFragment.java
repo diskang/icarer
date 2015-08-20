@@ -14,21 +14,21 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
+import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.utils.LogUtils;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.common.view.CircleButton;
-import com.sjtu.icarer.core.LoadAreaCarerTask;
 import com.sjtu.icarer.core.LoadAreaItemTask;
 import com.sjtu.icarer.core.PostAreaWorkRecord;
 import com.sjtu.icarer.core.utils.Named;
 import com.sjtu.icarer.core.utils.PreferenceManager;
-import com.sjtu.icarer.events.RefreshCarerEvent;
 import com.sjtu.icarer.model.AreaItem;
 import com.sjtu.icarer.model.AreaRecord;
 import com.sjtu.icarer.model.Carer;
@@ -55,7 +55,6 @@ public class AreaItemsFragment extends Fragment{
 		Injector.inject(this);
 		areaRecords = new AreaRecord();
 //		areaId = preferenceManager.getAreaId();
-		getAreaCarer();
 		getAreaItems();
 	}
 	
@@ -94,16 +93,22 @@ public class AreaItemsFragment extends Fragment{
 //				int count = areaItemsView.getCheckedItemCount();
 //				Toaster.showShort(getActivity(), "position:"+position+",count:"+count);
 				CircleButton cbCheckBox = (CircleButton)view.findViewById(R.id.cb_item_hint);
+				ImageView itemIconImage=(ImageView)view.findViewById(R.id.iv_item_icon);
 				AreaItem item = areaItems.get(position);
+				String itemIcon = item.getIcon();
 				cbCheckBox.toggle();
 				if(cbCheckBox.isChecked()){
 					confirmButton.setEnabled(true);
-//					Toaster.showShort(getActivity(), item.getName()+" checked");
+					int resId = Mapping.icons_selected.containsKey(itemIcon)?
+					        Mapping.icons_selected.get(itemIcon):R.drawable.default_user;
+					itemIconImage.setBackgroundResource(resId);
 					areaRecords.addAreaItem(item.getId(),item.getName() );//item.getId() --equals-- new Long(id).intValue()
 				}else{
-					Toaster.showShort(getActivity(), item.getName()+" canceled");
 					areaRecords.removeAreaItem(item.getId(), item.getName());
 //					Toaster.showLong(getActivity(), areaRecords.toString());
+					int resId = Mapping.icons.containsKey(itemIcon)?
+					        Mapping.icons.get(itemIcon):R.drawable.default_user;
+					itemIconImage.setBackgroundResource(resId);
 					if(areaRecords.isEmpty()){
 						//TODO should do something else
 						confirmButton.setEnabled(false);
@@ -112,27 +117,6 @@ public class AreaItemsFragment extends Fragment{
 			}
 		});
 		
-	}
-	
-	private void getAreaCarer(){
-		new LoadAreaCarerTask(getActivity(),dbManager,false){
-    		@Override
-         protected void onSuccess(List<Carer> carers) throws Exception {
-             super.onSuccess(carers);
-             LogUtils.d("area carer fetched");
-             try{
-                currentCarer = carers.get(0);
-             }catch(Exception e){
-                currentCarer=null;
-                  }
-             eventBus.post(new RefreshCarerEvent(currentCarer));
-             }
-    		@Override
-    		protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                	e.printStackTrace();
-            }
-    	}.start();
 	}
 	
 	@OnClick(R.id.items_submit)

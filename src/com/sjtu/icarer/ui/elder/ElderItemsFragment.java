@@ -11,27 +11,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 import com.sjtu.icarer.Injector;
 import com.sjtu.icarer.R;
+import com.sjtu.icarer.common.config.Mapping;
 import com.sjtu.icarer.common.utils.view.Toaster;
 import com.sjtu.icarer.common.view.CircleButton;
 import com.sjtu.icarer.common.view.superslim.LayoutManager;
-import com.sjtu.icarer.core.LoadElderCarerTask;
 import com.sjtu.icarer.core.LoadElderItemTask;
-import com.sjtu.icarer.core.LoadElderTask;
 import com.sjtu.icarer.core.PostElderWorkRecord;
 import com.sjtu.icarer.core.utils.Named;
+import com.sjtu.icarer.events.ElderClickEvent;
 import com.sjtu.icarer.events.RefreshCarerEvent;
-import com.sjtu.icarer.events.RefreshScreenEvent;
-import com.sjtu.icarer.model.Carer;
 import com.sjtu.icarer.model.Elder;
 import com.sjtu.icarer.model.ElderItem;
 import com.sjtu.icarer.model.ElderRecord;
@@ -47,19 +43,20 @@ public class ElderItemsFragment extends Fragment{
     private static final String KEY_MARGINS_FIXED = "key_margins_fixed";
     
     @Inject DbManager dbManager;
-    @Inject LayoutInflater layoutInflater;
+    
     @Inject Bus eventBus;
     @Inject @Named("Auth")IcarerService icarerService;
-    @InjectView(R.id.lv_elders)      protected ListView lvEldersView;
+    
     @InjectView(R.id.recycler_view) protected RecyclerView lvElderItemsView;
     @InjectView(R.id.items_submit)protected Button confirmButton;
     
     private ElderRecord elderRecords;
     private int currentCarerId = 0;
-	private List<Carer> historyCarers;
+    private Elder currentElder;
     
-    private int currentElderId = 0;
-    private int currentElderPosition = 0;
+    
+    //private int currentElderId = 0;
+    //private int currentElderPosition = 0;
     
     private HeaderOrItemViewHolder mViews;
     private ElderItemsAdapter mAdapter;
@@ -77,7 +74,7 @@ public class ElderItemsFragment extends Fragment{
 		View rootView = inflater.inflate(R.layout.fr_elders_items, container, false);
 		ButterKnife.inject(this, rootView);
 		confirmButton.setEnabled(false);
-		getElders();
+		
 		return rootView;
 	}
 	
@@ -102,21 +99,7 @@ public class ElderItemsFragment extends Fragment{
         
     }
 	
-	private void getElders(){
-		new LoadElderTask(getActivity(),dbManager,false) {
-			@Override
-            protected void onSuccess(List<Elder> elders) throws Exception {
-                super.onSuccess(elders);
-                inflateEldersView(elders);
-                refreshByClickingElder(0);// potential problem: if the elder view has blocked, cannot refresh
-            }
-			@Override
-    		protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                e.printStackTrace();  
-            }
-		}.start();
-	}
+	
 	
 	private void getElderItems(Elder elder){
 		new LoadElderItemTask(getActivity(),dbManager, elder){
@@ -133,29 +116,7 @@ public class ElderItemsFragment extends Fragment{
 		}.start();
 	}
 	
-	private void inflateEldersView(final List<Elder> elders){
-		lvEldersView.setAdapter(new ElderAdapter(layoutInflater,elders));
-		lvEldersView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				currentElderId=(int) id;
-				currentElderPosition = position;
-				for(int i=0,len = lvEldersView.getChildCount();i<len;i++){// single choice maintenance
-					View elderView = (View)lvEldersView.getChildAt(i);
-					if(i==position-lvEldersView.getFirstVisiblePosition()){
-					    elderView.setBackgroundResource(R.drawable.border_photo);//add a border to photo
-					}else{
-						 elderView.setBackgroundResource(0);//remove background resource
-					}
-				}
-				//Toaster.showLong(getActivity(), lvEldersView.getChildCount()+":"+position+":"+lvEldersView.getFirstVisiblePosition());
-				getElderItems(elders.get(position));
-				getElderCarer(elders.get(position));
-				confirmButton.setEnabled(false);
-				elderRecords=new ElderRecord(currentElderId, currentCarerId);
-			}
-		});      
-	}
+
 	private void inflateElderItemsView(final List<ElderItem> items){
 		
         mAdapter = new ElderItemsAdapter(getActivity(), mHeaderDisplay, items);
@@ -174,16 +135,25 @@ public class ElderItemsFragment extends Fragment{
 				if (elderItem==null)return;
 				
 				CircleButton cbCheckBox = (CircleButton)view.findViewById(R.id.cb_item_hint);
+				ImageView itemIconImage=(ImageView)view.findViewById(R.id.iv_item_icon);
 				String itemName = elderItem.getCareItemName();
+				String itemIcon = elderItem.getIcon();
+				
 				int itemId = elderItem.getId();
 				cbCheckBox.toggle();
 				if(cbCheckBox.isChecked()){
 					confirmButton.setEnabled(true);
+					int resId = Mapping.icons_selected.containsKey(itemIcon)?
+					        Mapping.icons_selected.get(itemIcon):R.drawable.default_user;
+					itemIconImage.setBackgroundResource(resId);
 //					Toaster.showShort(getActivity(), itemName+" checked");
 					elderRecords.addElderItem(itemId,itemName );//item.getId() --equals-- new Long(id).intValue()
 				}else{
 					elderRecords.removeElderItem(itemId, itemName);
 //					Toaster.showShort(getActivity(), elderRecords.toString());
+					int resId = Mapping.icons.containsKey(itemIcon)?
+					        Mapping.icons.get(itemIcon):R.drawable.default_user;
+					itemIconImage.setBackgroundResource(resId);
 					if(elderRecords.isEmpty()){
 						//TODO should do something else
 						confirmButton.setEnabled(false);
@@ -195,61 +165,25 @@ public class ElderItemsFragment extends Fragment{
         mViews.setAdapter(mAdapter);
 	}
 	
-	private void getElderCarer(final Elder elder){//TODO
-		new LoadElderCarerTask(getActivity(),dbManager,elder){
-    		@Override
-            protected void onSuccess(List<Carer> carers) throws Exception {
-                super.onSuccess(carers);
-                if(carers!=null&&carers.size()>0){
-                    
-                    historyCarers = carers;
-                    Carer currentCarer = historyCarers.get(0);
-                    currentCarerId = carers.get(0).getId();
-                    eventBus.post(new RefreshCarerEvent(currentCarer));
-                 }else{
-                	 currentCarerId=0;
-                	 eventBus.post(new RefreshCarerEvent(null));
-                      }
-            }
-    		@Override
-    		protected void onException(final Exception e) throws RuntimeException {
-                super.onException(e);
-                	e.printStackTrace();
-            }
-    	}.start();
-	}
-	
-	private void refreshByClickingElder(final int position){
-		
-		lvEldersView.postDelayed(new Runnable(){
-
-			@Override
-			public void run() {
-				if(lvEldersView.getChildCount()<=0){
-					Toaster.showShort(getActivity(), "cannot init because no elders' view");
-					return;
-				}
-            lvEldersView.performItemClick(
-            		lvEldersView.getChildAt(position),
-            		position,
-            		lvEldersView.getAdapter().getItemId(position));
-            
-			}
-		}, 300);
-		confirmButton.setEnabled(false);
-		elderRecords=new ElderRecord(currentElderId, currentCarerId);
+	@Subscribe
+	public void refreshCarer(RefreshCarerEvent event){
+		currentCarerId = event.getCarer().getId();
 	}
 	
 	@Subscribe
-	public void refreshScreen(RefreshScreenEvent event){
-		refreshByClickingElder(currentElderPosition);
+	public void refreshElderItems(ElderClickEvent event){
+		
+		currentElder = event.getElder();
+		getElderItems(currentElder);
+		confirmButton.setEnabled(false);
+		elderRecords=new ElderRecord(currentElder.getElderId(),currentCarerId);
 	}
 	
 	@OnClick(R.id.items_submit)
 	public void submitElderRecords(){
 		if(currentCarerId==0){
 			Toaster.showShort(getActivity(), getResources().getString(R.string.message_no_carer));
-			refreshByClickingElder(currentElderPosition);
+			refreshElderItems(new ElderClickEvent(currentElder));
 			return ;
 		}else{
 			elderRecords.setStaffId(currentCarerId);
@@ -270,7 +204,8 @@ public class ElderItemsFragment extends Fragment{
 			@Override
 			protected void onFinally()throws RuntimeException{
 				super.onFinally();
-				refreshByClickingElder(currentElderPosition);
+				//refreshByClickingElder(currentElderPosition);
+				refreshElderItems(new ElderClickEvent(currentElder));
 			}
 		}.start();
 	}

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="140dp"
-	android:layout_height="170dp" xmlns:app="http://schemas.android.com/apk/res/com.sjtu.icarer"
+	android:layout_width="120dp"
+	android:layout_height="160dp" 
+	android:paddingBottom="5dp"
+	android:paddingTop="5dp"
+	xmlns:app="http://schemas.android.com/apk/res/com.sjtu.icarer"
 	android:background="?android:attr/selectableItemBackground">
     <ImageView
      	  android:id="@+id/iv_item_icon"
@@ -18,13 +21,13 @@
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentBottom="true"
 	    android:layout_centerHorizontal="true"
-	    android:textSize="20sp"
+	    android:textSize="18sp"
 	    android:textColor="@color/black"/>
 
     <com.sjtu.icarer.common.view.CircleButton
           android:id="@+id/cb_item_hint"
-          android:layout_width="40dip"
-          android:layout_height="40dip"
+          android:layout_width="35dip"
+          android:layout_height="35dip"
           android:layout_centerHorizontal="true"
           android:layout_alignEnd="@id/iv_item_icon"
           android:layout_alignRight="@id/iv_item_icon"
@@ -36,8 +39,8 @@
       />
     <com.sjtu.icarer.common.view.IconNumberView
           android:id="@+id/iv_item_number"
-          android:layout_width="40dip"
-          android:layout_height="40dip"
+          android:layout_width="35dip"
+          android:layout_height="35dip"
           android:layout_alignStart="@id/iv_item_icon"
           android:layout_alignLeft="@id/iv_item_icon"
           android:focusable="false"

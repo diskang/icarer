@@ -16,6 +16,7 @@ public class Mapping {
 	public static HashMap<String,String> ElderItemMapping = new HashMap<String,String>();
 	public static HashMap<String,String> ElderPicMapping = new HashMap<String,String>();
 	public static Map<String, Integer> icons = new HashMap<String, Integer>();
+	public static Map<String, Integer> icons_selected = new HashMap<String, Integer>();
 	
 	static
 	{
@@ -66,6 +67,35 @@ public class Mapping {
 	    icons.put("hair_cut",          R.drawable.hair_cut);
 	   
 	}
+	static {
+	    icons_selected.put("balcony_clean",      R.drawable.balcony_clean_select);
+	    icons_selected.put("beard_shave",        R.drawable.beard_shave_select);
+	    icons_selected.put("bedsheet_change",    R.drawable.bedsheet_change_select);
+	    icons_selected.put("clothes_change",     R.drawable.clothes_change_select);
+	    icons_selected.put("clothes_on_off",     R.drawable.clothes_on_off_select);
+	    icons_selected.put("clothes_wash",       R.drawable.clothes_wash_select);
+	    icons_selected.put("diaper_change",      R.drawable.diaper_change_select);
+	    icons_selected.put("diaper_wash",        R.drawable.diaper_wash_select);
 
+	    icons_selected.put("face_wash",          R.drawable.face_wash_select);
+	    icons_selected.put("feet_wash",          R.drawable.feet_wash_select);
+	    icons_selected.put("food_comminute",     R.drawable.food_comminute_select);
+	    icons_selected.put("food_feed",          R.drawable.food_feed_select);
+	    icons_selected.put("hair_comb",          R.drawable.hair_comb_select);
+	    icons_selected.put("hands_wash",         R.drawable.hands_wash_select);
+	    icons_selected.put("medicine_distribute",R.drawable.medicine_distribute_select);
+	    icons_selected.put("mental_nursing",     R.drawable.mental_nursing_select);
+	    icons_selected.put("mouth_wash",         R.drawable.mouth_wash_select);
+	    icons_selected.put("nail_cut",           R.drawable.nail_cut_select);
+	    icons_selected.put("room_clean",         R.drawable.room_clean_select);
+	    icons_selected.put("shower_take",        R.drawable.shower_take_select);
+	    icons_selected.put("teeth_brush",        R.drawable.teeth_brush_select);
+	    icons_selected.put("toilet_assist",      R.drawable.toilet_assist_select);
+	    icons_selected.put("toilet_clean",       R.drawable.toilet_clean_select);
+	    icons_selected.put("water_drink",        R.drawable.water_drink_select);
+	    icons_selected.put("water_get",          R.drawable.water_get_select);
+	    icons_selected.put("hair_cut",          R.drawable.hair_cut_select);
+	   
+	}
 	
 }

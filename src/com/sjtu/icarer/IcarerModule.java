@@ -36,6 +36,7 @@ import com.sjtu.icarer.ui.HomeActivity;
 import com.sjtu.icarer.ui.MainActivity;
 import com.sjtu.icarer.ui.SettingActivity;
 import com.sjtu.icarer.ui.SetupActivity;
+import com.sjtu.icarer.ui.WebviewActivity;
 import com.sjtu.icarer.ui.area.AreaItemsFragment;
 import com.sjtu.icarer.ui.elder.ElderItemsFragment;
 import com.sjtu.icarer.ui.setting.AreaPreferenceFragment;
@@ -58,6 +59,7 @@ import dagger.Provides;
         IcarerAuthenticatorActivity.class,
         MainActivity.class,
         SetupActivity.class,
+        WebviewActivity.class,
         HomeActivity.class,
         SettingActivity.class,
         AreaItemsFragment.class,

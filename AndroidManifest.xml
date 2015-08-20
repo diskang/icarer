@@ -73,7 +73,10 @@
         <activity  
             android:label="AreaSetupPreferences"  
             android:name=".ui.SetupActivity" >  
-            
+        </activity> 
+         <activity  
+            android:label="DownloadWebPage"  
+            android:name=".ui.WebviewActivity" >  
         </activity> 
         <service
             android:name=".authenticator.AccountAuthenticatorService"
